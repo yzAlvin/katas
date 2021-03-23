@@ -1,0 +1,5 @@
+string_calculator/bin/
+string_calculator/obj/
+string_calculator.Tests/bin/
+string_calculator.Tests/obj/
+.vscode/
