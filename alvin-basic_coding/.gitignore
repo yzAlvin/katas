@@ -1,0 +1,9 @@
+basic_coding/bin/
+basic_coding/obj/
+basic_coding.Tests/bin/
+basic_coding.Tests/obj/
+.vscode/
+guessing_game/bin/
+guessing_game/obj/
+guessing_game.Tests/bin/
+guessing_game.Tests/obj/
