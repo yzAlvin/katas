@@ -26,3 +26,4 @@ This repository contains katas that I am working/worked on as well as writeups o
 
 [Coffee Machine](alvin-coffee_machine/)
 
+[Beverage Pricing](beverages_pricing_refactoring/)
