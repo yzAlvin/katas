@@ -1,6 +1,6 @@
 namespace coffee_machine
 {
-    public class MessageCommand : IMachineCommand
+    public class MessageCommand : ICommand
     {
         public string Message {get;}
         
@@ -8,5 +8,6 @@ namespace coffee_machine
         {
             Message = message;
         }
+
     }
 }

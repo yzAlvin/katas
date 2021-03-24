@@ -1,10 +1,6 @@
 # Coffee Machine
 
-In this Coffee Machine Project, your task is to implement the logic (starting from a simple class) that translates orders from customers of the coffee machine to the drink maker. Your code will use the drink maker protocol to send commands to the drink maker.
-
-You do not have to implement the coffee machine customer interface. For instance, your code could consume a simple POJO/POCO that would represent an order from a customer.
-
-You do not have to implement the drink maker. It is only a imaginary engine that will receive messages according to the protocol. Your job is to build those messages.
+In this kata, the task is to implement the logic (starting from a simple class) that translates orders from customers of the coffee machine to the drink maker. Code will use the drink maker protocol to send commands to the drink maker.
 
 ## Iterations
 
@@ -16,9 +12,9 @@ This project starts simple and will grow in added features through the iteration
 4) Fourth iteration: Making money  
 5) Fifth iteration: Running out 
 
---------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------
 
-### First iteration - Making drinks
+### First Iteration - Making Drinks
 
 In this iteration, your task is to implement the logic (starting from a simple class) that translates orders from customers of the coffee machine to the drink maker. Your code will use the drink maker protocol (see below) to send commands to the drink maker.
 
@@ -48,9 +44,27 @@ The drink maker receives string commands from your code to make the drinks. It c
 
 You can represent the incoming order of the customer as you wish. For instance, it could be a simple POJO that contains the order details, or a simple String, try to think of the simplest thing that do the job. Complex matters will arrive soon enough, trust us.
 
---------------------------------------------------------------------------------------------------------------------------------
+#### Thought Process
 
-### Second iteration - Going into business
+* Coffee Machine takes in string commands, returns drink or message.
+
+* Command will be some interface with an evaluate method, that DrinkCommand and MessageCommand implement. DrinkCommand makes a drink, MessageCommand returns a messaeg.
+
+* DrinkType could be an enum Coffee, Tea, and HotChocolate, or separate classes that inherit from a Drink Base Class.
+
+##### Tests
+
+* Throw exception when command is invalid (does not start with T:, H:, C: or M:)
+
+* Returns drinks with correct sugar and stick
+
+* Throw exception when negative sugars is passed in
+
+* Returns message
+
+----------------------------------------------------------------------
+
+### Second Iteration - Going Into Business
 
 The coffee machine is not free anymore! One tea is 0,4 euro, a coffee is 0,6 euro, a chocolate is 0,5 euro.
 
@@ -67,74 +81,20 @@ If too much money is given, the drink maker will still make the drink according 
 
 You don't need to worry if there is too much money inserted. Just make sure, the minimum amount of money is set.
 
---------------------------------------------------------------------------------------------------------------------------------
+#### Thought Process
 
-### Third iteration - Extra hot
+* I can maybe refactor the DrinkType Enum into a Coffee, HotChoc, Tea class. Maybe create a drink interface that has a price property that the drinks implement. Drink interface would have sugars and stick as properties too.
 
-The machine has been upgraded and the drink maker is now able to make orange juice and to deliver extra hot drinks. You have to update your code to send the correct messages to the drink maker so that users can have orange juices or extra hot drinks
+* How is money given to the machine? Going to assume it is just another variable passed in alongside the command. 
 
-Let us see if your implementation is flexible enough to welcome those changes with not too much hassle.
+* I don't need to worry about handling change, so I won't.
 
-#### Requirements
+##### Tests
 
-* I want to be able to buy a orange juice for 0,6 euro
-* I want to be able to have my coffee, chocolate or tea extra hot
+* Generate message when not enough money provided that contains amount of money missing.
 
-#### Implementation details
+* Returns correct drinks when money is equal to cost of drink
 
-Here are the new protocol commands added to the new firmware of the drink maker:
+* Returns correct drinks when money is more than cost of drink
 
-~~~
-"O::" (Drink maker will make one orange juice)
-"Ch::" (Drink maker will make an extra hot coffee with no sugar)
-"Hh:1:0" (Drink maker will make an extra hot chocolate with one sugar and a stick)
-"Th:2:0" (The drink maker will make an extra hot tea with two sugar and a stick)
-~~~
-
---------------------------------------------------------------------------------------------------------------------------------
-
-### Fourth iteration - Making money
-
-The machine is becoming popular in the office. The management is eager to have daily reports of what is sold and when.<Paste>
-
-#### Requirements
-
-* I want to be able to print a report anytime that contains: how many of each drink was sold and the total amount of money earned so far.
-
-#### Implementation details
-
-For the reporting, you can have a repository of data with a simple data structure in memory. A simple reporting can be done by printing to the console. Of course all of that should be tested before it is written, but you know that already, don't you ? ;)
-
---------------------------------------------------------------------------------------------------------------------------------
-
-### Fifth iteration - Running out
-
-The users of the coffee machine are complaining that there is often shortages of water and/or milk. It takes weeks before the machine is refilled.
-
-Your product owner wants to you to take advantage of the machine capabilities to inform the user that there is a shortage and to send a email notification to the company so that they can come and refill the machine.
-
-#### Requirements
-
-* When I order a drink and it can be delivered because of a shortage, I want to see a message to the coffee machine console that indicates me the shortage and that a notification has been sent
-
-#### Implementation details
-
-You can take advantages of the 2 services implemented by the coffee machine:
-
-~~~
-public interface EmailNotifier {
-	void notifyMissingDrink(String drink)
-	}
-~~~
-
-~~~
-public interface BeverageQuantityChecker {
-	boolean isEmpty(String drink)
-	}
-~~~
-
-Add those two services to your project and use mocking to finish your story.
-
-#### References
-
-[Based off the Coffee Machine Kata on GitHub](http://simcap.github.io/coffeemachine/index.html)  
+-------------------------------------------------------------------

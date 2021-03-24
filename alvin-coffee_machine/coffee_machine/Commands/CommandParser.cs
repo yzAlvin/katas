@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -6,22 +7,19 @@ namespace coffee_machine
     public static class CommandParser
     {
 
-        public static bool TryParse(string commandToParse, out IMachineCommand command)
+        public static ICommand TryParse(string commandToParse)
         {
             if (IsMessageCommand(commandToParse))
             {
-                command = GetMessageCommand(commandToParse);
-                return true;
+                return GetMessageCommand(commandToParse);
             }
 
             if (IsDrinkCommand(commandToParse))
             {
-                command = GetDrinkCommand(commandToParse);
-                return true;
+                return GetDrinkCommand(commandToParse);
             }
 
-            command = GetMessageCommand("Command type not found..");
-            return false;
+            throw new InvalidOperationException("Invalid command.");
         }
 
         private static bool IsMessageCommand(string commandToParse)
@@ -42,16 +40,12 @@ namespace coffee_machine
             return new MessageCommand(message);
         }
 
-        private static ErrorCommand GetErrorCommand(string errorMessage)
-        {
-            return new ErrorCommand(errorMessage);
-        }
-
         private static DrinkCommand GetDrinkCommand(string commandToParse)
         {
             var partsOfDrink = commandToParse.Split(":");
             var drinkType = GetDrinkType(partsOfDrink[0][0]);
             var sugars = GetSugars(partsOfDrink[1]);
+            if (sugars < 0) throw new InvalidOperationException("Cannot have negative sugars.");
             return new DrinkCommand(drinkType, sugars);
         }
 

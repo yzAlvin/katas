@@ -1,6 +1,6 @@
 namespace coffee_machine
 {
-    public class DrinkCommand : IMachineCommand
+    public class DrinkCommand : ICommand
     {
         public DrinkType DrinkType {get;}
         public int Sugars {get;}

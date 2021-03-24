@@ -3,8 +3,8 @@ using System.Collections.Generic;
 
 namespace coffee_machine
 {
-    public interface IMachineCommand
+    public interface ICommand
     {
-        // IMachineCommand GetCommand();
+        
     }
 }
