@@ -10,7 +10,7 @@ namespace coffee_machine
 
         public override string ToString()
         {
-            return base.ToString()[15..];
+            return base.ToString();
         }
     }
 }
