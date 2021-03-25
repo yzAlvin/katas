@@ -9,6 +9,7 @@ namespace coffee_machine
 
         public static ICommand TryParse(string commandToParse)
         {
+            // CODE SMELLS TO ME!!!!!
             if (IsMessageCommand(commandToParse))
             {
                 return GetMessageCommand(commandToParse);
@@ -49,14 +50,15 @@ namespace coffee_machine
             return new DrinkCommand(drinkType, sugars);
         }
 
-        private static readonly Dictionary<char, DrinkType> drinkTypes = new Dictionary<char, DrinkType>()
+        private static readonly Dictionary<char, Drink> drinkTypes = new Dictionary<char, Drink>()
         {
-            {'T', DrinkType.Tea},
-            {'H', DrinkType.HotChocolate},
-            {'C', DrinkType.Coffee}
+            // COMMAND PARSER SHOULDN'T BE THE ONE CREATING INSTANCES OF OBJECTS!!!!
+            {'T', new Tea()},
+            {'H', new HotChocolate()},
+            {'C', new Coffee()}
         };
 
-        private static DrinkType GetDrinkType(char drinkType)
+        private static Drink GetDrinkType(char drinkType)
         {
             return drinkTypes[drinkType];
         }

@@ -1,6 +1,6 @@
 namespace coffee_machine
 {
-    public class Tea : IDrink
+    public class Tea : Drink
     {
         public Tea()
         {
@@ -12,16 +12,14 @@ namespace coffee_machine
             Sugars = sugars;
         }
 
-        public int Sugars { get; set; }
+        public override int Sugars { get; set; }
 
-        public DrinkType DrinkType { get => DrinkType.Tea; }
-
-        public bool HasStick()
+        public override bool HasStick()
         {
             return Sugars > 0;
         }
 
-        public static decimal Price()
+        public override decimal Price()
         {
             return 0.4m;
         }

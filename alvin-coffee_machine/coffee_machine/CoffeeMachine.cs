@@ -6,35 +6,20 @@ namespace coffee_machine
 {
     public class CoffeeMachine
     {
-        private List<IDrink> DrinksMade = new List<IDrink>();
+        private List<Drink> DrinksMade = new List<Drink>();
         private List<string> Messages = new List<string>();
 
         public CoffeeMachine()
         {
         }
 
-        public void MakeDrink(DrinkCommand instructions)
+        public void MakeDrink(Drink drink, int sugars)
         {
-            IDrink drink;
-            switch (instructions.DrinkType)
-            {
-                case DrinkType.Coffee:
-                    drink = new Coffee(instructions.Sugars);
-                    break;
-                case DrinkType.HotChocolate:
-                    drink = new HotChocolate(instructions.Sugars);
-                    break;
-                case DrinkType.Tea:
-                    drink = new Tea(instructions.Sugars);
-                    break;
-                default:
-                    throw new InvalidOperationException("Your drink does not exist..");
-            }
-
+            drink.Sugars = sugars;
             DrinksMade.Add(drink);
         }
 
-        public IDrink LastDrink()
+        public Drink LastDrink()
         {
             return DrinksMade.Last();
         }
@@ -49,53 +34,33 @@ namespace coffee_machine
             var GivenCommand = CommandParser.TryParse(commandToParse); 
             // I want to do polymorphism here but don't know how
             // why: because if we add more commands in the future it will be a pain to change this if statement?
-            if (GivenCommand is DrinkCommand){
-                DrinkCommand drinkCommand = (DrinkCommand) GivenCommand;
-                if (CheckMoneyIsEnoughForDrink(money, (drinkCommand.DrinkType)))
-                {
-                    MakeDrink(drinkCommand);
-                }
-                else
-                {
-                    Messages.Add(NotEnoughMoneyMessage(money, drinkCommand.DrinkType));
-                }
+            // MAYBE ICOMMAND IS BAD USE OF INTERFACE????
+
+            if (GivenCommand is DrinkCommand)
+            {
+                ProcessDrinkCommand(money, (DrinkCommand)GivenCommand);
             }
-            else{
+            else
+            {
                 Messages.Add(((MessageCommand) GivenCommand).Message);
             }
         }
 
-        private bool CheckMoneyIsEnoughForDrink(decimal money, DrinkType drinkType)
+        private void ProcessDrinkCommand(decimal money, DrinkCommand drinkCommand)
         {
-            // I want to get rid of switch statement but don't know how
-            switch (drinkType)
+            if (CheckMoneyIsEnoughForDrink(money, drinkCommand.DrinkType))
             {
-                case DrinkType.Coffee:
-                    return money >= Coffee.Price();
-                case DrinkType.HotChocolate:
-                    return money >= HotChocolate.Price();
-                case DrinkType.Tea:
-                    return money >= Tea.Price();
-                default:
-                    throw new InvalidOperationException("Your drink does not exist..");
+                MakeDrink(drinkCommand.DrinkType, drinkCommand.Sugars);
+            }
+            else
+            {
+                Messages.Add(NotEnoughMoneyMessage(money, drinkCommand.DrinkType));
             }
         }
 
-        private string NotEnoughMoneyMessage(decimal money, DrinkType drinkType)
-        {
-            // I want to get rid of switch statement but don't know how
-            switch (drinkType)
-            {
-                case DrinkType.Coffee:
-                    return $"You need {Coffee.Price() - money} more to make a Coffee.";
-                case DrinkType.HotChocolate:
-                    return $"You need {HotChocolate.Price() - money} more to make a HotChocolate.";
-                case DrinkType.Tea:
-                    return $"You need {Tea.Price() - money} more to make a Tea.";
-                default:
-                    throw new InvalidOperationException("Your drink does not exist..");
-            }
-        }
+        private bool CheckMoneyIsEnoughForDrink(decimal money, Drink drinkType) => money >= drinkType.Price();
+
+        private string NotEnoughMoneyMessage(decimal money, Drink drinkType) => $"You need {drinkType.Price() - money} more to make a {drinkType}.";
 
     }
 }

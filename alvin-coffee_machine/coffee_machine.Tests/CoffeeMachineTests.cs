@@ -9,15 +9,15 @@ namespace coffee_machine.Tests
         CoffeeMachine coffeeMachine = new CoffeeMachine();
         
         [Theory]
-        [InlineData("T:1:0", 1, DrinkType.Tea, 1, true)]
-        [InlineData("H::", 1, DrinkType.HotChocolate, 0, false)]
-        [InlineData("H:0:", 1, DrinkType.HotChocolate, 0, false)]
-        [InlineData("C:2:0", 1, DrinkType.Coffee, 2, true)]
-        public void Machine_Returns_Drink_On_Drink_Commands(string drinkCommands, decimal money, DrinkType expectedDrinkType, int expectedSugars, bool expectedStick)
+        [InlineData("T:1:0", 1, 1, true)]
+        [InlineData("H::", 1, 0, false)]
+        [InlineData("H:0:", 1, 0, false)]
+        [InlineData("C:2:0", 1, 2, true)]
+        public void Machine_Returns_Drink_On_Drink_Commands(string drinkCommands, decimal money, int expectedSugars, bool expectedStick)
         {
             coffeeMachine.GiveCommand(drinkCommands, money);
             var drink = coffeeMachine.LastDrink();
-            Assert.Equal(expectedDrinkType, drink.DrinkType);
+            // Assert.Equal(expectedDrink, drink);
             Assert.Equal(expectedSugars, drink.Sugars);
             Assert.Equal(expectedStick, drink.HasStick());
         }

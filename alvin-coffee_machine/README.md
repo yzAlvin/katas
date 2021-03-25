@@ -98,3 +98,10 @@ You don't need to worry if there is too much money inserted. Just make sure, the
 * Returns correct drinks when money is more than cost of drink
 
 -------------------------------------------------------------------
+
+# Complaints
+I am definitely overusing switch statments and have a lot of unnecessary ifs
+I think the code smell is called too many return paths
+
+I don't know what to do to refactor and get rid of the code smell..
+The solution I think is to use polymorphism but not 100% sure if that is correct or how I would go about it
