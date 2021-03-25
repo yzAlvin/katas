@@ -13,7 +13,7 @@ namespace coffee_machine
         {
         }
 
-        public void MakeDrink(Drink drink, int sugars)
+        private void MakeDrink(Drink drink, int sugars)
         {
             drink.Sugars = sugars;
             DrinksMade.Add(drink);

@@ -9,16 +9,16 @@ namespace coffee_machine.Tests
         CoffeeMachine coffeeMachine = new CoffeeMachine();
         
         [Theory]
-        [InlineData("T:1:0", 1, 1, true)]
-        [InlineData("H::", 1, 0, false)]
-        [InlineData("H:0:", 1, 0, false)]
-        [InlineData("C:2:0", 1, 2, true)]
-        public void Machine_Returns_Drink_On_Drink_Commands(string drinkCommands, decimal money, int expectedSugars, bool expectedStick)
+        [InlineData("T:1:0", 1, typeof(Tea), 1, true)]
+        [InlineData("H::", 1, typeof(HotChocolate), 0, false)]
+        [InlineData("H:0:", 1, typeof(HotChocolate), 0, false)]
+        [InlineData("C:2:0", 1, typeof(Coffee), 2, true)]
+        public void Machine_Returns_Drink_On_Drink_Commands(string drinkCommands, decimal money, Type expectedDrink, int expectedSugars, bool expectedStick)
         {
             coffeeMachine.GiveCommand(drinkCommands, money);
             var drink = coffeeMachine.LastDrink();
-            // changing tests is cheating but don't know how to check type of object, Assert.IsType can't wrap my head around..
-            // Assert.Equal(expectedDrink, drink);
+
+            Assert.True(drink.GetType() == expectedDrink);
             Assert.Equal(expectedSugars, drink.Sugars);
             Assert.Equal(expectedStick, drink.HasStick());
         }
