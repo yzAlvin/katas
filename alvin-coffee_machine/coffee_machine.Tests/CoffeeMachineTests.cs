@@ -17,6 +17,7 @@ namespace coffee_machine.Tests
         {
             coffeeMachine.GiveCommand(drinkCommands, money);
             var drink = coffeeMachine.LastDrink();
+            // changing tests is cheating but don't know how to check type of object, Assert.IsType can't wrap my head around..
             // Assert.Equal(expectedDrink, drink);
             Assert.Equal(expectedSugars, drink.Sugars);
             Assert.Equal(expectedStick, drink.HasStick());
