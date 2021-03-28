@@ -30,7 +30,7 @@ namespace coffee_machine
 
         private static bool IsDrinkCommand(string commandToParse)
         {
-            var drinkCommandCodes = new string[] {"C:", "H:", "T:"};
+            var drinkCommandCodes = DrinkDictionary.PossibleDrinks();
             return drinkCommandCodes.Any(commandToParse.StartsWith);
         }
 

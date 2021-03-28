@@ -13,6 +13,7 @@ namespace coffee_machine.Tests
         [InlineData("H::", 1, typeof(HotChocolate), 0, false)]
         [InlineData("H:0:", 1, typeof(HotChocolate), 0, false)]
         [InlineData("C:2:0", 1, typeof(Coffee), 2, true)]
+        [InlineData("O::", 1, typeof(OrangeJuice), 0, false)]
         public void Machine_Returns_Drink_On_Drink_Commands(string drinkCommands, decimal money, Type expectedDrink, int expectedSugars, bool expectedStick)
         {
             coffeeMachine.GiveCommand(drinkCommands, money);
@@ -28,6 +29,7 @@ namespace coffee_machine.Tests
         [InlineData("H::", 0.1, "You need 0.4 more to make a HotChocolate.")]
         [InlineData("H:0:", 0.3, "You need 0.2 more to make a HotChocolate.")]
         [InlineData("C:2:0", 0.59, "You need 0.01 more to make a Coffee.")]
+        [InlineData("O::", 0.59, "You need 0.01 more to make a OrangeJuice.")]
         public void Machine_Returns_Missing_Money_When_Money_Provided_Insufficient(string drinkCommands, decimal money, string expectedMessage)
         {
             coffeeMachine.GiveCommand(drinkCommands, money);

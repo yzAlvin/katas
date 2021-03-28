@@ -6,16 +6,15 @@ namespace coffee_machine
     {
         private static readonly Dictionary<char, Drink> drinkTypes = new Dictionary<char, Drink>() 
         {
-            // COMMAND PARSER SHOULDN'T BE THE ONE CREATING INSTANCES OF OBJECTS!!!!
+            {'O', new OrangeJuice()},
             {'T', new Tea()},
             {'H', new HotChocolate()},
             {'C', new Coffee()}
         };
 
-        public static Drink GetDrink(char drinkType)
-        {
-            return drinkTypes[drinkType];
-        }
+        public static Drink GetDrink(char drinkType) => drinkTypes[drinkType];
+
+        public static List<char> PossibleDrinks() => new List<char>(drinkTypes.Keys);
     }
     
 }
