@@ -29,12 +29,9 @@ namespace coffee_machine
             return Messages.Last();
         }
 
-        public void GiveCommand(string commandToParse, decimal money = 0)
+        public void GiveCommand(string commandToParse, decimal money = 0) // Return a tuple containing Drink or Message ??
         {
             var GivenCommand = CommandParser.TryParse(commandToParse); 
-            // I want to do polymorphism here but don't know how
-            // why: because if we add more commands in the future it will be a pain to change this if statement?
-            // MAYBE ICOMMAND IS BAD USE OF INTERFACE????
 
             if (GivenCommand is DrinkCommand)
             {

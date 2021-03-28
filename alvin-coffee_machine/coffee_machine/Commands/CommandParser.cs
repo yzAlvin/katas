@@ -9,7 +9,6 @@ namespace coffee_machine
 
         public static ICommand TryParse(string commandToParse)
         {
-            // CODE SMELLS TO ME!!!!!
             if (IsMessageCommand(commandToParse))
             {
                 return GetMessageCommand(commandToParse);
@@ -43,30 +42,28 @@ namespace coffee_machine
 
         private static DrinkCommand GetDrinkCommand(string commandToParse)
         {
-            var partsOfDrink = commandToParse.Split(":");
-            var drinkType = GetDrinkType(partsOfDrink[0][0]);
-            var sugars = GetSugars(partsOfDrink[1]);
-            if (sugars < 0) throw new InvalidOperationException("Cannot have negative sugars.");
-            return new DrinkCommand(drinkType, sugars);
+            var drinkInstructions = commandToParse.Split(":");
+            return ParseDrinkInstructions(drinkInstructions);
         }
-
-        private static readonly Dictionary<char, Drink> drinkTypes = new Dictionary<char, Drink>()
-        {
-            // COMMAND PARSER SHOULDN'T BE THE ONE CREATING INSTANCES OF OBJECTS!!!!
-            {'T', new Tea()},
-            {'H', new HotChocolate()},
-            {'C', new Coffee()}
-        };
 
         private static Drink GetDrinkType(char drinkType)
         {
-            return drinkTypes[drinkType];
+            return DrinkDictionary.GetDrink(drinkType);
         }
 
         private static int GetSugars(string amountOfSugar)
         {
             int.TryParse(amountOfSugar, out var sugars);
+            if (sugars < 0) throw new InvalidOperationException("Cannot have negative sugars.");
             return sugars;
+        }
+
+        private static DrinkCommand ParseDrinkInstructions(string[] partsOfDrink)
+        {
+            var drinkType = GetDrinkType(partsOfDrink[0][0]);
+            var sugars = GetSugars(partsOfDrink[1]);
+
+            return new DrinkCommand(drinkType, sugars);
         }
     }
 }

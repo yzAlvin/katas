@@ -99,9 +99,38 @@ You don't need to worry if there is too much money inserted. Just make sure, the
 
 -------------------------------------------------------------------
 
-# Complaints
-I am definitely overusing switch statments and have a lot of unnecessary ifs
-I think the code smell is called too many return paths
+### Third Iteration - Extra Hot
 
-I don't know what to do to refactor and get rid of the code smell..
-The solution I think is to use polymorphism but not 100% sure if that is correct or how I would go about it
+The machine has been upgraded and the drink maker is now able to make orange juice and to deliver extra hot drinks.
+
+#### Requirements
+
+* I want to be able to buy a orange juice for 0,6 euro
+* I want to be able to have my coffee, chocolate or tea extra hot
+
+#### Implementation details
+
+Here are the new protocol commands added to the new firmware of the drink maker:
+
+~~~
+"O::" (Drink maker will make one orange juice)
+"Ch::" (Drink maker will make an extra hot coffee with no sugar)
+"Hh:1:0" (Drink maker will make an extra hot chocolate with one sugar and a stick)
+"Th:2:0" (The drink maker will make an extra hot tea with two sugar and a stick)
+~~~
+
+#### Thought Process
+
+* Orange Juice is just another class that inherits from Drink
+
+* Extra Hot can be another class that implements  Drink; that takes in a Drink in it's constructor, returning the drink as an extra hot drink. I think this is the decorator pattern.
+
+* To parse the "h" I will need something like a CheckIfExtaHot method
+
+##### Tests
+
+* Can make orange juice
+
+* Can make extra hot drinks, excluding orange juice
+
+-----------------------------------------------------------
