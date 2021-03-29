@@ -1,12 +1,15 @@
 using System;
 using System.Linq;
 using Xunit;
+using Moq;
 
 namespace coffee_machine.Tests
 {
     public class CoffeeMachineMakingDrinksTests
     {
-        CoffeeMachine coffeeMachine = new CoffeeMachine();
+        private IEmailNotifier _dummyEmailNotifier;
+        private IBeverageQuantityChecker _dummyBeverageQuantityChecker;
+        CoffeeMachine coffeeMachine = new CoffeeMachine(Mock.Of<IEmailNotifier>(), Mock.Of<IBeverageQuantityChecker>());
         
         [Theory]
         [InlineData("T:1:0", 1, typeof(Tea), 1, true)]

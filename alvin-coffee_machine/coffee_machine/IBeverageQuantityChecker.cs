@@ -2,8 +2,8 @@ using System;
 
 namespace coffee_machine
 {
-    public interface BeverageQuantityChecker 
+    public interface IBeverageQuantityChecker 
     {
-	    Boolean isEmpty(String drink);
+	    Boolean isEmpty(Drink drink);
 	}
 }

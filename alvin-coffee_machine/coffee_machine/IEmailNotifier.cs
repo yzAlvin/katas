@@ -1,8 +1,8 @@
 using System;
 namespace coffee_machine
 {
-    public interface EmailNotifier 
+    public interface IEmailNotifier 
     {
-	    void notifyMissingDrink(String drink);
+	    void notifyMissingDrink(Drink drink);
 	}
 }

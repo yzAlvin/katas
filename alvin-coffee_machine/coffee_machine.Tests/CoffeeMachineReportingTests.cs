@@ -2,17 +2,21 @@ using System.Text;
 using System.Collections.Generic;
 using System;
 using System.Linq;
+using Moq;
 using Xunit;
 
 namespace coffee_machine.Tests
 {
     public class CoffeeMachineReportingTests
     {
+        private IEmailNotifier _dummyEmailNotifier = Mock.Of<IEmailNotifier>();
+        private IBeverageQuantityChecker _dummyBeverageQuantityChecker = Mock.Of<IBeverageQuantityChecker>();
+        
         [Fact]
         public void Coffee_Machine_ReportingTool_Reports_0_At_Start()
         {
         //Given
-            CoffeeMachine coffeeMachine = new CoffeeMachine();
+            CoffeeMachine coffeeMachine = new CoffeeMachine(_dummyEmailNotifier, _dummyBeverageQuantityChecker);
             var expectedReport = new StringBuilder("The total of each drinks made are: \n");
             expectedReport.AppendLine("O: 0");
             expectedReport.AppendLine("T: 0");
@@ -29,7 +33,7 @@ namespace coffee_machine.Tests
         public void Coffee_Machine_ReportingTool_Tracks_Drinks()
         {
         //Given
-            CoffeeMachine coffeeMachine = new CoffeeMachine();
+            CoffeeMachine coffeeMachine = new CoffeeMachine(_dummyEmailNotifier, _dummyBeverageQuantityChecker);
             coffeeMachine.GiveCommand("T::", 1);
             coffeeMachine.GiveCommand("Th::", 1);
             coffeeMachine.GiveCommand("O::", 1);

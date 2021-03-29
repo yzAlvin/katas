@@ -6,29 +6,34 @@ namespace coffee_machine
 {
     public class CoffeeMachine
     {
-        private List<Drink> DrinksMade = new List<Drink>();
-        private List<string> Messages = new List<string>();
-        private ReportingTool ReportingTool = new ReportingTool();
+        private List<Drink> _DrinksMade = new List<Drink>();
+        private List<string> _Messages = new List<string>();
+        private ReportingTool _ReportingTool = new ReportingTool();
+        private readonly IEmailNotifier _EmailNotifier;
+        private readonly IBeverageQuantityChecker _BeverageQuantityChecker;
 
-        public CoffeeMachine()
+        public CoffeeMachine(IEmailNotifier emailNotifier, IBeverageQuantityChecker beverageQuantityChecker)
         {
+
+            _EmailNotifier = emailNotifier;
+            _BeverageQuantityChecker = beverageQuantityChecker;
         }
 
         private void MakeDrink(Drink drink, int sugars)
         {
             drink.Sugars = sugars;
-            DrinksMade.Add(drink);
-            ReportingTool.AddDrink(drink); // How do I make a "Spy" class?
+            _DrinksMade.Add(drink);
+            _ReportingTool.AddDrink(drink); // How do I make a "Spy" class?
         }
 
         public Drink LastDrink()
         {
-            return DrinksMade.Last();
+            return _DrinksMade.Last();
         }
 
         public string LastMessage()
         {
-            return Messages.Last();
+            return _Messages.Last();
         }
 
         public void GiveCommand(string commandToParse, decimal money = 0) // Return a tuple containing Drink or Message ??
@@ -41,7 +46,7 @@ namespace coffee_machine
             }
             else
             {
-                Messages.Add(((MessageCommand) GivenCommand).Message);
+                _Messages.Add(((MessageCommand) GivenCommand).Message);
             }
         }
 
@@ -53,7 +58,7 @@ namespace coffee_machine
             }
             else
             {
-                Messages.Add(NotEnoughMoneyMessage(money, drinkCommand.DrinkType));
+                _Messages.Add(NotEnoughMoneyMessage(money, drinkCommand.DrinkType));
             }
         }
 
@@ -61,7 +66,7 @@ namespace coffee_machine
 
         private string NotEnoughMoneyMessage(decimal money, Drink drinkType) => $"You need {drinkType.Price() - money} more to make a {drinkType.GetType().Name}.";
 
-        public string Report() => ReportingTool.Report();
+        public string Report() => _ReportingTool.Report();
 
     }
 }
