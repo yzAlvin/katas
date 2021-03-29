@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace coffee_machine
@@ -12,8 +13,16 @@ namespace coffee_machine
             {'C', new Coffee()}
         };
 
-        public static Drink GetDrink(char drinkType) => drinkTypes[drinkType];
+        private static readonly Dictionary<Type, Char> drinkCodes = new Dictionary<Type, Char>() 
+        {
+            {typeof(OrangeJuice), 'O'},
+            {typeof(Tea), 'T'},
+            {typeof(HotChocolate), 'H'},
+            {typeof(Coffee), 'C'}
+        };
 
+        public static Drink GetDrink(char drinkType) => drinkTypes[drinkType];
+        public static Char GetCode(Type drinkType) => drinkCodes[drinkType];
         public static List<char> PossibleDrinks() => new List<char>(drinkTypes.Keys);
     }
     

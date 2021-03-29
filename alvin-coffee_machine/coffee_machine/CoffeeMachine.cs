@@ -8,6 +8,7 @@ namespace coffee_machine
     {
         private List<Drink> DrinksMade = new List<Drink>();
         private List<string> Messages = new List<string>();
+        private ReportingTool ReportingTool = new ReportingTool();
 
         public CoffeeMachine()
         {
@@ -17,6 +18,7 @@ namespace coffee_machine
         {
             drink.Sugars = sugars;
             DrinksMade.Add(drink);
+            ReportingTool.AddDrink(drink); // How do I make a "Spy" class?
         }
 
         public Drink LastDrink()
@@ -58,6 +60,8 @@ namespace coffee_machine
         private bool CheckMoneyIsEnoughForDrink(decimal money, Drink drinkType) => money >= drinkType.Price();
 
         private string NotEnoughMoneyMessage(decimal money, Drink drinkType) => $"You need {drinkType.Price() - money} more to make a {drinkType.GetType().Name}.";
+
+        public string Report() => ReportingTool.Report();
 
     }
 }

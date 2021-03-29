@@ -4,7 +4,7 @@ using Xunit;
 
 namespace coffee_machine.Tests
 {
-    public class CoffeeMachineTests
+    public class CoffeeMachineMakingDrinksTests
     {
         CoffeeMachine coffeeMachine = new CoffeeMachine();
         
