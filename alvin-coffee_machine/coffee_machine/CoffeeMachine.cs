@@ -14,13 +14,17 @@ namespace coffee_machine
 
         public CoffeeMachine(IEmailNotifier emailNotifier, IBeverageQuantityChecker beverageQuantityChecker)
         {
-
             _EmailNotifier = emailNotifier;
             _BeverageQuantityChecker = beverageQuantityChecker;
         }
 
         private void MakeDrink(Drink drink, int sugars)
         {
+            if (_BeverageQuantityChecker.IsEmpty(drink))
+            {
+                _EmailNotifier.NotifyMissingDrink(drink);
+                return;
+            }
             drink.Sugars = sugars;
             _DrinksMade.Add(drink);
             _ReportingTool.AddDrink(drink); // How do I make a "Spy" class?

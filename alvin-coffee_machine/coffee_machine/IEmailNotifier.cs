@@ -3,6 +3,6 @@ namespace coffee_machine
 {
     public interface IEmailNotifier 
     {
-	    void notifyMissingDrink(Drink drink);
+	    void NotifyMissingDrink(Drink drink);
 	}
 }
