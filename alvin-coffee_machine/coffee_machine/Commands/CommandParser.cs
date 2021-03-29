@@ -46,22 +46,51 @@ namespace coffee_machine
             return ParseDrinkInstructions(drinkInstructions);
         }
 
-        private static Drink GetDrinkType(char drinkType)
+        private static Drink GetDrinkType(string[] partsOfDrink)
         {
+            var drinkType = partsOfDrink[0][0];
+            var isExtraHot = CheckExtraHot(partsOfDrink);
+            if (isExtraHot)
+            {
+                return new ExtraHot(DrinkDictionary.GetDrink(drinkType));
+            }
             return DrinkDictionary.GetDrink(drinkType);
         }
 
-        private static int GetSugars(string amountOfSugar)
+        private static int GetSugars(string[] partsOfDrink)
         {
+            var amountOfSugar = partsOfDrink[1];
             int.TryParse(amountOfSugar, out var sugars);
             if (sugars < 0) throw new InvalidOperationException("Cannot have negative sugars.");
             return sugars;
         }
 
+        private static bool CheckExtraHot(string[] partsOfDrink)
+        {
+            var drinkType = partsOfDrink[0];
+            if (drinkType.Length > 2)
+            {
+                throw new InvalidOperationException("Invalid Command");
+            }
+            if (drinkType.Length == 2)
+            {
+                if (drinkType[1] == 'h')
+                {
+                    return true;
+                }
+                else
+                {
+                    throw new InvalidOperationException("Invalid Command");
+                }
+            }
+            
+            return false;
+        }
+
         private static DrinkCommand ParseDrinkInstructions(string[] partsOfDrink)
         {
-            var drinkType = GetDrinkType(partsOfDrink[0][0]);
-            var sugars = GetSugars(partsOfDrink[1]);
+            var drinkType = GetDrinkType(partsOfDrink);
+            var sugars = GetSugars(partsOfDrink);
 
             return new DrinkCommand(drinkType, sugars);
         }

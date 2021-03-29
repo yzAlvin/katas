@@ -25,6 +25,26 @@ namespace coffee_machine.Tests
         }
         
         [Theory]
+        [InlineData("Th::", 1, typeof(ExtraHot), 0.4)]
+        [InlineData("Hh::", 1, typeof(ExtraHot), 0.5)]
+        [InlineData("Ch::", 1, typeof(ExtraHot), 0.6)]
+        public void Machine_Returns_Extra_Hot_Drinks_On_Exta_Hot_Drink_Commands(string drinkCommands, decimal money, Type expectedDrink, decimal expectedCost)
+        {
+            coffeeMachine.GiveCommand(drinkCommands, money);
+            var drink = coffeeMachine.LastDrink();
+            Assert.True(drink.Price() == expectedCost);
+            Assert.True(drink.GetType() == expectedDrink);
+        }
+
+        [Fact]
+        public void Machin_Throws_Exception_On_Extra_Hot_OrangeJuice()
+        {
+            var expectedExceptionMessage = "Orange Juice can't be extra hot.";
+            var exception = Assert.Throws<InvalidOperationException>(() =>  coffeeMachine.GiveCommand("Oh::", 1));
+            Assert.Equal(expectedExceptionMessage, exception.Message);
+        }
+        
+        [Theory]
         [InlineData("T:1:0", 0, "You need 0.4 more to make a Tea.")]
         [InlineData("H::", 0.1, "You need 0.4 more to make a HotChocolate.")]
         [InlineData("H:0:", 0.3, "You need 0.2 more to make a HotChocolate.")]
