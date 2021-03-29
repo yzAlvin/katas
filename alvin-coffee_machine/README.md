@@ -134,3 +134,32 @@ Here are the new protocol commands added to the new firmware of the drink maker:
 * Can make extra hot drinks, excluding orange juice
 
 -----------------------------------------------------------
+
+### Fourth Iteration - Making Money
+
+The machine is becoming popular in the office. The management is eager to have daily reports of what is sold and when.
+
+#### Requirements
+
+* I want to be able to print a report anytime that contains: 
+    * how many of each drink was sold 
+    * the total amount of money earned so far.
+
+#### Implementation details
+
+For the reporting, you can have a repository of data with a simple data structure in memory. A simple reporting can be done by printing to the console. Of course all of that should be tested before it is written, but you know that already, don't you ? ;)
+
+
+#### Thought Process
+
+* To track how many of each drink is sold I can have a Dictionary with <key, value> pairs of <Drink, amountSold>
+
+* To track the total amount of money earned I can iterate over the dictionary, multiplying the drink prices and the amount sold of each
+
+##### Tests
+
+* Can track drinks
+
+* Can track total money earned
+
+---------------------------------------------
