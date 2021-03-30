@@ -73,3 +73,21 @@ Field #2:
 33200 
 1*100
 ~~~
+
+## Thoughts
+
+* I am going to try a top-down approach because I have never tried a top down approach, and I think it will lead me to using mocking.
+* Reading in the M x N will create a new char[,] 2d array of chars..
+* Then it will go through each line and populate the 2d array with '*' and '.'
+* Need to be able to check neighbour cells
+* Need to be able to change '.' to a number, I don't want to do something like cell.value = 0, "reaching in and changing it's guts", instead, do something like cell.Calculate() which will do it for me.
+* 
+
+## Test Checklist
+
+* Creates the M x N 2d array
+* Populates the array
+* Checks neighbour cells:
+    * Corners, where there are only 3 available cells
+    * Edges, where there are only 5 available cells, unless it is a corner
+    * Everywhere else, where there are 8 available cells
