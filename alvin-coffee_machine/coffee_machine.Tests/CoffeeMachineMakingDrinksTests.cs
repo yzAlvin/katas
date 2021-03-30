@@ -52,6 +52,15 @@ namespace coffee_machine.Tests
         }
 
         [Fact]
+        public void Machine_Defaults_Normal_Temperature_Drinks()
+        {
+            coffeeMachine.GiveCommand("T::", 1);
+            var drink = coffeeMachine.LastDrink();
+            Assert.True(drink.GetType() == typeof(Tea));
+            Assert.True(drink.GetTemperature() == Temperature.Normal);
+        }
+
+        [Fact]
         public void Machine_Throws_Exception_On_Extra_Hot_OrangeJuice()
         {
             var expectedExceptionMessage = "Orange Juice can't be extra hot.";
