@@ -49,11 +49,6 @@ namespace coffee_machine
         private static Drink GetDrinkType(string[] partsOfDrink)
         {
             var drinkType = partsOfDrink[0][0];
-            var isExtraHot = CheckExtraHot(partsOfDrink);
-            if (isExtraHot)
-            {
-                return new ExtraHot(DrinkDictionary.GetDrink(drinkType));
-            }
             return DrinkDictionary.GetDrink(drinkType);
         }
 
@@ -65,34 +60,20 @@ namespace coffee_machine
             return sugars;
         }
 
-        private static bool CheckExtraHot(string[] partsOfDrink)
+        private static Temperature GetTemperature(string[] partsOfDrink)
         {
-            var drinkType = partsOfDrink[0];
-            if (drinkType.Length > 2)
-            {
-                throw new InvalidOperationException("Invalid Command");
-            }
-            if (drinkType.Length == 2)
-            {
-                if (drinkType[1] == 'h')
-                {
-                    return true;
-                }
-                else
-                {
-                    throw new InvalidOperationException("Invalid Command");
-                }
-            }
-            
-            return false;
+            if (partsOfDrink[0].Length == 1) return Temperature.Normal;
+            if (partsOfDrink[0].Length == 2) return DrinkDictionary.GetTemperature(partsOfDrink[0][1]);
+            throw new InvalidOperationException("Invalid Temperature");
         }
 
         private static DrinkCommand ParseDrinkInstructions(string[] partsOfDrink)
         {
             var drinkType = GetDrinkType(partsOfDrink);
             var sugars = GetSugars(partsOfDrink);
+            var temperature = GetTemperature(partsOfDrink);
 
-            return new DrinkCommand(drinkType, sugars);
+            return new DrinkCommand(drinkType, sugars, temperature);
         }
     }
 }

@@ -1,15 +1,23 @@
+using System;
 namespace coffee_machine
 {
     public class OrangeJuice : Drink
     {
-        public OrangeJuice()
+        private Temperature _Temperature;
+        public override Temperature Temperature 
         {
-            Sugars = 0;
+            get {return this._Temperature;}
+            set 
+            {
+                if (value == Temperature.ExtraHot) throw new InvalidOperationException("Orange Juice can't be extra hot.");
+                this._Temperature = value;
+            }
         }
-
-        public OrangeJuice(int sugars)
+        
+        public OrangeJuice(int sugars = 0, Temperature temperature = Temperature.Normal)
         {
-            Sugars = sugars;
+            this.Sugars = sugars;
+            this.Temperature = temperature;
         }
 
         public override decimal Price()

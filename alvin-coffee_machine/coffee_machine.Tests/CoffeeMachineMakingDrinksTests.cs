@@ -28,22 +28,42 @@ namespace coffee_machine.Tests
         }
         
         [Theory]
-        [InlineData("Th::", 1, typeof(ExtraHot), 0.4)]
-        [InlineData("Hh::", 1, typeof(ExtraHot), 0.5)]
-        [InlineData("Ch::", 1, typeof(ExtraHot), 0.6)]
-        public void Machine_Returns_Extra_Hot_Drinks_On_Exta_Hot_Drink_Commands(string drinkCommands, decimal money, Type expectedDrink, decimal expectedCost)
+        [InlineData("Th::", 1, Temperature.ExtraHot, 0.4)]
+        [InlineData("Hh::", 1, Temperature.ExtraHot, 0.5)]
+        [InlineData("Ch::", 1, Temperature.ExtraHot, 0.6)]
+        public void Machine_Returns_Extra_Hot_Drinks_On_Exta_Hot_Drink_Commands(string drinkCommands, decimal money, Temperature expectedTemperature, decimal expectedCost)
         {
             coffeeMachine.GiveCommand(drinkCommands, money);
             var drink = coffeeMachine.LastDrink();
             Assert.True(drink.Price() == expectedCost);
-            Assert.True(drink.GetType() == expectedDrink);
+            Assert.True(drink.GetTemperature() == expectedTemperature);
+        }
+        
+        [Theory]
+        [InlineData("Tc::", 1, Temperature.ExtraCold, typeof(Tea))]
+        [InlineData("Oc::", 1, Temperature.ExtraCold, typeof(OrangeJuice))]
+        [InlineData("Cc::", 1, Temperature.ExtraCold, typeof(Coffee))]
+        public void Machine_Returns_Extra_Cold_Drinks_On_Exta_Cold_Drink_Commands(string drinkCommands, decimal money, Temperature expectedTemperature, Type expectedDrinkType)
+        {
+            coffeeMachine.GiveCommand(drinkCommands, money);
+            var drink = coffeeMachine.LastDrink();
+            Assert.True(drink.GetType() == expectedDrinkType);
+            Assert.True(drink.GetTemperature() == expectedTemperature);
         }
 
         [Fact]
-        public void Machin_Throws_Exception_On_Extra_Hot_OrangeJuice()
+        public void Machine_Throws_Exception_On_Extra_Hot_OrangeJuice()
         {
             var expectedExceptionMessage = "Orange Juice can't be extra hot.";
             var exception = Assert.Throws<InvalidOperationException>(() =>  coffeeMachine.GiveCommand("Oh::", 1));
+            Assert.Equal(expectedExceptionMessage, exception.Message);
+        }
+
+        [Fact]
+        public void Machine_Throws_Exception_On_Extra_Cold_HotChocolate()
+        {
+            var expectedExceptionMessage = "Hot Chocolate can't be extra cold.";
+            var exception = Assert.Throws<InvalidOperationException>(() =>  coffeeMachine.GiveCommand("Hc::", 1));
             Assert.Equal(expectedExceptionMessage, exception.Message);
         }
         

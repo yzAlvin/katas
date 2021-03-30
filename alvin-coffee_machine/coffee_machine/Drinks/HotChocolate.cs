@@ -1,15 +1,24 @@
+using System;
+
 namespace coffee_machine
 {
     public class HotChocolate : Drink
     {
-        public HotChocolate()
+        private Temperature _Temperature;
+        public override Temperature Temperature 
         {
-            Sugars = 0;
+            get {return this._Temperature;}
+            set 
+            {
+                if (value == Temperature.ExtraCold) throw new InvalidOperationException("Hot Chocolate can't be extra cold.");
+                this._Temperature = value;
+            }
         }
 
-        public HotChocolate(int sugars)
+        public HotChocolate(int sugars = 0, Temperature temperature = Temperature.Normal)
         {
-            Sugars = sugars;
+            this.Sugars = sugars;
+            this.Temperature = temperature;
         }
 
         public override decimal Price()

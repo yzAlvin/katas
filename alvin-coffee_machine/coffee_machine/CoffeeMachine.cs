@@ -18,7 +18,7 @@ namespace coffee_machine
             _BeverageQuantityChecker = beverageQuantityChecker;
         }
 
-        private void MakeDrink(Drink drink, int sugars)
+        private void MakeDrink(Drink drink, int sugars, Temperature temperature)
         {
             if (_BeverageQuantityChecker.IsEmpty(drink))
             {
@@ -27,6 +27,7 @@ namespace coffee_machine
                 return;
             }
             drink.Sugars = sugars;
+            drink.Temperature = temperature;
             _DrinksMade.Add(drink);
             _ReportingTool.AddDrink(drink); // How do I make a "Spy" class?
         }
@@ -59,7 +60,7 @@ namespace coffee_machine
         {
             if (CheckMoneyIsEnoughForDrink(money, drinkCommand.DrinkType))
             {
-                MakeDrink(drinkCommand.DrinkType, drinkCommand.Sugars);
+                MakeDrink(drinkCommand.DrinkType, drinkCommand.Sugars, drinkCommand.Temperature);
             }
             else
             {
@@ -75,8 +76,4 @@ namespace coffee_machine
 
     }
 }
-
-// Extra Hot as a property of Drink
-// How would you implement Extra Cold
-// Maybe make sugars an interface that some drinks implement
 

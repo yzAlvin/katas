@@ -2,14 +2,10 @@ namespace coffee_machine
 {
     public class Coffee : Drink
     {
-        public Coffee()
+        public Coffee(int sugars = 0, Temperature temperature = Temperature.Normal)
         {
-            Sugars = 0;
-        }
-
-        public Coffee(int sugars)
-        {
-            Sugars = sugars;
+            this.Sugars = sugars;
+            this.Temperature = temperature;
         }
 
         public override decimal Price()

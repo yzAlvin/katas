@@ -21,8 +21,15 @@ namespace coffee_machine
             {typeof(Coffee), 'C'}
         };
 
+        private static readonly Dictionary<char, Temperature> temperatures = new Dictionary<char, Temperature>()
+        {
+            {'h', Temperature.ExtraHot},
+            {'c', Temperature.ExtraCold}
+        };
+
         public static Drink GetDrink(char drinkType) => drinkTypes[drinkType];
         public static Char GetCode(Type drinkType) => drinkCodes[drinkType];
+        public static Temperature GetTemperature(char temperatureCode) => temperatures[temperatureCode];
         public static List<char> PossibleDrinks() => new List<char>(drinkTypes.Keys);
     }
     

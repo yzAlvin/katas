@@ -164,7 +164,7 @@ For the reporting, you can have a repository of data with a simple data structur
 
 ---------------------------------------------
 
-### Fifth iteration - Running out
+### Fifth Iteration - Running Out
 
 The users of the coffee machine are complaining that there is often shortages of water and/or milk. It takes weeks before the machine is refilled.
 
@@ -191,3 +191,69 @@ public interface BeverageQuantityChecker {
 ~~~
 
 Add those two services to your project and use mocking to finish your story.
+
+#### Thought Process
+
+* Coffee Machines will now take in an EmailNotifier and BeverageQuantityChecker object..
+
+* When MakeDrink is called it will check that the beverage is able to be made (IsEmpty method)
+
+* If it is empty it will send an email notification (NotifyMissingDrink method)
+
+* To test this I can mock the object to say any drink is empty, and to check the notify method was called once.
+
+##### Tests
+
+* When there is a shortage of something needed for a drink (BeverageQuantityChecker.IsEmpty):
+	* the coffee machine will add a message "there is not enough water or milk"
+	* it will call NotifyMissingDrink on the EmailNotifier interface
+
+-----------------------------------
+
+### Extra Iteration - Testing Flexibility
+
+To test how flexible my system is and to identify areas for refactoring:
+
+* How would you implement Extra Cold?
+* What if only some drinks can be extra hot and/or extra cold?
+* What if only some drinks can have sugars
+* <s>Drinks require Water and Milk</s>
+
+#### Requirements
+
+* Extra Cold drinks
+* Not all drinks can be extra cold, or extra hot
+
+#### Implementation details
+
+* Coffee -- extra hot and extra cold and normal
+* Tea -- extra hot and extra cold and normal
+* Hot Chocolate -- extra hot and normal
+* Orange Juice -- extra cold and normal
+* Orange Juice -- can not add sugar
+
+#### Thought Process
+
+To implement different temperatures:
+
+* ExtraHot and ExtraCold class that wraps Drinks
+	* bad because I will be type checking and have to use an if statement in a few places
+* A Temperature interface that all Drinks implement
+	* not good use of interface, what methods would temperature require ? IsExtraHot, IsExtraCold? sounds bad
+* ExtraHot and ExtraCold are interfaces that Drinks that can be them implement
+	* IsExtraHot, IsExtraCold, respectively? same problem as above
+	* reference: [c-sharp multiple inheritance](https://www.geeksforgeeks.org/c-sharp-multiple-inheritance-using-interfaces/)
+* Temperature could just be an enum that all Drinks have a property of.
+	* sounds simple
+	* different temperatures does not lead to different behaviours **currently** so I think it will be okay, no need for any additional branching
+	* No way to say that a certain drink can't be a certain temperature (oj can't be hot), unless I check the temperature being passed in inside the constructor of the drink or the commandParser?
+
+#### Tests
+
+* Test ExtraHot drinks
+* Test normal drinks
+* Test ExtraCold drinks
+
+-----------------------------------
+
+
