@@ -51,5 +51,19 @@ namespace coffee_machine.Tests
         //Then
             Assert.Equal(expectedReport.ToString(), coffeeMachine.Report());
         }
+
+        [Fact]
+        public void Coffee_Machine_Notifies_Missing_Drink()
+        {
+            var mockBeverageQuantityChecker =
+                Mock.Of<IBeverageQuantityChecker>(b => b.IsEmpty(It.IsAny<Drink>()));
+            
+            var drinkMaker = new CoffeeMachine(_dummyEmailNotifier, mockBeverageQuantityChecker);
+            drinkMaker.GiveCommand("C::", 1);
+            
+            Mock.Get(_dummyEmailNotifier).Verify(e => e.NotifyMissingDrink(It.IsAny<Drink>()), Times.Once);
+            Assert.Equal("There is not enough water or milk.", drinkMaker.LastMessage());
+        }
+
     }
 }

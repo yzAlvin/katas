@@ -23,6 +23,7 @@ namespace coffee_machine
             if (_BeverageQuantityChecker.IsEmpty(drink))
             {
                 _EmailNotifier.NotifyMissingDrink(drink);
+                _Messages.Add("There is not enough water or milk.");
                 return;
             }
             drink.Sugars = sugars;
@@ -74,3 +75,8 @@ namespace coffee_machine
 
     }
 }
+
+// Extra Hot as a property of Drink
+// How would you implement Extra Cold
+// Maybe make sugars an interface that some drinks implement
+
