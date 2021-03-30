@@ -17,10 +17,6 @@ namespace coffee_machine
 
         public void AddDrink(Drink drink)
         {
-            if (drink.GetType() == typeof(ExtraHot))
-            {
-                drink = ((ExtraHot) drink).GetDrink();
-            }
             var drinkCode = DrinkDictionary.GetCode(drink.GetType());
             _DrinkCounter[drinkCode] += 1;
 
