@@ -76,7 +76,11 @@ Field #2:
 
 ## Thoughts
 
-* I am going to try a top-down approach because I have never tried a top down approach, and I think it will lead me to using mocking.
+* <s>I am going to try a top-down approach because I have never tried a top down approach, and maybe I well see how to use mocking for lower-level stuff?</s>
+* No idea what I'm doing
+
+* Read in from file
+* Read in from console
 * Reading in the M x N will create a new char[,] 2d array of chars..
 * Then it will go through each line and populate the 2d array with '*' and '.'
 * Need to be able to check neighbour cells
