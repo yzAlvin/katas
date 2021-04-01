@@ -10,7 +10,8 @@ namespace minesweeper.Tests
         [InlineData("44")]
         [InlineData("35")]
         [InlineData("00")]
-        public void RequestFieldDimensions(string expectedDimensions)
+        [InlineData("99")]
+        public void Input_Field_Dimensions(string expectedDimensions)
         {
             var mockReadLine = Mock.Of<TextReader>(x => x.ReadLine() == expectedDimensions);
             var consoleInput = new Input(mockReadLine);

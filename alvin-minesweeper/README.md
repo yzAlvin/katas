@@ -85,13 +85,32 @@ Field #2:
 * Then it will go through each line and populate the 2d array with '*' and '.'
 * Need to be able to check neighbour cells
 * Need to be able to change '.' to a number, I don't want to do something like cell.value = 0, "reaching in and changing it's guts", instead, do something like cell.Calculate() which will do it for me.
-* 
+* Fields are made up of cells
 
 ## Test Checklist
+------------------------------
 
 * Creates the M x N 2d array
 * Populates the array
+------------------------------
+
 * Checks neighbour cells:
     * Corners, where there are only 3 available cells
     * Edges, where there are only 5 available cells, unless it is a corner
     * Everywhere else, where there are 8 available cells
+* Cells have a position (x, y) on the 2d array, that cannot be negative
+* Cells start off without a mine (safe)
+--------------------------------
+
+* Field therefore starts off without mines
+* Field class sets where the mines are
+* Field can calculate list of neighbour cells
+--------------------------------
+
+* Input can take in dimensions
+* Input can parse the dimensions up to 99 (highest size)
+--------------------------------
+
+* Output can parse field to calculate number of mines
+* Output can print to console
+--------------------------------

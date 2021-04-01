@@ -6,7 +6,10 @@ namespace minesweeper
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var consoleReader = new Input(Console.In);
+            var consoleWriter = new Output(Console.Out);
+            var game = new Game(consoleReader, consoleWriter);
+            game.Play();
         }
     }
 }
