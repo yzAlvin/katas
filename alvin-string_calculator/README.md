@@ -43,5 +43,3 @@ Step 9. Delimiters can be of any length in the format `//[delimiter]\n`
 Step 10. Allow multiple delimiters `//[delim1][delim2]\n`
 * A test where there are multiple delimiters
 * A test where there are multiple delimiters of differing lengths
-
-Feels more like I am training my regex skills rather than TDD and design principles at this point so I am putting this on pause for now because I think my time can be better spent practicing another language design skills
