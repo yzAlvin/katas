@@ -33,7 +33,7 @@ namespace minesweeper
             GetCell(location).IsMine = true;
         }
 
-        public Cell GetCell(Location location)
+        public Cell GetCell(Location location) //private
         {
             return Cells.SingleOrDefault(cell => cell.Location.X == location.X && cell.Location.Y == location.Y);
         }
