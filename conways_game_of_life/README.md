@@ -26,6 +26,7 @@ Your task is to impelment Conways Game of Life. You should be able to:
 * Don't make things public unless necessary
 * Think extensibility - tests should not break abstractions
 * Don't test implementation details (x has y)
+* Try extra hard not to code anything unless I have written a test for it
 * Should I keep threshold values in a file somewhere that the implementation and tests pull from?
 
 
