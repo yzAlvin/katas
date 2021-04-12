@@ -20,5 +20,6 @@ namespace game_of_life.Tests
         {
             Assert.IsType<DeadCell>(new Coordinate(0, 0).Cell);
         }
+
     }
 }
