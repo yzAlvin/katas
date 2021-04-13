@@ -22,13 +22,12 @@ Your task is to impelment Conways Game of Life. You should be able to:
 * Be able to set the inital state of the world
 
 ## Thoughts / Keep in mind
-* Minesweeper kata was good, now I know to eliminate duplication aggressively like x,y -> location, now getNeighbouringCells or whatever belongs in Location class instead of Field or whatever.
+* learnt from Minesweeper kata to eliminate duplication aggressively like x,y -> location, -> make sure tests not dependent on implementation details -> now getNeighbouringCells or whatever belongs in aptly named Location class instead of elsewhere
 * Don't make things public unless necessary
-* Think extensibility - tests should not break abstractions
+* Tests should not break abstraction level
 * Don't test implementation details (x has y)
-* Try extra hard not to code anything unless I have written a test for it
 * Should I keep threshold values in a file somewhere that the implementation and tests pull from?
-
+* Think of BEHAVIOUR instead of shoehorning into inheritance
 
 ## Test Checklist
 * World is all deadcells at the start
