@@ -36,12 +36,16 @@ namespace Game_of_Life
             return $"({this.X}, {this.Y}): {this.Cell.GetType().Name}";
         }
         
+        // maybe these should be in their own class or something? I think this makes things more readable when you want to find neighbours, 
+        // also abstracts away knowledge of location, maybe I can make location an interface later so different types of location calculate neighbours differently
+        // Ideally I want GetNeighbours to be in the location class but I don't know how to deal with wrapping around the edges of the world because world size needs to belong to the world. 
+        // I don't want to use a global variable
         public Location TopLeft() => new Location(this.X - 1, this.Y - 1);
         public Location Top() => new Location(this.X - 1, this.Y);
         public Location TopRight() => new Location(this.X - 1, this.Y + 1);
         public Location Left() => new Location(this.X, this.Y - 1);
         public Location Right() => new Location(this.X, this.Y + 1);
-        public Location Self() => new Location(this.X, this.Y);
+        // public Location Self() => new Location(this.X, this.Y); if I follow YAGNI I shouldn't implement this
         public Location BottomLeft() => new Location(this.X + 1, this.Y - 1);
         public Location Bottom() => new Location(this.X + 1, this.Y);
         public Location BottomRight() => new Location(this.X + 1, this.Y + 1);

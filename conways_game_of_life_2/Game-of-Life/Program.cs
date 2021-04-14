@@ -6,7 +6,8 @@ namespace Game_of_Life
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var game = new Game(Console.In);
+            game.Run();
         }
     }
 }
