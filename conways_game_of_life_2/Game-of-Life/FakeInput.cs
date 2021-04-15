@@ -6,7 +6,6 @@ namespace Game_of_Life
 {
     public class FakeInput : TextReader
     {
-        public int Calls;
         private Queue<string> strings = new Queue<string>();
         public Dictionary<string, int> readStrings = new Dictionary<string, int>();
         public FakeInput()

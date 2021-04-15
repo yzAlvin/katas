@@ -65,7 +65,7 @@ namespace Game_of_Life.Tests
         [Fact]
         public void World_With_One_Live_Cells_Dies_Next_Generation()
         {
-            var world = new World(5, 5);
+            var world = new World(5, 3);
             var topLeft = new Location(0, 0);
             world.SetLivingAt(topLeft);
             Assert.False(world.IsEmpty());

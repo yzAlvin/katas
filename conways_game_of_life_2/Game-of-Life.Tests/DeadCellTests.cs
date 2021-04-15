@@ -20,6 +20,5 @@ namespace Game_of_Life.Tests
             var deadCell = new DeadCell();
             Assert.False(deadCell.AliveNextGeneration(numberOfNeighbours));
         }
-
     }
 }

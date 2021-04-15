@@ -7,8 +7,8 @@ namespace Game_of_Life
     public class World
     {
 
-        private int Width {get;}
-        private int Height {get;}
+        public int Width {get;}
+        public int Height {get;}
         private List<Location> Locations = new List<Location>();
 
         public World(int width, int height)
@@ -62,10 +62,10 @@ namespace Game_of_Life
 
         private Location WrapLocation(Location location)
         {
-            if (location.X < 0) location.X = this.Width + location.X;
-            if (location.Y < 0) location.Y = this.Height + location.Y;
-            if (location.X > this.Width - 1) location.X = location.X - this.Width;
-            if (location.Y > this.Height - 1) location.Y = location.Y - this.Height;
+            if (location.X < 0) location.X = this.Height + location.X;
+            if (location.Y < 0) location.Y = this.Width + location.Y;
+            if (location.X > this.Height - 1) location.X = location.X - this.Height;
+            if (location.Y > this.Width - 1) location.Y = location.Y - this.Width;
             return location;
         }
 
@@ -75,17 +75,27 @@ namespace Game_of_Life
 
         public void Tick()
         {
-            foreach (var location in Locations)
+            var nextGenerationLocations = new List<Location>();
+            foreach (var location in this.Locations)
             {
+                var nextGenerationLocation = new Location(location.X, location.Y);
+                nextGenerationLocations.Add(nextGenerationLocation);
                 if (location.Cell.AliveNextGeneration(GetAliveNeighbours(location).Count()))
                 {
-                    location.BecomeAlive();
+                    nextGenerationLocation.BecomeAlive();
                 }
                 else
                 {
-                    location.BecomeDead();
+                    nextGenerationLocation.BecomeDead();
                 }
             }
+            this.Locations = nextGenerationLocations;
+        }
+
+        //get world?
+        public IEnumerable<Location> GetLocations()
+        {
+            return this.Locations;
         }
     }
 }
