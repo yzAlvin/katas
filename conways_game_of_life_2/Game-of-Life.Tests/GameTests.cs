@@ -51,5 +51,14 @@ namespace Game_of_Life.Tests
 
             Assert.False(fakeInput.readStrings.ContainsKey(shouldNotBeRead));
         }
+
+        // Do I need to test infinite world?
+        [Fact]
+        public void Game_From_File()
+        {
+            TextReader reader = File.OpenText(@"/Users/Alvin.Zhao/Projects/katas/conways_game_of_life_2/Game-of-Life/exampleWorld.txt");
+            var game = new Game(reader, Console.Out);
+            game.Run();
+        }
     }
 }

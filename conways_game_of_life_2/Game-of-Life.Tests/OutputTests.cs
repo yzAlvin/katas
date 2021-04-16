@@ -5,6 +5,7 @@ namespace Game_of_Life.Tests
     public class FakeOutputTests
     {
         // probably unnecessary?
+        // don't test builtin c# functions so maybe I don't need these classes
         [Fact]
         public void Output_Some_String()
         {

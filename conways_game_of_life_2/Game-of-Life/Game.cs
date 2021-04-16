@@ -7,17 +7,17 @@ namespace Game_of_Life
 {
     public class Game
     {
-        private readonly TextReader _consoleReader;
-        private readonly TextWriter _consoleWriter;
+        private readonly TextReader _reader;
+        private readonly TextWriter _writer;
         private World world;
         private char livingCellCharacter = '*';
         private char deadCellCharacter = '.';
         private int generation = 1;
 
-        public Game(TextReader consoleReader, TextWriter consoleWriter)
+        public Game(TextReader reader, TextWriter writer)
         {
-            _consoleReader = consoleReader;
-            _consoleWriter = consoleWriter;
+            _reader = reader;
+            _writer = writer;
         }
 
         public void Run()
@@ -32,17 +32,17 @@ namespace Game_of_Life
             do
             {
                 WriteGeneration();
-                Thread.Sleep(1500);
-                _consoleWriter.WriteLine(WorldRenderer.DisplayWorld(world));
+                Thread.Sleep(100);
+                _writer.WriteLine(WorldRenderer.DisplayWorld(world));
                 world.Tick();
             } while (!world.IsEmpty());
             WriteGeneration();
-            _consoleWriter.WriteLine(WorldRenderer.DisplayWorld(world));
+            _writer.WriteLine(WorldRenderer.DisplayWorld(world));
         }
 
         private void WriteGeneration()
         {
-            _consoleWriter.WriteLine($"Generation {generation}: ");
+            _writer.WriteLine($"Generation {generation}: ");
             generation++;
         }
 
@@ -50,10 +50,10 @@ namespace Game_of_Life
         {
             for (var x = 0; x < world.Height; x++)
             {
-                var row = _consoleReader.ReadLine().ToString();
+                var row = _reader.ReadLine().ToString();
                 while (!ValidRow(row))
                 {
-                    row = _consoleReader.ReadLine().ToString();
+                    row = _reader.ReadLine().ToString();
                 }
                 for(var y = 0; y < world.Width; y++)
                 {
@@ -69,12 +69,13 @@ namespace Game_of_Life
 
         private void GetWorldSize()
         {
-            var size = _consoleReader.ReadLine().ToString();
-            while (!ValidFieldSize(size))
+            var size = _reader.ReadLine().ToString();
+            while (!ValidWorldSize(size))
             {
-                size = _consoleReader.ReadLine().ToString();
+                size = _reader.ReadLine().ToString();
             }
-            this.world = new World(ParseSize(size[0]), ParseSize(size[2]));
+            var worldSize = size.Split("x");
+            this.world = new World(ParseSize(worldSize[0]), ParseSize(worldSize[1]));
         }
 
         private bool EndOfInput(string input)
@@ -83,10 +84,13 @@ namespace Game_of_Life
             return input == endOfInputCode;
         }
 
-        private bool ValidFieldSize(string input) => input.Length == 3 && IsValidInt(input[0]) && IsValidInt(input[2]);
+        private bool ValidWorldSize(string input){
+            var worldSize = input.Split("x");
+            return IsValidInt(worldSize[0]) && IsValidInt(worldSize[1]);
+        }
 
-        private int ParseSize(char n) => int.Parse(n.ToString());
+        private int ParseSize(string n) => int.Parse(n.ToString());
 
-        private bool IsValidInt(char size) => int.TryParse(size.ToString(), out var dimension)  && dimension > 0 && dimension < 50;
+        private bool IsValidInt(string size) => int.TryParse(size.ToString(), out var dimension)  && dimension > 0 && dimension < 50;
     }
 }
