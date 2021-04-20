@@ -2,22 +2,28 @@ using System.Threading;
 using System;
 using System.IO;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace Game_of_Life
 {
     public class Game
     {
-        private readonly TextReader _reader;
-        private readonly TextWriter _writer;
+        private readonly TextReader reader;
+        private readonly TextWriter writer;
+        private readonly ISleeper sleeper;
         private World world;
-        private char livingCellCharacter = '*';
-        private char deadCellCharacter = '.';
-        private int generation = 1;
-
-        public Game(TextReader reader, TextWriter writer)
+        
+        private static Dictionary<Type, char> CellCharacters = new Dictionary<Type, char>
         {
-            _reader = reader;
-            _writer = writer;
+            {typeof(LivingCell), '*'},
+            {typeof(DeadCell), '.'},
+        };
+
+        public Game(TextReader reader, TextWriter writer, ISleeper sleeper)
+        {
+            this.reader = reader;
+            this.writer = writer;
+            this.sleeper = sleeper;
         }
 
         public void Run()
@@ -31,57 +37,71 @@ namespace Game_of_Life
         {
             do
             {
+                // Console.Clear();
                 WriteGeneration();
-                Thread.Sleep(100);
-                _writer.WriteLine(WorldRenderer.DisplayWorld(world));
+                var currentGenerationString = WorldRenderer.StringifyWorld(world);
+                this.writer.WriteLine(currentGenerationString);
+                this.sleeper.Sleep();
                 world.Tick();
+
+                var nextGenerationString = WorldRenderer.StringifyWorld(world);
+                if (nextGenerationString == currentGenerationString) break;
+
             } while (!world.IsEmpty());
+
             WriteGeneration();
-            _writer.WriteLine(WorldRenderer.DisplayWorld(world));
+            this.writer.WriteLine(WorldRenderer.StringifyWorld(world));
         }
 
         private void WriteGeneration()
         {
-            _writer.WriteLine($"Generation {generation}: ");
-            generation++;
+            this.writer.WriteLine($"Generation {world.Generation}: ");
         }
 
         private void GetWorld()
         {
+            PromptWorld();
             for (var x = 0; x < world.Height; x++)
             {
-                var row = _reader.ReadLine().ToString();
+                var row = this.reader.ReadLine().ToString();
                 while (!ValidRow(row))
                 {
-                    row = _reader.ReadLine().ToString();
+                    this.writer.WriteLine("Previously entered row is invalid, it has been skipped.");
+                    row = this.reader.ReadLine().ToString();
                 }
                 for(var y = 0; y < world.Width; y++)
                 {
-                    if (row[y] == livingCellCharacter) world.SetLivingAt(new Location(x, y));
+                    if (row[y] == CellCharacters[typeof(LivingCell)]) world.SetLivingAt(new Location(x, y));
                 }
             }
         }
 
+        private void PromptWorld()
+        {
+            this.writer.WriteLine("Enter world a row at a time: ");
+        }
+
         private bool ValidRow(string row)
         {
-            return row.Length == world.Width && row.All(c => c == livingCellCharacter || c == deadCellCharacter);
+            return row.Length == world.Width && row.All(c => CellCharacters.ContainsValue(c));
         }
 
         private void GetWorldSize()
         {
-            var size = _reader.ReadLine().ToString();
+            PromptWorldSize();
+            var size = this.reader.ReadLine().ToString();
             while (!ValidWorldSize(size))
             {
-                size = _reader.ReadLine().ToString();
+                PromptWorldSize();
+                size = this.reader.ReadLine().ToString();
             }
             var worldSize = size.Split("x");
             this.world = new World(ParseSize(worldSize[0]), ParseSize(worldSize[1]));
         }
 
-        private bool EndOfInput(string input)
+        private void PromptWorldSize()
         {
-            const string endOfInputCode = "d";
-            return input == endOfInputCode;
+            this.writer.Write("Enter world size in the format 'nxn': ");
         }
 
         private bool ValidWorldSize(string input){

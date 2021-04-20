@@ -9,10 +9,12 @@ namespace Game_of_Life
 
         public int Width {get;}
         public int Height {get;}
-        private List<Location> Locations = new List<Location>();
+        public List<Location> Locations {get; private set;}
+        public int Generation {get; private set;}
 
         public World(int width, int height)
         {
+            Generation = 1;
             ValidateSize(width, height);
             this.Width = width;
             this.Height = height;
@@ -26,6 +28,7 @@ namespace Game_of_Life
 
         private void InitialiseLocations()
         {
+            Locations = new List<Location>();
             for (var x = 0; x < Height; x++)
             {
                 for (var y = 0; y < Width; y++)
@@ -35,29 +38,47 @@ namespace Game_of_Life
             }
         }
 
-        //private? but important to test? unsure..
-        public IEnumerable<Location> GetNeighbours(Location location)
+        public bool IsEmpty() => Locations.Where(c => c.Cell.GetType() == typeof(LivingCell)).Count() == 0;
+
+        public void SetLivingAt(Location someLocation)
         {
-            var neighbouringCells = new List<Location>
+            var locationOfLife = Locations.SingleOrDefault(l => l.Equals(someLocation));
+            if (locationOfLife == null) throw new ArgumentException("Location out of bounds");
+            locationOfLife.BecomeAlive();
+        } 
+        public void SetLivingAt(Location[] liveCellLocations) => Array.ForEach(liveCellLocations, l => SetLivingAt(l));
+
+        public void Tick()
+        {
+            var nextGenerationLocations = new List<Location>();
+            foreach (var location in this.Locations)
             {
-                GetLocation(location.TopLeft()),
-                GetLocation(location.Top()),
-                GetLocation(location.TopRight()),
-                GetLocation(location.Left()),
-                GetLocation(location.Right()),
-                GetLocation(location.BottomLeft()),
-                GetLocation(location.Bottom()),
-                GetLocation(location.BottomRight())
-            };
-            return neighbouringCells;
+                var nextGenerationLocation = location.Clone();
+                nextGenerationLocations.Add(nextGenerationLocation);
+
+                SetNextGenerationCellState(location, nextGenerationLocation);
+            }
+            this.Locations = nextGenerationLocations;
+            Generation++;
         }
 
-        private IEnumerable<Location> GetAliveNeighbours(Location location) => GetNeighbours(location).Where(l => l.Cell.GetType() == typeof(LivingCell));
-
-        private Location GetLocation(Location location)
+        private void SetNextGenerationCellState(Location location, Location nextGenerationLocation)
         {
-            location = WrapLocation(location);
-            return Locations.Single(l => l.Equals(location));
+            if (location.Cell.AliveNextGeneration(NumberOfAliveNeighbours(location)))
+            {
+                nextGenerationLocation.BecomeAlive();
+            }
+            else
+            {
+                nextGenerationLocation.BecomeDead();
+            }
+        }
+
+        private IEnumerable<Location> GetNeighbours(Location location)
+        {
+            var neighbouringCells = location.Neighbours();
+            neighbouringCells = neighbouringCells.Select(l => WrapLocation(l));
+            return Locations.Where(l => neighbouringCells.Contains(l));;
         }
 
         private Location WrapLocation(Location location)
@@ -69,33 +90,7 @@ namespace Game_of_Life
             return location;
         }
 
-        public void SetLivingAt(Location someLocation) => Locations.SingleOrDefault(l => l.Equals(someLocation)).BecomeAlive();
+        private int NumberOfAliveNeighbours(Location location) => GetNeighbours(location).Where(l => l.Cell.GetType() == typeof(LivingCell)).Count();
 
-        public bool IsEmpty() => Locations.Where(c => c.Cell.GetType() == typeof(LivingCell)).Count() == 0;
-
-        public void Tick()
-        {
-            var nextGenerationLocations = new List<Location>();
-            foreach (var location in this.Locations)
-            {
-                var nextGenerationLocation = new Location(location.X, location.Y);
-                nextGenerationLocations.Add(nextGenerationLocation);
-                if (location.Cell.AliveNextGeneration(GetAliveNeighbours(location).Count()))
-                {
-                    nextGenerationLocation.BecomeAlive();
-                }
-                else
-                {
-                    nextGenerationLocation.BecomeDead();
-                }
-            }
-            this.Locations = nextGenerationLocations;
-        }
-
-        //get world?
-        public IEnumerable<Location> GetLocations()
-        {
-            return this.Locations;
-        }
     }
 }

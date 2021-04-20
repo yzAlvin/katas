@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,21 +8,20 @@ namespace Game_of_Life
 {
     public static class WorldRenderer
     {
-
-        public static string DisplayWorld(World world)
+        private static Dictionary<Type, char> CellCharacters = new Dictionary<Type, char>
         {
-            var locations = world.GetLocations();
-            return RenderWorld(world, locations);
-        }
+            {typeof(LivingCell), '*'},
+            {typeof(DeadCell), '.'},
+        };
 
-        // constraint to keep public methods to 5 lines is this cheating 
-        private static string RenderWorld(World world, IEnumerable<Location> locations)
+        public static string StringifyWorld(World world)
         {
+            var locations = world.Locations;
             var stringBuilder = new StringBuilder();
             var cellsAdded = 0;
             foreach (var location in locations)
             {
-                stringBuilder.Append(location.Cell.GetType() == typeof(LivingCell) ? "*" : ".");
+                stringBuilder.Append(CellCharacters[location.Cell.GetType()]);
                 cellsAdded++;
                 if (world.Width == cellsAdded)
                 {
