@@ -14,7 +14,7 @@ namespace Game_of_Life
             {typeof(DeadCell), '.'},
         };
 
-        public static string StringifyWorld(World world)
+        public static string RenderWorld(World world)
         {
             var locations = world.Locations;
             var stringBuilder = new StringBuilder();

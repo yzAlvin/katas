@@ -39,18 +39,18 @@ namespace Game_of_Life
             {
                 // Console.Clear();
                 WriteGeneration();
-                var currentGenerationString = WorldRenderer.StringifyWorld(world);
+                var currentGenerationString = WorldRenderer.RenderWorld(world);
                 this.writer.WriteLine(currentGenerationString);
                 this.sleeper.Sleep();
                 world.Tick();
 
-                var nextGenerationString = WorldRenderer.StringifyWorld(world);
+                var nextGenerationString = WorldRenderer.RenderWorld(world);
                 if (nextGenerationString == currentGenerationString) break;
 
             } while (!world.IsEmpty());
 
             WriteGeneration();
-            this.writer.WriteLine(WorldRenderer.StringifyWorld(world));
+            this.writer.WriteLine(WorldRenderer.RenderWorld(world));
         }
 
         private void WriteGeneration()

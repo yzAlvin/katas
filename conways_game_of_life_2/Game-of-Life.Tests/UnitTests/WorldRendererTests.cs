@@ -10,7 +10,7 @@ namespace Game_of_Life.Tests
             var expectedOutput = "...\n...\n...\n";
             var emptyWorld = new World(3, 3);
             
-            var actualOutput = WorldRenderer.StringifyWorld(emptyWorld);
+            var actualOutput = WorldRenderer.RenderWorld(emptyWorld);
             
             Assert.Equal(expectedOutput, actualOutput);
         }
@@ -23,7 +23,7 @@ namespace Game_of_Life.Tests
             var liveCellLocations = new Location[]{new Location(0, 1), new Location(1, 0), new Location(2, 2)};
 
             worldWithLife.SetLivingAt(liveCellLocations);
-            var actualOutput = WorldRenderer.StringifyWorld(worldWithLife);
+            var actualOutput = WorldRenderer.RenderWorld(worldWithLife);
 
             Assert.Equal(expectedOutput, actualOutput);
         }

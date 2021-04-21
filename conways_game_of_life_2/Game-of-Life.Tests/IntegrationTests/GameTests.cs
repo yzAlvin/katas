@@ -21,7 +21,6 @@ namespace Game_of_Life.Tests
             fakeInput.SetupSequence(sequenceOfInput);
 
             var fakeOutput = new FakeOutput();
-            var fakeOutputStringDictionary = fakeOutput.writtenStrings.Keys;
 
             var fakeSleeper = new FakeSleeper();
 
@@ -40,15 +39,16 @@ namespace Game_of_Life.Tests
             Assert.Equal(1, fakeInput.readStrings[row2]);
             Assert.Equal(1, fakeInput.readStrings[row3]);
 
-            Assert.Contains(expectedGenerationOneWorldString, fakeOutputStringDictionary);
-            Assert.Contains(expectedGenerationTwoWorldString, fakeOutputStringDictionary);
-            Assert.Contains(expectedGenerationThreeWorldString, fakeOutputStringDictionary);
-
             Assert.Equal(1, fakeOutput.writtenStrings[expectedGenerationOne]);
+            Assert.Equal(1, fakeOutput.writtenStrings[expectedGenerationOneWorldString]);
             Assert.Equal(1, fakeOutput.writtenStrings[expectedGenerationTwo]);
+            Assert.Equal(1, fakeOutput.writtenStrings[expectedGenerationTwoWorldString]);
             Assert.Equal(1, fakeOutput.writtenStrings[expectedGenerationThree]);
+            Assert.Equal(1, fakeOutput.writtenStrings[expectedGenerationThreeWorldString]);
 
-            Assert.DoesNotContain(shouldNotBeRead, fakeOutputStringDictionary);
+            Assert.Equal(2, fakeSleeper.Calls);
+
+            Assert.DoesNotContain(shouldNotBeRead, fakeOutput.writtenStrings.Keys);
         }
 
         [Fact]
@@ -59,13 +59,25 @@ namespace Game_of_Life.Tests
             var fakeSleeper = new FakeSleeper();
             var game = new Game(fileReader, fakeOutput, fakeSleeper);
 
+            var expectedGenerationOne = "Generation 1: ";
+            var expectedGenerationOneString = "*.......\n.**.....\n........\n...*....\n...*....\n........\n";
+            var expectedGenerationTwo = "Generation 2: ";
+            var expectedGenerationTwoString = ".*......\n.*......\n..*.....\n........\n........\n........\n";
+            var expectedGenerationThree = "Generation 3: ";
+            var expectedGenerationThreeString = "........\n.**.....\n........\n........\n........\n........\n";
             var expectedGenerationFour = "Generation 4: ";
             var expectedGenerationFourString = "........\n........\n........\n........\n........\n........\n";
 
             game.Run();
-
+            Assert.Equal(1, fakeOutput.writtenStrings[expectedGenerationOne]);
+            Assert.Equal(1, fakeOutput.writtenStrings[expectedGenerationOneString]);
+            Assert.Equal(1, fakeOutput.writtenStrings[expectedGenerationTwo]);
+            Assert.Equal(1, fakeOutput.writtenStrings[expectedGenerationTwoString]);
+            Assert.Equal(1, fakeOutput.writtenStrings[expectedGenerationThree]);
+            Assert.Equal(1, fakeOutput.writtenStrings[expectedGenerationThreeString]);
             Assert.Equal(1, fakeOutput.writtenStrings[expectedGenerationFour]);
             Assert.Equal(1, fakeOutput.writtenStrings[expectedGenerationFourString]);
+            Assert.Equal(3, fakeSleeper.Calls);
         }
     }
 }

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Game_of_Life
 {
-    public class Location
+    public class Location : ILocation<Location>
     {
         public int X {get; set;}
         public int Y {get; set;}
@@ -47,6 +47,5 @@ namespace Game_of_Life
         private Location BottomLeft() => new Location(this.X + 1, this.Y - 1);
         private Location Bottom() => new Location(this.X + 1, this.Y);
         private Location BottomRight() => new Location(this.X + 1, this.Y + 1);
-
     }
 }

@@ -5,10 +5,6 @@ namespace Game_of_Life
         private const int LowerPopulationBound = 2;
         private const int UpperPopulationBound = 3;
 
-        public LivingCell()
-        {
-        }
-
         public bool AliveNextGeneration(int numberOfNeighbours) => Survival(numberOfNeighbours)
                                                             && !Underpopulation(numberOfNeighbours)
                                                             && !Overcrowding(numberOfNeighbours);
