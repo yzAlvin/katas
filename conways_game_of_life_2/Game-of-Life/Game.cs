@@ -1,8 +1,5 @@
-using System.Threading;
-using System;
 using System.IO;
 using System.Linq;
-using System.Collections.Generic;
 
 namespace Game_of_Life
 {
@@ -12,12 +9,6 @@ namespace Game_of_Life
         private readonly TextWriter writer;
         private readonly ISleeper sleeper;
         private World world;
-        
-        private static Dictionary<Type, char> CellCharacters = new Dictionary<Type, char>
-        {
-            {typeof(LivingCell), '*'},
-            {typeof(DeadCell), '.'},
-        };
 
         public Game(TextReader reader, TextWriter writer, ISleeper sleeper)
         {
@@ -40,8 +31,8 @@ namespace Game_of_Life
                 // Console.Clear();
                 WriteGeneration();
                 var currentGenerationString = WorldRenderer.RenderWorld(world);
-                this.writer.WriteLine(currentGenerationString);
-                this.sleeper.Sleep();
+                writer.WriteLine(currentGenerationString);
+                sleeper.Sleep();
                 world.Tick();
 
                 var nextGenerationString = WorldRenderer.RenderWorld(world);
@@ -50,12 +41,12 @@ namespace Game_of_Life
             } while (!world.IsEmpty());
 
             WriteGeneration();
-            this.writer.WriteLine(WorldRenderer.RenderWorld(world));
+            writer.WriteLine(WorldRenderer.RenderWorld(world));
         }
 
         private void WriteGeneration()
         {
-            this.writer.WriteLine($"Generation {world.Generation}: ");
+            writer.WriteLine($"Generation {world.Generation}: ");
         }
 
         private void GetWorld()
@@ -63,45 +54,45 @@ namespace Game_of_Life
             PromptWorld();
             for (var x = 0; x < world.Height; x++)
             {
-                var row = this.reader.ReadLine().ToString();
+                var row = reader.ReadLine().ToString();
                 while (!ValidRow(row))
                 {
-                    this.writer.WriteLine("Previously entered row is invalid, it has been skipped.");
-                    row = this.reader.ReadLine().ToString();
+                    writer.WriteLine("Previously entered row is invalid, it has been skipped.");
+                    row = reader.ReadLine().ToString();
                 }
                 for(var y = 0; y < world.Width; y++)
                 {
-                    if (row[y] == CellCharacters[typeof(LivingCell)]) world.SetLivingAt(new Location2D(x, y));
+                    if (row[y] == CellCharacters.CellSymbols[typeof(LivingCell)]) world.SetLivingAt(new Location2D(x, y));
                 }
             }
         }
 
         private void PromptWorld()
         {
-            this.writer.WriteLine("Enter world a row at a time: ");
+            this.writer.WriteLine("Enter world one row at a time: ");
         }
 
         private bool ValidRow(string row)
         {
-            return row.Length == world.Width && row.All(c => CellCharacters.ContainsValue(c));
+            return row.Length == world.Width && row.All(c => CellCharacters.CellSymbols.ContainsValue(c));
         }
 
         private void GetWorldSize()
         {
             PromptWorldSize();
-            var size = this.reader.ReadLine().ToString();
+            var size = reader.ReadLine().ToString();
             while (!ValidWorldSize(size))
             {
                 PromptWorldSize();
-                size = this.reader.ReadLine().ToString();
+                size = reader.ReadLine().ToString();
             }
             var worldSize = size.Split("x");
-            this.world = new World(ParseSize(worldSize[0]), ParseSize(worldSize[1]));
+            world = new World(ParseSize(worldSize[0]), ParseSize(worldSize[1]));
         }
 
         private void PromptWorldSize()
         {
-            this.writer.Write("Enter world size in the format 'nxn': ");
+            writer.Write("Enter world size in the format 'nxn': ");
         }
 
         private bool ValidWorldSize(string input){
@@ -111,6 +102,6 @@ namespace Game_of_Life
 
         private int ParseSize(string n) => int.Parse(n.ToString());
 
-        private bool IsValidInt(string size) => int.TryParse(size.ToString(), out var dimension)  && dimension > 0 && dimension < 50;
+        private bool IsValidInt(string size) => int.TryParse(size.ToString(), out var dimension)  && dimension > 0 && dimension < 100;
     }
 }

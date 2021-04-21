@@ -3,24 +3,18 @@ using System.Collections.Generic;
 
 namespace Game_of_Life
 {
-    public class Location3D : ILocation<Location3D>
+    public class Location3D : ILocation
     {
         public int X {get; set;}
         public int Y {get; set;}
         public int Z {get; set;}
-        public ICell Cell {get; set;}
 
         public Location3D(int x, int y, int z)
         {
             this.X = x;
             this.Y = y;
             this.Z = z;
-            Cell = new DeadCell();
         }
-
-        public void BecomeAlive() => this.Cell = new LivingCell();
-
-        public void BecomeDead() => this.Cell = new DeadCell();
 
         public override bool Equals(object obj)
         {
@@ -29,9 +23,9 @@ namespace Game_of_Life
             return X == otherCoord.X && Y == otherCoord.Y && Z == otherCoord.Z;
         }
 
-        public Location3D Clone() => new Location3D(this.X, this.Y, this.Z);
+        public override Location3D Clone() => new Location3D(this.X, this.Y, this.Z);
 
-        public IEnumerable<Location3D> Neighbours()=> new Location3D[]
+        public override IEnumerable<Location3D> Neighbours()=> new Location3D[]
         {
             this.BackTopLeft(),
             this.BackTopMid(),

@@ -2,22 +2,16 @@ using System.Collections.Generic;
 
 namespace Game_of_Life
 {
-    public class Location2D : ILocation<Location2D>
+    public class Location2D : ILocation
     {
         public int X {get; set;}
         public int Y {get; set;}
-        public ICell Cell {get; set;}
 
         public Location2D(int x, int y)
         {
             this.X = x;
             this.Y = y;
-            Cell = new DeadCell();
         }
-
-        public void BecomeAlive() => this.Cell = new LivingCell();
-        
-        public void BecomeDead() => this.Cell = new DeadCell();
 
         public override bool Equals(object obj)
         {
@@ -26,9 +20,9 @@ namespace Game_of_Life
             return X == otherCoord.X && Y == otherCoord.Y;
         }
 
-        public Location2D Clone() => new Location2D(this.X, this.Y);
+        public override Location2D Clone() => new Location2D(this.X, this.Y);
 
-        public IEnumerable<Location2D> Neighbours() => new Location2D[]
+        public override IEnumerable<Location2D> Neighbours() => new Location2D[]
         {
             this.TopLeft(),
             this.Top(),

@@ -26,17 +26,18 @@ Your task is to impelment Conways Game of Life. You should be able to:
 * Don't make things public unless necessary
 * Tests should not break abstraction level
 * Don't test implementation details (x has y)
-* Should I keep threshold values in a file somewhere that the implementation and tests pull from?
 * Think of BEHAVIOUR instead of shoehorning into inheritance
 
 ## Test Checklist
 * World is all deadcells at the start
 * World is not empty when there is any number of livingcells
 * World size must be positive
-* World looks at a coordinate and fetches neighbours
+* World looks at a coordinate and fetches neighbours, wrapping location data
 
-* Coordinate positions must be positive
-* Coordinate by default contains a dead cell
+* Location positions must be positive
+* Location by default contains a dead cell
+* Location can become a live cell or a dead cell
+* Location can return the expected neighbouring locations
 
 * Living cell lives with 'nice' neighbourhood
 * Living cell dies by underpopulation
@@ -44,4 +45,5 @@ Your task is to impelment Conways Game of Life. You should be able to:
 
 * Dead cell revives with 'fertile' neighbourhood
 
-* Input accepts text
+//README
+//HIGH LEVEL VIEW

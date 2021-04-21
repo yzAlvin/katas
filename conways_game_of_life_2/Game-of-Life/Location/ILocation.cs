@@ -2,12 +2,13 @@ using System.Collections.Generic;
 
 namespace Game_of_Life
 {
-    public interface ILocation<T>
+    public abstract class ILocation
     {
-        void BecomeAlive();
-        void BecomeDead();
-        // bool Equals();
-        T Clone();
-        IEnumerable<T> Neighbours();
+        public ICell Cell = new DeadCell();
+        public void BecomeAlive() => this.Cell = new LivingCell();
+        public void BecomeDead() => this.Cell = new DeadCell();
+        public override abstract bool Equals(object obj);
+        public abstract ILocation Clone();
+        public abstract IEnumerable<ILocation> Neighbours();
     }
 }

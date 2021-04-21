@@ -54,7 +54,8 @@ namespace Game_of_Life.Tests
         [Fact]
         public void Game_From_File()
         {
-            var fileReader = File.OpenText(@"/Users/Alvin.Zhao/Projects/katas/conways_game_of_life_2/Game-of-Life/exampleWorld.txt");
+            var pathToTestWorld = @"/Users/Alvin.Zhao/Projects/katas/conways_game_of_life_2/Game-of-Life/testWorld.txt";
+            var fileReader = File.OpenText(pathToTestWorld);
             var fakeOutput = new FakeOutput();
             var fakeSleeper = new FakeSleeper();
             var game = new Game(fileReader, fakeOutput, fakeSleeper);

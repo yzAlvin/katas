@@ -6,30 +6,31 @@ using System.Text;
 
 namespace Game_of_Life
 {
-    public static class WorldRenderer
+    public class WorldRenderer
     {
-        private static Dictionary<Type, char> CellCharacters = new Dictionary<Type, char>
-        {
-            {typeof(LivingCell), '*'},
-            {typeof(DeadCell), '.'},
-        };
+        public static string RenderWorld(World world) => WorldToString(world, world.Locations);
 
-        public static string RenderWorld(World world)
+        private static string WorldToString(World world, List<Location2D> locations)
         {
-            var locations = world.Locations;
-            var stringBuilder = new StringBuilder();
+            var worldAsString = new StringBuilder();
+
             var cellsAdded = 0;
             foreach (var location in locations)
             {
-                stringBuilder.Append(CellCharacters[location.Cell.GetType()]);
+                worldAsString.Append(CellCharacters.CellSymbols[location.Cell.GetType()]);
                 cellsAdded++;
                 if (world.Width == cellsAdded)
                 {
-                    stringBuilder.AppendLine();
+                    worldAsString.AppendLine();
                     cellsAdded = 0;
                 }
             }
-            return stringBuilder.ToString();
+            return worldAsString.ToString();
+        }
+
+        private static void WorldToString(World world, List<Location3D> locations)
+        {
+            throw new NotImplementedException();
         }
     }
 }
