@@ -9,7 +9,7 @@ namespace Game_of_Life
 
         public int Width {get;}
         public int Height {get;}
-        public List<Location> Locations {get; private set;}
+        public List<Location2D> Locations {get; private set;}
         public int Generation {get; private set;}
 
         public World(int width, int height)
@@ -28,29 +28,29 @@ namespace Game_of_Life
 
         private void InitialiseLocations()
         {
-            Locations = new List<Location>();
+            Locations = new List<Location2D>();
             for (var x = 0; x < Height; x++)
             {
                 for (var y = 0; y < Width; y++)
                 {
-                    Locations.Add(new Location(x, y));
+                    Locations.Add(new Location2D(x, y));
                 }
             }
         }
 
         public bool IsEmpty() => Locations.Where(c => c.Cell.GetType() == typeof(LivingCell)).Count() == 0;
 
-        public void SetLivingAt(Location someLocation)
+        public void SetLivingAt(Location2D someLocation)
         {
             var locationOfLife = Locations.SingleOrDefault(l => l.Equals(someLocation));
             if (locationOfLife == null) throw new ArgumentException("Location out of bounds");
             locationOfLife.BecomeAlive();
         } 
-        public void SetLivingAt(Location[] liveCellLocations) => Array.ForEach(liveCellLocations, l => SetLivingAt(l));
+        public void SetLivingAt(Location2D[] liveCellLocations) => Array.ForEach(liveCellLocations, l => SetLivingAt(l));
 
         public void Tick()
         {
-            var nextGenerationLocations = new List<Location>();
+            var nextGenerationLocations = new List<Location2D>();
             foreach (var location in this.Locations)
             {
                 var nextGenerationLocation = location.Clone();
@@ -62,7 +62,7 @@ namespace Game_of_Life
             Generation++;
         }
 
-        private void SetNextGenerationCellState(Location location, Location nextGenerationLocation)
+        private void SetNextGenerationCellState(Location2D location, Location2D nextGenerationLocation)
         {
             if (location.Cell.AliveNextGeneration(NumberOfAliveNeighbours(location)))
             {
@@ -74,14 +74,14 @@ namespace Game_of_Life
             }
         }
 
-        private IEnumerable<Location> GetNeighbours(Location location)
+        private IEnumerable<Location2D> GetNeighbours(Location2D location)
         {
             var neighbouringCells = location.Neighbours();
             neighbouringCells = neighbouringCells.Select(l => WrapLocation(l));
             return Locations.Where(l => neighbouringCells.Contains(l));;
         }
 
-        private Location WrapLocation(Location location)
+        private Location2D WrapLocation(Location2D location)
         {
             if (location.X < 0) location.X = this.Height + location.X;
             if (location.Y < 0) location.Y = this.Width + location.Y;
@@ -90,7 +90,7 @@ namespace Game_of_Life
             return location;
         }
 
-        private int NumberOfAliveNeighbours(Location location) => GetNeighbours(location).Where(l => l.Cell.GetType() == typeof(LivingCell)).Count();
+        private int NumberOfAliveNeighbours(Location2D location) => GetNeighbours(location).Where(l => l.Cell.GetType() == typeof(LivingCell)).Count();
 
     }
 }

@@ -71,7 +71,7 @@ namespace Game_of_Life
                 }
                 for(var y = 0; y < world.Width; y++)
                 {
-                    if (row[y] == CellCharacters[typeof(LivingCell)]) world.SetLivingAt(new Location(x, y));
+                    if (row[y] == CellCharacters[typeof(LivingCell)]) world.SetLivingAt(new Location2D(x, y));
                 }
             }
         }

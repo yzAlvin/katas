@@ -3,10 +3,11 @@ using Xunit;
 
 namespace Game_of_Life.Tests
 {
-    public class LocationTests
+    public class Location3DTests
     {
-        Location someLocation = new Location(0, 0);
-
+        Location3D someLocation = new Location3D(0, 0, 0);
+        // idea: should I separate the tests for each method into it's own class?
+        // eg. BecomeAlive Tests etc.
         [Fact]
         public void BecomeAlive_Sets_DeadCell_To_LivingCell()
         {
@@ -37,7 +38,7 @@ namespace Game_of_Life.Tests
             var livingCellToBecomeDead = someLocation;
             livingCellToBecomeDead.BecomeDead();
             Assert.IsType<DeadCell>(livingCellToBecomeDead.Cell);
-        } 
+        }
 
         [Fact]
         public void Equals_ReturnsTrue_Comparing_Locations_With_Same_Location()
@@ -50,12 +51,12 @@ namespace Game_of_Life.Tests
         [Fact]
         public void Equals_ReturnsFalse_Comparing_Locations_With_Different_Location()
         {
-            var anotherLocationWithDifferentCoordinates = new Location(0, 1);
+            var anotherLocationWithDifferentCoordinates = new Location3D(0, 0, 1);
             Assert.False(someLocation.Equals(anotherLocationWithDifferentCoordinates));
         }
 
         [Fact]
-        public void Equals_ReturnsFalse_Comparing_Location_With_Not_A_Location()
+        public void Equals_ReturnsFalse_Comparing_Location3D_With_NotLocation3D()
         {
             var notALocation = new Object();
             Assert.False(someLocation.Equals(notALocation));
@@ -73,20 +74,39 @@ namespace Game_of_Life.Tests
         [Fact]
         public void Neighbours_Returns_Collection_Of_Surrounding_Locations()
         {
-            var expectedNeighbours = new Location[]
+            var expectedNeighbours = new Location3D[]
             {
-                new Location(-1, -1),
-                new Location(-1, 0),
-                new Location(-1, 1),
-                new Location(0, -1),
-                new Location(0, 1),
-                new Location(1, -1),
-                new Location(1, 0),
-                new Location(1, 1),
+                new Location3D(-1, -1, -1),
+                new Location3D(-1, -1, 0),
+                new Location3D(-1, -1, 1),
+                new Location3D(-1, 0, -1),
+                new Location3D(-1, 0, 0),
+                new Location3D(-1, 0, 1),
+                new Location3D(-1, 1, -1),
+                new Location3D(-1, 1, 0),
+                new Location3D(-1, 1, 1),
+
+                new Location3D(0, -1, -1),
+                new Location3D(0, -1, 0),
+                new Location3D(0, -1, 1),
+                new Location3D(0, 0, -1),
+                new Location3D(0, 0, 1),
+                new Location3D(0, 1, -1),
+                new Location3D(0, 1, 0),
+                new Location3D(0, 1, 1),
+
+                new Location3D(1, -1, -1),
+                new Location3D(1, -1, 0),
+                new Location3D(1, -1, 1),
+                new Location3D(1, 0, -1),
+                new Location3D(1, 0, 0),
+                new Location3D(1, 0, 1),
+                new Location3D(1, 1, -1),
+                new Location3D(1, 1, 0),
+                new Location3D(1, 1, 1),
             };
             var actualNeighbours = someLocation.Neighbours();
             Assert.Equal(expectedNeighbours, actualNeighbours);
         }
-
     }
 }

@@ -26,7 +26,7 @@ namespace Game_of_Life.Tests
         public void SetLivingAt_CreatesLivingCell_At_Location()
         {
             var worldWithLife = new World(3, 3);
-            var locationOfLife = new Location(0, 0);
+            var locationOfLife = new Location2D(0, 0);
             worldWithLife.SetLivingAt(locationOfLife);
             Assert.IsType<LivingCell>(worldWithLife.Locations.Single(l => l.Equals(locationOfLife)).Cell);
         }
@@ -35,7 +35,7 @@ namespace Game_of_Life.Tests
         public void SetLivingAt_ThrowsArgumentException_At_LocationOutOfBounds()
         {
             var world = new World(3, 3);
-            var outOfBounds = new Location(5, 5);
+            var outOfBounds = new Location2D(5, 5);
             Assert.Throws<ArgumentException>(() => world.SetLivingAt(outOfBounds));
         }
 
@@ -43,7 +43,7 @@ namespace Game_of_Life.Tests
         public void IsEmpty_ReturnsFalse_With_WorldWithLivingCells()
         {
             var world = new World(3, 3);
-            var someLocation = new Location(1, 1);
+            var someLocation = new Location2D(1, 1);
             world.SetLivingAt(someLocation);
             Assert.False(world.IsEmpty());
         }
@@ -60,7 +60,7 @@ namespace Game_of_Life.Tests
         public void Tick_WorldWithLife_Updates_NextGeneration()
         {
             var world = new World(3, 3);
-            var topLeft = new Location(0, 0);
+            var topLeft = new Location2D(0, 0);
             world.SetLivingAt(topLeft);
             Assert.False(world.IsEmpty());
             world.Tick();
@@ -71,14 +71,14 @@ namespace Game_of_Life.Tests
         public void Tick_WorldWithLifeOnEdges_Updates_NextGeneration()
         {
             var world = new World(5, 5);
-            var liveCellLocations = new Location[]{new Location(0, 0), new Location(0, 1), new Location(4, 4)};
+            var liveCellLocations = new Location2D[]{new Location2D(0, 0), new Location2D(0, 1), new Location2D(4, 4)};
             world.SetLivingAt(liveCellLocations);
 
             Array.ForEach(liveCellLocations, locationOfLife => Assert.IsType<LivingCell>(world.Locations.Single(l => l.Equals(locationOfLife)).Cell));
             
             world.Tick();
-            var locationOfStillLife = new Location(0, 0);
-            var locationOfNewLife = new Location(4, 0);
+            var locationOfStillLife = new Location2D(0, 0);
+            var locationOfNewLife = new Location2D(4, 0);
             Assert.IsType<LivingCell>(world.Locations.Single(l => l.Equals(locationOfNewLife)).Cell);
             Assert.IsType<LivingCell>(world.Locations.Single(l => l.Equals(locationOfStillLife)).Cell);
 
