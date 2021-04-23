@@ -43,12 +43,13 @@ namespace Game_of_Life
 
         public override Location2D WrapLocation(int width, int height, int depth)
         {
-            var wrappedLocation = this;
-            if (X < 0) wrappedLocation.X = height + X;
-            if (Y < 0) wrappedLocation.Y = width + Y;
-            if (X > height - 1) wrappedLocation.X = X - height;
-            if (Y > width - 1) wrappedLocation.Y = Y - width;
-            return wrappedLocation;
+            var wrappedX = X;
+            var wrappedY = Y;
+            if (X < 0) wrappedX = height + X;
+            if (Y < 0) wrappedY = width + Y;
+            if (X > height - 1) wrappedX = X - height;
+            if (Y > width - 1) wrappedY = Y - width;
+            return new Location2D(wrappedX, wrappedY);
         }
     }
 }

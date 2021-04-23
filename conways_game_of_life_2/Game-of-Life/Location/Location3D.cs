@@ -84,14 +84,21 @@ namespace Game_of_Life
 
         public override Location3D WrapLocation(int width, int height, int depth)
         {
-            var wrappedLocation = this;
-            if (X < 0) wrappedLocation.X = height + X;
-            if (Y < 0) wrappedLocation.Y = width + Y;
-            if (Z < 0) wrappedLocation.Z = depth + Z;
-            if (X > height - 1) wrappedLocation.X = X - height;
-            if (Y > width - 1) wrappedLocation.Y = Y - width;
-            if (Z > depth - 1) wrappedLocation.Z = Z - depth;
-            return wrappedLocation;
+            var wrappedX = X;
+            var wrappedY = Y;
+            var wrappedZ = Z;
+            if (X < 0) wrappedX = height + X;
+            if (Y < 0) wrappedY = width + Y;
+            if (Z < 0) wrappedY = depth + Z;
+            if (X > height - 1) wrappedX = X - height;
+            if (Y > width - 1) wrappedY = Y - width;
+            if (Z > depth - 1) wrappedY = Z - depth;
+            return new Location3D(wrappedX, wrappedY, wrappedZ);
+        }
+
+        public override string ToString()
+        {
+            return $"({X}, {Y}, {Z})";
         }
     }
 }

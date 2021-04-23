@@ -29,7 +29,7 @@ namespace Game_of_Life
             do
             {
                 // Console.Clear();
-                WriteGeneration();
+                // WriteGeneration();
                 var currentGenerationString = WorldRenderer.RenderWorld(world);
                 writer.WriteLine(currentGenerationString);
                 sleeper.Sleep();
@@ -40,11 +40,11 @@ namespace Game_of_Life
 
             } while (!world.IsEmpty());
 
-            WriteGeneration();
+            // WriteGeneration();
             writer.WriteLine(WorldRenderer.RenderWorld(world));
         }
 
-        private void WriteGeneration() => writer.WriteLine($"Generation {world.Generation}: ");
+        // private void WriteGeneration() => writer.WriteLine($"Generation {world.Generation}: ");
 
         //BAD CODE?
         private void GetWorld()

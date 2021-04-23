@@ -10,22 +10,23 @@ namespace Game_of_Life
         public int Height { get; }
         public int Depth { get; }
         public List<ILocation> Locations { get; private set; }
-        public int Generation { get; private set; }
 
-        public World(int width, int height, int depth = 1)
+        
+        public World(int width = 5, int height = 5, int depth = 1, ILocation[] locationOfLiveCells = default)
         {
-            Generation = 1;
+            if (locationOfLiveCells == default) locationOfLiveCells = new ILocation[0];
             ValidateSize(width, height, depth);
             this.Width = width;
             this.Height = height;
             this.Depth = depth;
             InitialiseWorld();
+            Array.ForEach(locationOfLiveCells, SetLivingAt);
         }
 
         private void ValidateSize(int width, int height, int depth)
         {
-            if (width < 0 || height < 0 || depth < 1) throw new ArgumentException("World size must be positive integers");
-            if (width > 100 || height > 100 || depth > 3) throw new ArgumentException("World size must be less than 100");
+            if (width < 3 || height < 3 || depth < 1) throw new ArgumentException("World size must be greater than 0");
+            if (width > 100 || height > 100 || depth > 5) throw new ArgumentException("World size must be less than 100");
         }
 
         // gross
@@ -75,7 +76,6 @@ namespace Game_of_Life
             {
                 if (LocationAliveNextGeneration(location)) nextWorld.SetLivingAt(location);
             }
-            nextWorld.Generation = Generation+1;
             return nextWorld;
         }
 
@@ -85,10 +85,18 @@ namespace Game_of_Life
                                                                                                     .Select(l => l.WrapLocation(Width, Height, Depth))
                                                                                                     .Contains);
 
-        private int NumberOfAliveNeighbours(ILocation location) => GetNeighboursInWorld(location).Where(IsAlive)
-                                                                                        .Count();
+        private int NumberOfAliveNeighbours(ILocation location) => GetNeighboursInWorld(location).Count(IsAlive);
 
         private bool IsAlive(ILocation l) => l.Cell.GetType() == typeof(LivingCell);
-
+        
+        public override bool Equals(object obj)
+        {
+            World otherWorld = obj as World;
+            if (otherWorld == null) return false;
+            return Width == otherWorld.Width && 
+                Height == otherWorld.Height &&
+                Depth == otherWorld.Depth &&
+                Locations.SequenceEqual(otherWorld.Locations);
+        }
     }
 }

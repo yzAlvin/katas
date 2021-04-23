@@ -22,11 +22,17 @@ Your task is to impelment Conways Game of Life. You should be able to:
 * Be able to set the inital state of the world
 
 ## Thoughts / Keep in mind
-* learnt from Minesweeper kata to eliminate duplication aggressively like x,y -> location, -> make sure tests not dependent on implementation details -> now getNeighbouringCells or whatever belongs in aptly named Location class instead of elsewhere
-* Don't make things public unless necessary
+
+* Don't make things public for no reason
 * Tests should not break abstraction level
-* Don't test implementation details (x has y)
-* Think of BEHAVIOUR instead of shoehorning into inheritance
+* Tests should contain no logic
+* Don't test implementation details
+* Think in terms of **BEHAVIOUR** - put on "tester" hat
+
+* Trying to be as "functional" as possible
+    * Pure functions
+    * Writing small methods and combining them
+    * Preferring Linq methods over loops - preferring declarative over imperative
 
 ## Approaches
 
@@ -38,6 +44,8 @@ Your task is to impelment Conways Game of Life. You should be able to:
 * Turn World into interface/abstract class, have a World2D and a World3D. Only World3D would have "depth". Would also need a new Location that uses this "depth" so I would also need a Location2D and a Location3D.
 
 * Add "depth" into World, and defaulting depth of a 2D locations to 1. 
+
+// cheated writing tests for 3D couldn't work out the wrapping on paper
  
 **Give a high level view of my solution**
 
@@ -52,11 +60,16 @@ Your task is to impelment Conways Game of Life. You should be able to:
 * Cell on edge of game
 * Cell not on edge of game
 
+* Display world from console
+* Display world from file
+
+* Pause between each generation
+
 ### Interfaces
-* World(int width, int height)
+* World(int width, int height, List<(int x, int y)> liveCells)
 * World.NextWorld() => World
 * World.IsEmpty() => bool
-* World.SetLivingAt(Location location)
+* <s>World.SetLivingAt(Location location)</s>
 
 * Location(int x, int y)
 * Location.BecomeAlive()
@@ -75,7 +88,7 @@ Your task is to impelment Conways Game of Life. You should be able to:
 * World is not empty when there is any number of living cells
 * World size must be positive
 * World size must be less than 100
-* World should set a Location to have a living cell
+* <s>World should set a Location to have a living cell</s>
 * World should calculate the next generation
 
 * Location positions must be positive
