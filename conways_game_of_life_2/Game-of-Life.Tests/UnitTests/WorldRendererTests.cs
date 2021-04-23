@@ -5,7 +5,7 @@ namespace Game_of_Life.Tests
     public class WorldRendererTests
     {
         [Fact]
-        public void StringifyWorld_Returns_Empty_World()
+        public void RenderWorld_Returns_2DEmpty_World()
         {
             var expectedOutput = "...\n...\n...\n";
             var emptyWorld = new World(3, 3);
@@ -16,7 +16,7 @@ namespace Game_of_Life.Tests
         }
 
         [Fact]
-        public void StringifyWorld_Returns_World_With_Life()
+        public void RenderWorld_Returns_2DWorld_With_Life()
         {
             var expectedOutput = ".*.\n*..\n..*\n";
             var worldWithLife = new World(3, 3);
@@ -26,6 +26,17 @@ namespace Game_of_Life.Tests
             var actualOutput = WorldRenderer.RenderWorld(worldWithLife);
 
             Assert.Equal(expectedOutput, actualOutput);
+        }
+
+        [Fact (Skip = "t")]
+        public void RenderWorld_Returns_3DEmpty_World()
+        {
+            var expectedWorld = "...\n...\n...\n";
+            var empty3DWorld = new World(3, 3, 3);
+
+            var actualWorld = WorldRenderer.RenderWorld(empty3DWorld);
+
+            Assert.Equal(expectedWorld, actualWorld);
         }
     }
 }

@@ -20,8 +20,6 @@ namespace Game_of_Life
             return X == otherCoord.X && Y == otherCoord.Y;
         }
 
-        public override Location2D Clone() => new Location2D(this.X, this.Y);
-
         public override IEnumerable<Location2D> Neighbours() => new Location2D[]
         {
             this.TopLeft(),
@@ -42,5 +40,15 @@ namespace Game_of_Life
         private Location2D BottomLeft() => new Location2D(this.X + 1, this.Y - 1);
         private Location2D Bottom() => new Location2D(this.X + 1, this.Y);
         private Location2D BottomRight() => new Location2D(this.X + 1, this.Y + 1);
+
+        public override Location2D WrapLocation(int width, int height, int depth)
+        {
+            var wrappedLocation = this;
+            if (X < 0) wrappedLocation.X = height + X;
+            if (Y < 0) wrappedLocation.Y = width + Y;
+            if (X > height - 1) wrappedLocation.X = X - height;
+            if (Y > width - 1) wrappedLocation.Y = Y - width;
+            return wrappedLocation;
+        }
     }
 }

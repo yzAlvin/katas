@@ -28,22 +28,65 @@ Your task is to impelment Conways Game of Life. You should be able to:
 * Don't test implementation details (x has y)
 * Think of BEHAVIOUR instead of shoehorning into inheritance
 
-## Test Checklist
-* World is all deadcells at the start
-* World is not empty when there is any number of livingcells
+## Approaches
+
+### Adding 3D Conways
+* In a 3D world rules remain the same except you can have neighbours on either side.
+    * Method for getting neighbours is different but everything else remains the same, 
+
+* Turn Location into an interface/abstract class, have a Location2D and a Location3D. World would now need "depth" as an additional parameter for Locations.
+* Turn World into interface/abstract class, have a World2D and a World3D. Only World3D would have "depth". Would also need a new Location that uses this "depth" so I would also need a Location2D and a Location3D.
+
+* Add "depth" into World, and defaulting depth of a 2D locations to 1. 
+ 
+**Give a high level view of my solution**
+
+## Before Coding
+
+### Scenarios
+* Live -> Live
+* Live -> Dead
+* Dead -> Live
+* Dead -> Dead
+
+* Cell on edge of game
+* Cell not on edge of game
+
+### Interfaces
+* World(int width, int height)
+* World.NextWorld() => World
+* World.IsEmpty() => bool
+* World.SetLivingAt(Location location)
+
+* Location(int x, int y)
+* Location.BecomeAlive()
+* Location.BecomeDead()
+* Location.Neighbours() => List<Location>
+* Location.WrapLocation(int width, int height) => Location
+
+* Cell()
+* Cell.AliveNextGeneration(int numberOfNeighbours) => bool
+
+* WorldRenderer
+* WorldRenderer.RenderWorld(World world) => string
+
+### Test Cases
+* World is empty when there are 0 living cells
+* World is not empty when there is any number of living cells
 * World size must be positive
-* World looks at a coordinate and fetches neighbours, wrapping location data
+* World size must be less than 100
+* World should set a Location to have a living cell
+* World should calculate the next generation
 
 * Location positions must be positive
-* Location by default contains a dead cell
 * Location can become a live cell or a dead cell
 * Location can return the expected neighbouring locations
+* Location can be wrapped based on a max size
 
-* Living cell lives with 'nice' neighbourhood
-* Living cell dies by underpopulation
-* Living cell dies by overcrowding
+* Living cell lives with 2 neighbours
+* Living cell lives with 3 neighbours
+* Living cell dies with less than 2 neighbours
+* Living cell dies with more than 3 neighbours
+* Dead cell revives with 3 neighbours
 
-* Dead cell revives with 'fertile' neighbourhood
-
-//README
-//HIGH LEVEL VIEW
+* WorldRenderer returns world in string format

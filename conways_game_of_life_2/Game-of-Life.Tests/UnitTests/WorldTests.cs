@@ -52,7 +52,7 @@ namespace Game_of_Life.Tests
         public void Tick_EmptyWorld_Is_Empty_NextGeneration()
         {
             var world = new World(3, 3);
-            world.Tick();
+            world = world.NextWorld();
             Assert.True(world.IsEmpty());
         }
 
@@ -63,7 +63,7 @@ namespace Game_of_Life.Tests
             var topLeft = new Location2D(0, 0);
             world.SetLivingAt(topLeft);
             Assert.False(world.IsEmpty());
-            world.Tick();
+            world = world.NextWorld();
             Assert.True(world.IsEmpty());
         }
 
@@ -76,13 +76,13 @@ namespace Game_of_Life.Tests
 
             Array.ForEach(liveCellLocations, locationOfLife => Assert.IsType<LivingCell>(world.Locations.Single(l => l.Equals(locationOfLife)).Cell));
             
-            world.Tick();
+            world = world.NextWorld(); 
             var locationOfStillLife = new Location2D(0, 0);
             var locationOfNewLife = new Location2D(4, 0);
             Assert.IsType<LivingCell>(world.Locations.Single(l => l.Equals(locationOfNewLife)).Cell);
             Assert.IsType<LivingCell>(world.Locations.Single(l => l.Equals(locationOfStillLife)).Cell);
 
-            world.Tick();
+            world = world.NextWorld(); 
             Assert.True(world.IsEmpty());
         }
     }

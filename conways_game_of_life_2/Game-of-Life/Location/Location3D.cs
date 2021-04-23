@@ -23,8 +23,6 @@ namespace Game_of_Life
             return X == otherCoord.X && Y == otherCoord.Y && Z == otherCoord.Z;
         }
 
-        public override Location3D Clone() => new Location3D(this.X, this.Y, this.Z);
-
         public override IEnumerable<Location3D> Neighbours()=> new Location3D[]
         {
             this.BackTopLeft(),
@@ -83,5 +81,17 @@ namespace Game_of_Life
         private Location3D FrontBottomLeft() => new Location3D(this.X + 1, this.Y + 1, this.Z - 1);
         private Location3D FrontBottomMid() => new Location3D(this.X + 1, this.Y + 1, this.Z);
         private Location3D FrontBottomRight() => new Location3D(this.X + 1, this.Y + 1, this.Z + 1);
+
+        public override Location3D WrapLocation(int width, int height, int depth)
+        {
+            var wrappedLocation = this;
+            if (X < 0) wrappedLocation.X = height + X;
+            if (Y < 0) wrappedLocation.Y = width + Y;
+            if (Z < 0) wrappedLocation.Z = depth + Z;
+            if (X > height - 1) wrappedLocation.X = X - height;
+            if (Y > width - 1) wrappedLocation.Y = Y - width;
+            if (Z > depth - 1) wrappedLocation.Z = Z - depth;
+            return wrappedLocation;
+        }
     }
 }

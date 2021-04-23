@@ -33,7 +33,7 @@ namespace Game_of_Life
                 var currentGenerationString = WorldRenderer.RenderWorld(world);
                 writer.WriteLine(currentGenerationString);
                 sleeper.Sleep();
-                world.Tick();
+                world = world.NextWorld();
 
                 var nextGenerationString = WorldRenderer.RenderWorld(world);
                 if (nextGenerationString == currentGenerationString) break;
@@ -44,64 +44,66 @@ namespace Game_of_Life
             writer.WriteLine(WorldRenderer.RenderWorld(world));
         }
 
-        private void WriteGeneration()
-        {
-            writer.WriteLine($"Generation {world.Generation}: ");
-        }
+        private void WriteGeneration() => writer.WriteLine($"Generation {world.Generation}: ");
 
+        //BAD CODE?
         private void GetWorld()
         {
             PromptWorld();
             for (var x = 0; x < world.Height; x++)
             {
-                var row = reader.ReadLine().ToString();
+                var row = reader.ReadLine();
                 while (!ValidRow(row))
                 {
-                    writer.WriteLine("Previously entered row is invalid, it has been skipped.");
-                    row = reader.ReadLine().ToString();
+                    row = reader.ReadLine();
                 }
                 for(var y = 0; y < world.Width; y++)
                 {
-                    if (row[y] == CellCharacters.CellSymbols[typeof(LivingCell)]) world.SetLivingAt(new Location2D(x, y));
+                    if (world.Depth == 1)
+                    {
+                        if (row[y] == CellCharacters.CellSymbols[typeof(LivingCell)]) world.SetLivingAt(new Location2D(x, y));
+                    }
+                    else
+                    {
+                        for(var z = 0; z < world.Depth; y++)
+                        {
+                            if (row[y] == CellCharacters.CellSymbols[typeof(LivingCell)]) world.SetLivingAt(new Location3D(x, y, z));
+                        }
+                    }
                 }
             }
         }
 
-        private void PromptWorld()
-        {
-            this.writer.WriteLine("Enter world one row at a time: ");
-        }
+        private void PromptWorld() => writer.WriteLine("Enter world one row at a time: ");
 
-        private bool ValidRow(string row)
-        {
-            return row.Length == world.Width && row.All(c => CellCharacters.CellSymbols.ContainsValue(c));
-        }
+        private bool ValidRow(string row) => row.Length == world.Width && row.All(CellCharacters.CellSymbols.ContainsValue);
 
         private void GetWorldSize()
         {
             PromptWorldSize();
-            var size = reader.ReadLine().ToString();
+            var size = reader.ReadLine();
             while (!ValidWorldSize(size))
             {
                 PromptWorldSize();
-                size = reader.ReadLine().ToString();
+                size = reader.ReadLine();
             }
-            var worldSize = size.Split("x");
-            world = new World(ParseSize(worldSize[0]), ParseSize(worldSize[1]));
+            var worldSize = size.Split("x").Select(int.Parse).ToArray();
+            if (worldSize.Length == 2) worldSize = new int[]{worldSize[0], worldSize[1], 1};
+            world = new World(width: worldSize[0], height: worldSize[1], depth: worldSize[2]);
         }
 
-        private void PromptWorldSize()
+        private void PromptWorldSize() =>  writer.Write("Enter world size in the format 'nxn': ");
+
+        private bool ValidWorldSize(string size)
         {
-            writer.Write("Enter world size in the format 'nxn': ");
+            var worldSize = size.Split("x");
+            return SizeIs2DOr3D(worldSize) && SizesAreValid(worldSize);
         }
 
-        private bool ValidWorldSize(string input){
-            var worldSize = input.Split("x");
-            return IsValidInt(worldSize[0]) && IsValidInt(worldSize[1]);
-        }
+        private bool SizesAreValid(string[] worldSize) => worldSize.All(IsValidInt);
 
-        private int ParseSize(string n) => int.Parse(n.ToString());
+        private bool SizeIs2DOr3D(string[] worldSize) => worldSize.Length == 2 || worldSize.Length == 3;
 
-        private bool IsValidInt(string size) => int.TryParse(size.ToString(), out var dimension)  && dimension > 0 && dimension < 100;
+        private bool IsValidInt(string size) => int.TryParse(size, out var _);
     }
 }

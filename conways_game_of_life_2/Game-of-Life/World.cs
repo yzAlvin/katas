@@ -6,11 +6,10 @@ namespace Game_of_Life
 {
     public class World
     {
-
         public int Width { get; }
         public int Height { get; }
         public int Depth { get; }
-        public List<Location2D> Locations { get; private set; }
+        public List<ILocation> Locations { get; private set; }
         public int Generation { get; private set; }
 
         public World(int width, int height, int depth = 1)
@@ -20,24 +19,39 @@ namespace Game_of_Life
             this.Width = width;
             this.Height = height;
             this.Depth = depth;
-            InitialiseLocations();
+            InitialiseWorld();
         }
 
         private void ValidateSize(int width, int height, int depth)
         {
             if (width < 0 || height < 0 || depth < 1) throw new ArgumentException("World size must be positive integers");
+            if (width > 100 || height > 100 || depth > 3) throw new ArgumentException("World size must be less than 100");
         }
 
-        private void InitialiseLocations()
+        // gross
+        private void InitialiseWorld()
         {
-            Locations = new List<Location2D>();
-            for (var x = 0; x < Height; x++)
+            Locations = new List<ILocation>();
+            if (Depth == 1)
             {
-                for (var y = 0; y < Width; y++)
+                for (var x = 0; x < Height; x++)
                 {
-                    for (var z = 0; z < Depth; z++)
+                    for (var y = 0; y < Width; y++)
                     {
                         Locations.Add(new Location2D(x, y));
+                    }
+                }
+            }
+            else
+            {
+                for (var x = 0; x < Height; x++)
+                {
+                    for (var y = 0; y < Width; y++)
+                    {
+                        for (var z = 0; z < Depth; z++)
+                        {
+                            Locations.Add(new Location3D(x, y, z));
+                        }
                     }
                 }
             }
@@ -46,48 +60,32 @@ namespace Game_of_Life
         public bool IsEmpty() => Locations.Where(IsAlive)
                                         .Count() == 0;
 
-        public void SetLivingAt(Location2D someLocation)
+        public void SetLivingAt(ILocation someLocation)
         {
-            var locationOfLife = Locations.SingleOrDefault(l => l.Equals(someLocation));
+            var locationOfLife = Locations.SingleOrDefault(someLocation.Equals);
             if (locationOfLife == null) throw new ArgumentException("Location out of bounds");
             locationOfLife.BecomeAlive();
         }
-        public void SetLivingAt(Location2D[] liveCellLocations) => Array.ForEach(liveCellLocations, SetLivingAt);
+        public void SetLivingAt(ILocation[] liveCellLocations) => Array.ForEach(liveCellLocations, SetLivingAt);
 
-        public void Tick()
+        public World NextWorld()
         {
-            var nextGenerationLocations = new List<Location2D>();
+            var nextWorld = new World(Width, Height, Depth);
             foreach (var location in Locations)
             {
-                var nextGenerationLocation = location.Clone();
-                nextGenerationLocations.Add(nextGenerationLocation);
-
-                SetNextGenerationCellState(location, nextGenerationLocation);
+                if (LocationAliveNextGeneration(location)) nextWorld.SetLivingAt(location);
             }
-            Locations = nextGenerationLocations;
-            Generation++;
+            nextWorld.Generation = Generation+1;
+            return nextWorld;
         }
 
-        private void SetNextGenerationCellState(Location2D location, Location2D nextGenerationLocation)
-        {
-            if (location.Cell.AliveNextGeneration(NumberOfAliveNeighbours(location))) nextGenerationLocation.BecomeAlive();
-        }
+        private bool LocationAliveNextGeneration(ILocation location) => location.Cell.AliveNextGeneration(NumberOfAliveNeighbours(location));
 
-        private IEnumerable<Location2D> GetNeighbours(Location2D location) => Locations.Where(location.Neighbours()
-                                                                                                    .Select(WrapLocation)
+        private IEnumerable<ILocation> GetNeighboursInWorld(ILocation location) => Locations.Where(location.Neighbours()
+                                                                                                    .Select(l => l.WrapLocation(Width, Height, Depth))
                                                                                                     .Contains);
 
-
-        private Location2D WrapLocation(Location2D location)
-        {
-            if (location.X < 0) location.X = this.Height + location.X;
-            if (location.Y < 0) location.Y = this.Width + location.Y;
-            if (location.X > this.Height - 1) location.X = location.X - this.Height;
-            if (location.Y > this.Width - 1) location.Y = location.Y - this.Width;
-            return location;
-        }
-
-        private int NumberOfAliveNeighbours(Location2D location) => GetNeighbours(location).Where(IsAlive)
+        private int NumberOfAliveNeighbours(ILocation location) => GetNeighboursInWorld(location).Where(IsAlive)
                                                                                         .Count();
 
         private bool IsAlive(ILocation l) => l.Cell.GetType() == typeof(LivingCell);

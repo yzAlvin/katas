@@ -62,15 +62,6 @@ namespace Game_of_Life.Tests
         }
 
         [Fact]
-        public void Clone_Returns_DeepCopy_Of_Location_With_SameCoordinates_()
-        {
-            var clonedLocation = someLocation.Clone();
-            Assert.Equal(someLocation, clonedLocation);
-            clonedLocation.X = 1;
-            Assert.NotEqual(someLocation, clonedLocation);
-        }
-
-        [Fact]
         public void Neighbours_Returns_Collection_Of_Surrounding_Locations()
         {
             var expectedNeighbours = new Location2D[]
