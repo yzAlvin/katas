@@ -21,39 +21,28 @@ namespace Game_of_Life
 
         public void Run()
         {
-            GetWorldSize();
-            GetWorld();
-            // world = new World(ws[0], ws[1], ws[2], lc);
-            StartWorld();
+            var worldSize = GetWorldSize();
+            var locationOfLiveCells = GetLocationOfLiveCells(worldSize);
+            world = new World(worldSize, locationOfLiveCells);
+            PlayWorld();
         }
 
-        private void StartWorld()
+        private void PlayWorld()
         {
-            do
-            {
-                // Console.Clear();
-                var currentGenerationString = WorldRenderer.RenderWorld(world);
-                writer.WriteLine(currentGenerationString);
-                sleeper.Sleep();
-                world = world.NextWorld();
-
-                var nextGenerationString = WorldRenderer.RenderWorld(world);
-                if (nextGenerationString == currentGenerationString) break;
-
-            } while (!world.IsEmpty());
-
             writer.WriteLine(WorldRenderer.RenderWorld(world));
+            while (!world.IsEmpty() || !world.IsStagnant())
+            {
+                world = world.NextWorld();
+                // Console.Clear();
+                writer.WriteLine(WorldRenderer.RenderWorld(world));
+                sleeper.Sleep();
+            }
         }
 
-        private void GetWorld()
+        private ILocation[] GetLocationOfLiveCells(WorldSize ws)
         {
             PromptWorld();
-            // 0, 1.2,1.2,3.3,3
-            var lifeCoords = CleanCoords(reader.ReadLine());
-            while (!ValidCoords(lifeCoords))
-            {
-                lifeCoords = CleanCoords(reader.ReadLine());
-            }
+            var lifeCoords = PromptUntilValidLocations(ws);
             var coords = lifeCoords.Split(".");
             var locationOfLife = new List<ILocation>();
             foreach (var c in coords)
@@ -62,47 +51,32 @@ namespace Game_of_Life
                 if (co.Length == 2) locationOfLife.Add(new Location2D(co[0], co[1]));
                 if (co.Length == 3) locationOfLife.Add(new Location3D(co[0], co[1], co[2]));
             }
-            world = new World(world.Size, locationOfLiveCells: locationOfLife.ToArray());
+            return locationOfLife.ToArray();
         }
 
-        private string CleanCoords(string coords) => String.Join("", (coords.Where(c => !Char.IsWhiteSpace(c) && c != '(' && c != ')')));
+        private string PromptUntilValidLocations(WorldSize ws)
+        {
+            var lifeCoords = CleanCoords(reader.ReadLine());
+            while (!ValidCoords(lifeCoords, ws))
+            {
+                lifeCoords = CleanCoords(reader.ReadLine());
+            }
 
-        // private void GetWorld()
-        // {
-        //     PromptWorld();
-        //     for (var x = 0; x < world.Height; x++)
-        //     {
-        //         var row = reader.ReadLine();
-        //         while (!ValidRow(row))
-        //         {
-        //             row = reader.ReadLine();
-        //         }
-        //         for(var y = 0; y < world.Width; y++)
-        //         {
-        //             if (world.Depth == 1)
-        //             {
-        //                 if (row[y] == CellCharacters.CellSymbols[typeof(LivingCell)]) world.SetLivingAt(new Location2D(x, y));
-        //             }
-        //             else
-        //             {
-        //                 for(var z = 0; z < world.Depth; y++)
-        //                 {
-        //                     if (row[y] == CellCharacters.CellSymbols[typeof(LivingCell)]) world.SetLivingAt(new Location3D(x, y, z));
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
+            return lifeCoords;
+        }
+
+        private string CleanCoords(string coords) => String.Join("", (coords.Where(ValidCoordChars)));
 
         private void PromptWorld() => writer.WriteLine("Enter world one row at a time: ");
 
-        private bool ValidRow(string row) => row.Length == world.Size.Width && row.All(CellCharacters.CellSymbols.ContainsValue);
-        
-        private bool ValidCoords(string coords) => coords.All(c => Char.IsDigit(c) || c == '.' || c == ',') && LegitCoords(coords);
+        private bool ValidCoords(string coords, WorldSize ws) => coords.All(ValidCoordChars) && LegitCoords(coords, ws);
 
-        private bool LegitCoords(string coords)
+        private bool ValidCoordChars(char c) => Char.IsDigit(c) || c == '.' || c == ',';
+
+        private bool LegitCoords(string coords, WorldSize ws)
         {
             var testCoords = coords.Split(".");
+
             foreach (var c in testCoords)
             {
                 var co = c.Split(",").Select(int.Parse).ToArray();
@@ -110,36 +84,38 @@ namespace Game_of_Life
                 int width = co[0];
                 int height = co[1];
                 int depth = co.Length == 3 ? co[2] : 1;
-                if (OutOfBounds(width, world.Size.Width)) return false;
-                if (OutOfBounds(height, world.Size.Height)) return false;
-                if (OutOfBounds(depth, world.Size.Depth)) return false;
+                if (OutOfBounds(width, height, depth, ws)) return false;
             }
             return true;
         }
 
-        private bool OutOfBounds(int n, int upperBound) => n < 0 || n > upperBound; 
+        private bool OutOfBounds(int width, int height, int depth, WorldSize upperBound) => width < 0 || width > upperBound.Width
+                                                                    || height < 0 || height > upperBound.Height
+                                                                    || depth < 0 || depth > upperBound.Depth; 
 
-        private void GetWorldSize()
+        private WorldSize GetWorldSize()
         {
             PromptWorldSize();
-            var size = reader.ReadLine();
-            while (!ValidWorldSize(size))
+            var size = PromptUntilValid();
+            var worldSize = size.Split("x").Select(int.Parse).ToArray();
+            worldSize = worldSize.Length == 3 ? worldSize : new int[] { worldSize[0], worldSize[1], 1 };
+            return new WorldSize(worldSize[0], worldSize[1], worldSize[2]);
+        }
+
+        private string PromptUntilValid()
+        {
+            var worldSize = reader.ReadLine();
+            while (!ValidWorldSize(worldSize.Split("x")))
             {
                 PromptWorldSize();
-                size = reader.ReadLine();
+                worldSize = reader.ReadLine();
             }
-            var worldSize = size.Split("x").Select(int.Parse).ToArray();
-            if (worldSize.Length == 2) worldSize = new int[]{worldSize[0], worldSize[1], 1};
-            world = new World(new WorldSize(worldSize[0], worldSize[1], worldSize[2]));
+            return worldSize;
         }
 
         private void PromptWorldSize() =>  writer.Write("Enter world size in the format 'nxn': ");
 
-        private bool ValidWorldSize(string size)
-        {
-            var worldSize = size.Split("x");
-            return SizeIs2DOr3D(worldSize) && SizesAreValid(worldSize);
-        }
+        private bool ValidWorldSize(string[] worldSize) => SizeIs2DOr3D(worldSize) && SizesAreValid(worldSize);
 
         private bool SizesAreValid(string[] worldSize) => worldSize.All(IsValidInt);
 

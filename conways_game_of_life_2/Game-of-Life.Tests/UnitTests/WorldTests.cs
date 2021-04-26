@@ -17,7 +17,7 @@ namespace Game_of_Life.Tests
         }
 
 
-        public ICell GetCell(World world, ILocation location) => world.Locations.Single(l => l.Equals(location)).Cell;
+        private ICell GetCell(World world, ILocation location) => world.Locations.Single(l => l.Equals(location)).Cell;
         [Fact]
         public void World_CreatesLivingCell_At_Location()
         {
@@ -56,8 +56,7 @@ namespace Game_of_Life.Tests
         {
             var location = new Location2D(0, 0);
             var locationOfLife = new ILocation[]{location};
-            var worldSize = new WorldSize(width: 3, height: 3);
-            var world = new World(worldSize: worldSize, locationOfLiveCells: locationOfLife);
+            var world = new World(locationOfLiveCells: locationOfLife);
             Assert.False(world.IsEmpty());
         }
 

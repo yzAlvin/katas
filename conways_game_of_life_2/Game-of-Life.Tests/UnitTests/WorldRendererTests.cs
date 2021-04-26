@@ -1,3 +1,4 @@
+using System;
 using Xunit;
 
 namespace Game_of_Life.Tests
@@ -21,24 +22,21 @@ namespace Game_of_Life.Tests
         {
             var expectedOutput = ".*.\n*..\n..*\n";
             var worldSize = new WorldSize(width: 3, height: 3);
-            var worldWithLife = new World(worldSize: worldSize);
             var liveCellLocations = new Location2D[]{new Location2D(0, 1), new Location2D(1, 0), new Location2D(2, 2)};
-
-            worldWithLife.SetLivingAt(liveCellLocations);
+            var worldWithLife = new World(worldSize: worldSize, locationOfLiveCells: liveCellLocations);
             var actualOutput = WorldRenderer.RenderWorld(worldWithLife);
 
             Assert.Equal(expectedOutput, actualOutput);
         }
 
-        [Fact (Skip = "t")]
+        [Fact]
         public void RenderWorld_Returns_3DEmpty_World()
         {
-            var expectedWorld = "...\n...\n...\n";
-            var worldSize = new WorldSize(width: 3, height: 3, depth: 1);
+            var expectedWorld = "..|..|..|..\n..|..|..|..\n";
+            var worldSize = new WorldSize(width: 2, height: 2, depth: 4);
             var empty3DWorld = new World(worldSize: worldSize);
 
             var actualWorld = WorldRenderer.RenderWorld(empty3DWorld);
-
             Assert.Equal(expectedWorld, actualWorld);
         }
     }

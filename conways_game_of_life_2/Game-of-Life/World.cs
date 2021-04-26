@@ -9,7 +9,6 @@ namespace Game_of_Life
         public WorldSize Size {get;}
         public List<ILocation> Locations { get; private set; }
 
-        
         public World(WorldSize worldSize = default, ILocation[] locationOfLiveCells = default)
         {
             if (worldSize == default) worldSize = new WorldSize(5, 5, 1);
@@ -48,16 +47,17 @@ namespace Game_of_Life
             }
         }
 
+        public bool IsStagnant() => NextWorld().Equals(this);
+
         public bool IsEmpty() => Locations.Where(IsAlive)
                                         .Count() == 0;
 
-        public void SetLivingAt(ILocation someLocation)
+        private void SetLivingAt(ILocation someLocation)
         {
             var locationOfLife = Locations.SingleOrDefault(someLocation.Equals);
             if (locationOfLife == null) throw new ArgumentException("Location out of bounds");
             locationOfLife.BecomeAlive();
         }
-        public void SetLivingAt(ILocation[] liveCellLocations) => Array.ForEach(liveCellLocations, SetLivingAt);
 
         public World NextWorld()
         {
@@ -78,7 +78,6 @@ namespace Game_of_Life
         private int NumberOfAliveNeighbours(ILocation location) => GetNeighboursInWorld(location).Count(IsAlive);
 
         private bool IsAlive(ILocation l) => l.Cell.GetType() == typeof(LivingCell);
-        // private Func<ILocation, bool> IsAlive = l => l.Cell.GetType() == typeof(LivingCell);
 
         public override bool Equals(object obj)
         {
