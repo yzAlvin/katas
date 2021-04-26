@@ -19,7 +19,7 @@ namespace Game_of_Life
             {
                 worldAsString.Append(CellCharacters.CellSymbols[location.Cell.GetType()]);
                 cellsAdded++;
-                if (world.Width == cellsAdded)
+                if (world.Size.Width == cellsAdded)
                 {
                     worldAsString.AppendLine();
                     cellsAdded = 0;
@@ -37,7 +37,7 @@ namespace Game_of_Life
             {
                 worldAsString.Append(CellCharacters.CellSymbols[location.Cell.GetType()]);
                 cellsAdded++;
-                if (world.Width == cellsAdded)
+                if (world.Size.Width == cellsAdded)
                 {
                     worldAsString.AppendLine();
                     cellsAdded = 0;

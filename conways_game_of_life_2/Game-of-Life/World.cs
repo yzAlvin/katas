@@ -6,38 +6,28 @@ namespace Game_of_Life
 {
     public class World
     {
-        public int Width { get; }
-        public int Height { get; }
-        public int Depth { get; }
+        public WorldSize Size {get;}
         public List<ILocation> Locations { get; private set; }
 
         
-        public World(int width = 5, int height = 5, int depth = 1, ILocation[] locationOfLiveCells = default)
+        public World(WorldSize worldSize = default, ILocation[] locationOfLiveCells = default)
         {
+            if (worldSize == default) worldSize = new WorldSize(5, 5, 1);
             if (locationOfLiveCells == default) locationOfLiveCells = new ILocation[0];
-            ValidateSize(width, height, depth);
-            this.Width = width;
-            this.Height = height;
-            this.Depth = depth;
+            this.Size = worldSize;
             InitialiseWorld();
             Array.ForEach(locationOfLiveCells, SetLivingAt);
-        }
-
-        private void ValidateSize(int width, int height, int depth)
-        {
-            if (width < 3 || height < 3 || depth < 1) throw new ArgumentException("World size must be greater than 0");
-            if (width > 100 || height > 100 || depth > 6) throw new ArgumentException("World size must be less than 100");
         }
 
         // gross
         private void InitialiseWorld()
         {
             Locations = new List<ILocation>();
-            if (Depth == 1)
+            if (Size.Depth == 1)
             {
-                for (var x = 0; x < Height; x++)
+                for (var x = 0; x < Size.Height; x++)
                 {
-                    for (var y = 0; y < Width; y++)
+                    for (var y = 0; y < Size.Width; y++)
                     {
                         Locations.Add(new Location2D(x, y));
                     }
@@ -45,11 +35,11 @@ namespace Game_of_Life
             }
             else
             {
-                for (var x = 0; x < Height; x++)
+                for (var x = 0; x < Size.Height; x++)
                 {
-                    for (var y = 0; y < Width; y++)
+                    for (var y = 0; y < Size.Width; y++)
                     {
-                        for (var z = 0; z < Depth; z++)
+                        for (var z = 0; z < Size.Depth; z++)
                         {
                             Locations.Add(new Location3D(x, y, z));
                         }
@@ -71,7 +61,7 @@ namespace Game_of_Life
 
         public World NextWorld()
         {
-            var nextWorld = new World(Width, Height, Depth);
+            var nextWorld = new World(Size);
             foreach (var location in Locations)
             {
                 if (LocationAliveNextGeneration(location)) nextWorld.SetLivingAt(location);
@@ -82,7 +72,7 @@ namespace Game_of_Life
         private bool LocationAliveNextGeneration(ILocation location) => location.Cell.AliveNextGeneration(NumberOfAliveNeighbours(location));
 
         private IEnumerable<ILocation> GetNeighboursInWorld(ILocation location) => Locations.Where(location.Neighbours()
-                                                                                                    .Select(l => l.WrapLocation(Width, Height, Depth))
+                                                                                                    .Select(l => l.WrapLocation(Size.Width, Size.Height, Size.Depth))
                                                                                                     .Contains);
 
         private int NumberOfAliveNeighbours(ILocation location) => GetNeighboursInWorld(location).Count(IsAlive);
@@ -94,9 +84,9 @@ namespace Game_of_Life
         {
             World otherWorld = obj as World;
             if (otherWorld == null) return false;
-            return Width == otherWorld.Width && 
-                Height == otherWorld.Height &&
-                Depth == otherWorld.Depth &&
+            return Size.Width == otherWorld.Size.Width && 
+                Size.Height == otherWorld.Size.Height &&
+                Size.Depth == otherWorld.Size.Depth &&
                 Locations.SequenceEqual(otherWorld.Locations);
         }
     }

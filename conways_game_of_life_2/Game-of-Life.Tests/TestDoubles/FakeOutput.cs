@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Game_of_Life
+namespace Game_of_Life.Tests
 {
     public class FakeOutput : TextWriter
     {

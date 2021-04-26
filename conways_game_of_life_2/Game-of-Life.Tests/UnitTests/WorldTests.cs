@@ -7,16 +7,7 @@ namespace Game_of_Life.Tests
 {
     public class WorldTests
     {
-        [Theory]
-        [InlineData(-1)]
-        [InlineData(0)]
-        [InlineData(101)]
-        public void World_ThrowsArgumentException_With_Negative_Sizes(int badSize)
-        {
-            Assert.Throws<ArgumentException>(() => new World(width: badSize));
-            Assert.Throws<ArgumentException>(() => new World(height: badSize));
-            Assert.Throws<ArgumentException>(() => new World(depth: badSize));
-        }
+
 
         [Fact]
         public void IsEmpty_ReturnsTrue_With_NewWorld()
@@ -40,7 +31,8 @@ namespace Game_of_Life.Tests
         {
             var location = new Location3D(1, 1, 1);
             var locationOfLife = new ILocation[]{location};
-            var worldWithLife = new World(depth: 3, locationOfLiveCells: locationOfLife);
+            var worldSize = new WorldSize(depth: 3);
+            var worldWithLife = new World(worldSize: worldSize, locationOfLiveCells: locationOfLife);
             Assert.IsType<LivingCell>(GetCell(worldWithLife, location));
         }
 
@@ -55,7 +47,8 @@ namespace Game_of_Life.Tests
         public void SetLivingAt_ThrowsArgumentException_At_3DLocationOutOfBounds()
         {
             var outOfBounds = new Location3D(0, 0, 4);
-            Assert.Throws<ArgumentException>(() => new World(depth: 3, locationOfLiveCells: new ILocation[]{outOfBounds}));
+            var worldSize = new WorldSize(depth: 3);
+            Assert.Throws<ArgumentException>(() => new World(worldSize: worldSize, locationOfLiveCells: new ILocation[]{outOfBounds}));
         }
 
         [Fact]
@@ -63,7 +56,8 @@ namespace Game_of_Life.Tests
         {
             var location = new Location2D(0, 0);
             var locationOfLife = new ILocation[]{location};
-            var world = new World(locationOfLiveCells: locationOfLife);
+            var worldSize = new WorldSize(width: 3, height: 3);
+            var world = new World(worldSize: worldSize, locationOfLiveCells: locationOfLife);
             Assert.False(world.IsEmpty());
         }
 
@@ -72,7 +66,8 @@ namespace Game_of_Life.Tests
         {
             var location = new Location3D(0, 0, 2);
             var locationOfLife = new ILocation[]{location};
-            var world = new World(depth: 3, locationOfLiveCells: locationOfLife);
+            var worldSize = new WorldSize(depth: 3);
+            var world = new World(worldSize: worldSize, locationOfLiveCells: locationOfLife);
             Assert.False(world.IsEmpty());
         }
 
@@ -98,8 +93,9 @@ namespace Game_of_Life.Tests
         public void Tick_3DWorldWithLife_Updates_NextGeneration()
         {
             var location = new Location3D(2, 2, 2);
-            var world = new World(depth: 3, locationOfLiveCells: new ILocation[]{location});
-            var expectedNextWorld = new World(depth: 3, locationOfLiveCells: new ILocation[0]);
+            var worldSize = new WorldSize(depth: 3);
+            var world = new World(worldSize: worldSize, locationOfLiveCells: new ILocation[]{location});
+            var expectedNextWorld = new World(worldSize: worldSize, locationOfLiveCells: new ILocation[0]);
             var actualNextWorld = world.NextWorld();
             Assert.Equal(expectedNextWorld, actualNextWorld);
         }
@@ -108,7 +104,8 @@ namespace Game_of_Life.Tests
         public void Tick_WorldWithLifeOnEdges_Updates_NextGeneration()
         {
             var liveCellLocations = new Location2D[]{new Location2D(0, 0), new Location2D(0, 1), new Location2D(4, 4)};
-            var world = new World(5, 5, locationOfLiveCells: liveCellLocations);
+            var worldSize = new WorldSize(width: 5, height: 5);
+            var world = new World(worldSize: worldSize, locationOfLiveCells: liveCellLocations);
 
             Array.ForEach(liveCellLocations, locationOfLife => Assert.IsType<LivingCell>(GetCell(world, locationOfLife)));
             
@@ -126,7 +123,8 @@ namespace Game_of_Life.Tests
         public void Tick_3DWorldWithLifeOnEdges_Updates_NextGeneration()
         {
             var liveCellLocations = new Location3D[]{new Location3D(0, 0, 0), new Location3D(0, 1, 0), new Location3D(1, 0, 0), new Location3D(0, 0, 1)};
-            var world = new World(4, 4, 3, locationOfLiveCells: liveCellLocations);
+            var worldSize = new WorldSize(width: 4, height: 4, depth: 3);
+            var world = new World(worldSize: worldSize, locationOfLiveCells: liveCellLocations);
 
             Array.ForEach(liveCellLocations, locationOfLife => Assert.IsType<LivingCell>(GetCell(world, locationOfLife)));
             

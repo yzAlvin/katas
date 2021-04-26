@@ -26,7 +26,7 @@ namespace Game_of_Life
             
             if (args[0] == "file")
             {
-                var pathToTestWorld = @"/Users/Alvin.Zhao/Projects/katas/conways_game_of_life_2/Game-of-Life/exampleWorlds/exampleWorld.txt";
+                var pathToTestWorld = @"/Users/Alvin.Zhao/Projects/katas/conways_game_of_life_2/Game-of-Life/exampleWorlds/testWorld.txt";
                 var fileReader = File.OpenText(pathToTestWorld); 
                 var game = new Game(fileReader, Console.Out, sleeper);
                 game.Run();
