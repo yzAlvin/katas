@@ -31,6 +31,7 @@ Your task is to impelment Conways Game of Life. You should be able to:
 
 * Trying to be as "functional" as possible
     * Pure functions
+    * No side effects - might be hard, still unsure how to handle input/output streams
     * Writing small methods and combining them
     * Preferring Linq methods over loops - preferring declarative over imperative
 

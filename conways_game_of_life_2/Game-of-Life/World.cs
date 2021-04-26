@@ -26,7 +26,7 @@ namespace Game_of_Life
         private void ValidateSize(int width, int height, int depth)
         {
             if (width < 3 || height < 3 || depth < 1) throw new ArgumentException("World size must be greater than 0");
-            if (width > 100 || height > 100 || depth > 5) throw new ArgumentException("World size must be less than 100");
+            if (width > 100 || height > 100 || depth > 6) throw new ArgumentException("World size must be less than 100");
         }
 
         // gross
@@ -88,7 +88,8 @@ namespace Game_of_Life
         private int NumberOfAliveNeighbours(ILocation location) => GetNeighboursInWorld(location).Count(IsAlive);
 
         private bool IsAlive(ILocation l) => l.Cell.GetType() == typeof(LivingCell);
-        
+        // private Func<ILocation, bool> IsAlive = l => l.Cell.GetType() == typeof(LivingCell);
+
         public override bool Equals(object obj)
         {
             World otherWorld = obj as World;
