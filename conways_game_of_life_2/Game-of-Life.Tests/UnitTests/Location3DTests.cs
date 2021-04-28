@@ -6,8 +6,7 @@ namespace Game_of_Life.Tests
     public class Location3DTests
     {
         Location3D someLocation = new Location3D(0, 0, 0);
-        // idea: should I separate the tests for each method into it's own class?
-        // eg. BecomeAlive Tests etc.
+
         [Fact]
         public void BecomeAlive_Sets_DeadCell_To_LivingCell()
         {

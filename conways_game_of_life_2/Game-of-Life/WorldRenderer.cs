@@ -20,26 +20,17 @@ namespace Game_of_Life
             {
                 worldAsString.Append(CellCharacters.CellSymbols[location.Cell.GetType()]);
                 cellsAdded++;
-                if (world.Size.Depth == 1)
+
+                var sliceSize = world.Size.Width * world.Size.Depth;
+                bool EndOfWidthOfSlice = cellsAdded % world.Size.Width == 0 && cellsAdded != sliceSize;
+                if (EndOfWidthOfSlice)
                 {
-                    if (world.Size.Width == cellsAdded)
-                    {
-                        worldAsString.AppendLine();
-                        cellsAdded = 0;
-                    }
+                    worldAsString.Append("|");
                 }
-                else
+                if (sliceSize == cellsAdded)
                 {
-                    var sliceSize = world.Size.Width * world.Size.Depth;
-                    if (cellsAdded % world.Size.Width == 0 && cellsAdded != sliceSize)
-                    {
-                        worldAsString.Append("|");
-                    }
-                    if (sliceSize == cellsAdded)
-                    {
-                        worldAsString.AppendLine();
-                        cellsAdded = 0;
-                    }
+                    worldAsString.AppendLine();
+                    cellsAdded = 0;
                 }
             }
             return worldAsString.ToString(); 
