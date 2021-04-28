@@ -48,6 +48,7 @@ namespace Game_of_Life
             foreach (var c in coords)
             {
                 var co = c.Split(",").Select(int.Parse).ToArray();
+                //BAD ?
                 if (co.Length == 2) locationOfLife.Add(new Location2D(co[0], co[1]));
                 if (co.Length == 3) locationOfLife.Add(new Location3D(co[0], co[1], co[2]));
             }
@@ -98,6 +99,7 @@ namespace Game_of_Life
             PromptWorldSize();
             var size = PromptUntilValid();
             var worldSize = size.Split("x").Select(int.Parse).ToArray();
+            // BAD?
             worldSize = worldSize.Length == 3 ? worldSize : new int[] { worldSize[0], worldSize[1], 1 };
             return new WorldSize(worldSize[0], worldSize[1], worldSize[2]);
         }

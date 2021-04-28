@@ -18,10 +18,12 @@ namespace Game_of_Life
             Array.ForEach(locationOfLiveCells, SetLivingAt);
         }
 
-        // gross
+        // Unhappy with this
         private void InitialiseWorld()
         {
+            
             Locations = new List<ILocation>();
+            // could make this a private method - eg. if (Is3D()) ... would still be bad imo
             if (Size.Depth == 1)
             {
                 for (var x = 0; x < Size.Height; x++)
@@ -72,7 +74,7 @@ namespace Game_of_Life
         private bool LocationAliveNextGeneration(ILocation location) => location.Cell.AliveNextGeneration(NumberOfAliveNeighbours(location));
 
         private IEnumerable<ILocation> GetNeighboursInWorld(ILocation location) => Locations.Where(location.Neighbours()
-                                                                                                    .Select(l => l.WrapLocation(Size.Width, Size.Height, Size.Depth))
+                                                                                                    .Select(l => l.WrapLocation(Size))
                                                                                                     .Contains);
 
         private int NumberOfAliveNeighbours(ILocation location) => GetNeighboursInWorld(location).Count(IsAlive);

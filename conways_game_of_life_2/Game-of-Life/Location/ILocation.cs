@@ -9,6 +9,6 @@ namespace Game_of_Life
         public void BecomeDead() => this.Cell = new DeadCell();
         public override abstract bool Equals(object obj);
         public abstract IEnumerable<ILocation> Neighbours();
-        public abstract ILocation WrapLocation(int width, int height, int depth);
+        public abstract ILocation WrapLocation(WorldSize upperBound);
     }
 }

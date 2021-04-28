@@ -6,8 +6,10 @@ namespace Game_of_Life
     {
         private const int FertileThreshold = 3;
 
-        public bool AliveNextGeneration(int numberOfNeighbours) => FertileNeighbourhood(numberOfNeighbours);
+        public bool AliveNextGeneration(int numberOfNeighbours) => 
+            FertileNeighbourhood(numberOfNeighbours);
 
-        private bool FertileNeighbourhood(int numberOfNeighbours) => numberOfNeighbours == FertileThreshold;
+        private bool FertileNeighbourhood(int numberOfNeighbours) => 
+            numberOfNeighbours == FertileThreshold;
     }
 }

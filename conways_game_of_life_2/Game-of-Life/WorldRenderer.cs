@@ -14,6 +14,7 @@ namespace Game_of_Life
         {
             var worldAsString = new StringBuilder();
 
+            // BAD
             var cellsAdded = 0;
             foreach (var location in locations)
             {

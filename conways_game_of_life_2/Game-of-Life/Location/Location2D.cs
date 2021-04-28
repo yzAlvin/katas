@@ -41,14 +41,14 @@ namespace Game_of_Life
         private Location2D Bottom() => new Location2D(this.X + 1, this.Y);
         private Location2D BottomRight() => new Location2D(this.X + 1, this.Y + 1);
 
-        public override Location2D WrapLocation(int width, int height, int depth)
+        public override Location2D WrapLocation(WorldSize upperBound)
         {
             var wrappedX = X;
             var wrappedY = Y;
-            if (X < 0) wrappedX = height + X;
-            if (Y < 0) wrappedY = width + Y;
-            if (X > height - 1) wrappedX = X - height;
-            if (Y > width - 1) wrappedY = Y - width;
+            if (X < 0) wrappedX = upperBound.Height + X;
+            if (Y < 0) wrappedY = upperBound.Width + Y;
+            if (X > upperBound.Height - 1) wrappedX = X - upperBound.Height;
+            if (Y > upperBound.Width - 1) wrappedY = Y - upperBound.Width;
             return new Location2D(wrappedX, wrappedY);
         }
     }

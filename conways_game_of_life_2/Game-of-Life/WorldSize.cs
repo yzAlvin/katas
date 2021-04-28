@@ -8,6 +8,7 @@ namespace Game_of_Life
         public int Height { get; }
         public int Depth { get; }
 
+        // MAYBE BAD?
         public WorldSize(int width = 5, int height = 5, int depth = 1)
         {
             ValidateSize(width, height, depth);
