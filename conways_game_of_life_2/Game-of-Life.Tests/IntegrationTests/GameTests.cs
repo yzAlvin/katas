@@ -10,14 +10,14 @@ namespace Game_of_Life.Tests
         public void Game_Gets_World_pass_coords()
         {
             var worldSize = "5x4";
-            var lifeCoords = "()0, 1.2,1.2,  3.3,3";
+            var lifeCoords = "0,1.2,1.2,3.3,3";
+            // var lifeCoords = "()0, 1.2,1.2,  3.3,3";
 
             var fakeInput = new FakeInput();
             var sequenceOfInput = new string[] {worldSize, lifeCoords};
             fakeInput.SetupSequence(sequenceOfInput);
 
             var fakeOutput = new FakeOutput();
-
             var fakeSleeper = new FakeSleeper();
 
             var expectedGenerationOneWorldString = $".*...\n.....\n.*.*.\n...*.\n";

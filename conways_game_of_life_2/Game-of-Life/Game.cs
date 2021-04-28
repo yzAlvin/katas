@@ -70,22 +70,24 @@ namespace Game_of_Life
 
         private void PromptWorld() => writer.WriteLine("Enter world one row at a time: ");
 
-        private bool ValidCoords(string coords, WorldSize ws) => coords.All(ValidCoordChars) && LegitCoords(coords, ws);
+        private bool ValidCoords(string coords, WorldSize worldSize) => coords.All(ValidCoordChars) && LegitCoords(coords, worldSize);
 
         private bool ValidCoordChars(char c) => Char.IsDigit(c) || c == '.' || c == ',';
 
-        private bool LegitCoords(string coords, WorldSize ws)
+        private bool LegitCoords(string coords, WorldSize worldSize)
         {
-            var testCoords = coords.Split(".");
+            var coordsArary = coords.Split(".");
 
-            foreach (var c in testCoords)
+            foreach (var c in coordsArary)
             {
-                var co = c.Split(",").Select(int.Parse).ToArray();
-                if (co.Length != 2 && co.Length != 3) return false;
-                int width = co[0];
-                int height = co[1];
-                int depth = co.Length == 3 ? co[2] : 1;
-                if (OutOfBounds(width, height, depth, ws)) return false;
+                var coordsStringArray = c.Split(",");
+                if (!coordsStringArray.All(IsValidInt)) return false;
+                var coordsIntArray = coordsStringArray.Select(int.Parse).ToArray();
+                if (coordsIntArray.Length != 2 && coordsIntArray.Length != 3) return false;
+                int width = coordsIntArray[0];
+                int height = coordsIntArray[1];
+                int depth = coordsStringArray.Length == 3 ? coordsIntArray[2] : 1;
+                if (OutOfBounds(width, height, depth, worldSize)) return false;
             }
             return true;
         }
