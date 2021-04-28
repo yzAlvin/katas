@@ -15,5 +15,16 @@ namespace Game_of_Life.Tests
             Assert.Throws<ArgumentException>(() => new WorldSize(height: badSize));
             Assert.Throws<ArgumentException>(() => new WorldSize(depth: badSize));
         }
+
+        [Theory]
+        [InlineData(1, 1, 1)]
+        [InlineData(100, 100, 6)]
+        public void WorldSize_GoodSize(int goodWidth, int goodHeight, int goodDepth)
+        {
+            var worldSize = new WorldSize(goodWidth, goodHeight, goodDepth);
+            Assert.Equal(goodWidth, worldSize.Width);
+            Assert.Equal(goodHeight, worldSize.Height);
+            Assert.Equal(goodDepth, worldSize.Depth);
+        }
     }
 }
