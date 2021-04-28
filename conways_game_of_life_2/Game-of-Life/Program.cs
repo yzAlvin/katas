@@ -16,7 +16,7 @@ namespace Game_of_Life
                 return;
             }
 
-            var sleeper = new ConfigurableSleeper(300);
+            var sleeper = new Sleeper();
 
             if (args[0] == "console")
             {

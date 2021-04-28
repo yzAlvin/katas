@@ -9,10 +9,10 @@ namespace Game_of_Life
     {
         private readonly TextReader reader;
         private readonly TextWriter writer;
-        private readonly ISleeper sleeper;
+        private readonly Sleeper sleeper;
         private World world;
 
-        public Game(TextReader reader, TextWriter writer, ISleeper sleeper)
+        public Game(TextReader reader, TextWriter writer, Sleeper sleeper)
         {
             this.reader = reader;
             this.writer = writer;

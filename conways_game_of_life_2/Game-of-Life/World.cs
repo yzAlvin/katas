@@ -61,6 +61,7 @@ namespace Game_of_Life
             locationOfLife.BecomeAlive();
         }
 
+        //easier to reason about, 
         public World NextWorld()
         {
             var nextWorld = new World(Size);
