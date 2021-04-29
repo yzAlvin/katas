@@ -18,6 +18,23 @@ namespace Game_of_Life
             PopulateWorld(locationOfLiveCells);
         }
 
+        public bool IsStagnant() => NextWorld().Equals(this);
+
+        public bool IsEmpty() => Locations.Count(IsAlive) == 0;
+
+        public World NextWorld() => 
+            new World(Size, Locations.Where(LocationAliveNextGeneration).ToArray());
+
+        public override bool Equals(object obj)
+        {
+            World otherWorld = obj as World;
+            if (otherWorld == null) return false;
+            return Size.Width == otherWorld.Size.Width && 
+                Size.Height == otherWorld.Size.Height &&
+                Size.Depth == otherWorld.Size.Depth &&
+                Locations.SequenceEqual(otherWorld.Locations);
+        }
+
         private void InitialiseWorld()
         {
             Locations = new List<Location>();
@@ -37,19 +54,12 @@ namespace Game_of_Life
         private void PopulateWorld(Location[] locationOfLiveCells) =>
             Array.ForEach(locationOfLiveCells, SetLivingAt);
 
-        public bool IsStagnant() => NextWorld().Equals(this);
-
-        public bool IsEmpty() => Locations.Count(IsAlive) == 0;
-
         private void SetLivingAt(Location someLocation)
         {
             var locationOfLife = Locations.SingleOrDefault(someLocation.Equals);
             if (locationOfLife == null) throw new ArgumentException("Location out of bounds");
             locationOfLife.BecomeAlive();
         }
-
-        public World NextWorld() => 
-            new World(Size, Locations.Where(LocationAliveNextGeneration).ToArray());
 
         private bool LocationAliveNextGeneration(Location location) => 
             location.Cell.AliveNextGeneration(NumberOfAliveNeighbours(location));
@@ -66,14 +76,5 @@ namespace Game_of_Life
 
         private bool IsAlive(Location l) => l.Cell.GetType() == typeof(LivingCell);
 
-        public override bool Equals(object obj)
-        {
-            World otherWorld = obj as World;
-            if (otherWorld == null) return false;
-            return Size.Width == otherWorld.Size.Width && 
-                Size.Height == otherWorld.Size.Height &&
-                Size.Depth == otherWorld.Size.Depth &&
-                Locations.SequenceEqual(otherWorld.Locations);
-        }
     }
 }

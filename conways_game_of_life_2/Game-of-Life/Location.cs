@@ -23,13 +23,6 @@ namespace Game_of_Life
 
         public void BecomeDead() => Cell = new DeadCell();
 
-        public override bool Equals(object obj)
-        {
-            Location otherCoord = obj as Location;
-            if (otherCoord == null) return false;
-            return X == otherCoord.X && Y == otherCoord.Y && Z == otherCoord.Z;
-        }
-
         public Location[] Neighbours()
         {
             var neighbourOps = new int[]{-1, 0, 1};
@@ -46,6 +39,27 @@ namespace Game_of_Life
                 }
             }
             return neighbours.ToArray();
+        }
+
+        public Location WrapLocation(WorldSize upperBound)
+        {
+            var wrappedX = X;
+            var wrappedY = Y;
+            var wrappedZ = Z;
+            if (X < 0) wrappedX = upperBound.Height + X;
+            if (Y < 0) wrappedY = upperBound.Width + Y;
+            if (Z < 0) wrappedY = upperBound.Depth + Z;
+            if (X > upperBound.Height - 1) wrappedX = X - upperBound.Height;
+            if (Y > upperBound.Width - 1) wrappedY = Y - upperBound.Width;
+            if (Z > upperBound.Depth - 1) wrappedY = Z - upperBound.Depth;
+            return new Location(wrappedX, wrappedY, wrappedZ);
+        }
+
+        public override bool Equals(object obj)
+        {
+            Location otherCoord = obj as Location;
+            if (otherCoord == null) return false;
+            return X == otherCoord.X && Y == otherCoord.Y && Z == otherCoord.Z;
         }
 
         // public Location[] Neighbours()=> new Location[]
@@ -106,19 +120,5 @@ namespace Game_of_Life
         // private Location FrontBottomLeft() => new Location(this.X + 1, this.Y + 1, this.Z - 1);
         // private Location FrontBottomMid() => new Location(this.X + 1, this.Y + 1, this.Z);
         // private Location FrontBottomRight() => new Location(this.X + 1, this.Y + 1, this.Z + 1);
-
-        public Location WrapLocation(WorldSize upperBound)
-        {
-            var wrappedX = X;
-            var wrappedY = Y;
-            var wrappedZ = Z;
-            if (X < 0) wrappedX = upperBound.Height + X;
-            if (Y < 0) wrappedY = upperBound.Width + Y;
-            if (Z < 0) wrappedY = upperBound.Depth + Z;
-            if (X > upperBound.Height - 1) wrappedX = X - upperBound.Height;
-            if (Y > upperBound.Width - 1) wrappedY = Y - upperBound.Width;
-            if (Z > upperBound.Depth - 1) wrappedY = Z - upperBound.Depth;
-            return new Location(wrappedX, wrappedY, wrappedZ);
-        }
     }
 }

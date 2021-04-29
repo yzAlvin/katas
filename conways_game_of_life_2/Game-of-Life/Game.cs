@@ -49,7 +49,7 @@ namespace Game_of_Life
             {
                 var co = c.Split(",").Select(int.Parse).ToArray();
                 //BAD ?
-                if (co.Length == 2) locationOfLife.Add(new Location(co[0], co[1]));
+                if (co.Length == 2) locationOfLife.Add(new Location(co[0], co[1], 0));
                 if (co.Length == 3) locationOfLife.Add(new Location(co[0], co[1], co[2]));
             }
             return locationOfLife.ToArray();
@@ -86,15 +86,16 @@ namespace Game_of_Life
                 if (coordsIntArray.Length != 2 && coordsIntArray.Length != 3) return false;
                 int width = coordsIntArray[0];
                 int height = coordsIntArray[1];
-                int depth = coordsStringArray.Length == 3 ? coordsIntArray[2] : 1;
+                int depth = coordsStringArray.Length == 3 ? coordsIntArray[2] : 0;
                 if (OutOfBounds(width, height, depth, worldSize)) return false;
             }
             return true;
         }
 
-        private bool OutOfBounds(int width, int height, int depth, WorldSize upperBound) => width < 0 || width > upperBound.Width
-                                                                    || height < 0 || height > upperBound.Height
-                                                                    || depth < 0 || depth > upperBound.Depth; 
+        private bool OutOfBounds(int width, int height, int depth, WorldSize upperBound) => 
+            width < 0 || width > upperBound.Width
+            || height < 0 || height > upperBound.Height
+            || depth < 0 || depth > upperBound.Depth; 
 
         private WorldSize GetWorldSize()
         {

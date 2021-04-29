@@ -14,7 +14,6 @@ namespace Game_of_Life
         {
             var worldAsString = new StringBuilder();
 
-            // BAD
             var cellsAdded = 0;
             foreach (var location in locations)
             {
@@ -36,7 +35,23 @@ namespace Game_of_Life
             return worldAsString.ToString(); 
         }
 
-        private ICell GetCell(World world, Location location) => world.Locations.Single(l => l.Equals(location)).Cell;
+        private static string WorldToString2(World world, List<Location> locations)
+        {
+            var worldAsString = new StringBuilder();
+            for (var h = 0; h < world.Size.Height; h++)
+            {
+                for (var d = 0; d < world.Size.Depth; d++)
+                {
+                    for (var w = 0; w < world.Size.Width; w++)
+                    {
+                        worldAsString.Append(CellCharacters.CellSymbols[locations.Single(l => l.Equals(new Location(h, w, d))).Cell.GetType()]);
+                    }
+                    if (d != world.Size.Depth - 1) worldAsString.Append("|");
+                }
+                worldAsString.AppendLine();
+            }
+            return worldAsString.ToString();
+        }
 
     }
 }
