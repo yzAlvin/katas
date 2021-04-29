@@ -7,80 +7,64 @@ namespace Game_of_Life
     public class World
     {
         public WorldSize Size {get;}
-        public List<ILocation> Locations { get; private set; }
+        public List<Location> Locations { get; private set; }
 
-        public World(WorldSize worldSize = default, ILocation[] locationOfLiveCells = default)
+        public World(WorldSize worldSize = default, Location[] locationOfLiveCells = default)
         {
             if (worldSize == default) worldSize = new WorldSize(5, 5, 1);
-            if (locationOfLiveCells == default) locationOfLiveCells = new ILocation[0];
+            if (locationOfLiveCells == default) locationOfLiveCells = new Location[0];
             this.Size = worldSize;
             InitialiseWorld();
-            Array.ForEach(locationOfLiveCells, SetLivingAt);
+            PopulateWorld(locationOfLiveCells);
         }
 
-        // Unhappy with this
         private void InitialiseWorld()
         {
-            
-            Locations = new List<ILocation>();
-            // could make this a private method - eg. if (Is3D()) ... would still be bad imo
-            if (Size.Depth == 1)
+            Locations = new List<Location>();
+            for (var x = 0; x < Size.Height; x++)
             {
-                for (var x = 0; x < Size.Height; x++)
+                for (var y = 0; y < Size.Width; y++)
                 {
-                    for (var y = 0; y < Size.Width; y++)
+                    for (var z = 0; z < Size.Depth; z++)
                     {
-                        Locations.Add(new Location2D(x, y));
-                    }
-                }
-            }
-            else
-            {
-                for (var x = 0; x < Size.Height; x++)
-                {
-                    for (var y = 0; y < Size.Width; y++)
-                    {
-                        for (var z = 0; z < Size.Depth; z++)
-                        {
-                            Locations.Add(new Location3D(x, y, z));
-                        }
+                        var newLocation = new Location(x, y, z);
+                        Locations.Add(newLocation);
                     }
                 }
             }
         }
+
+        private void PopulateWorld(Location[] locationOfLiveCells) =>
+            Array.ForEach(locationOfLiveCells, SetLivingAt);
 
         public bool IsStagnant() => NextWorld().Equals(this);
 
-        public bool IsEmpty() => Locations.Where(IsAlive)
-                                        .Count() == 0;
+        public bool IsEmpty() => Locations.Count(IsAlive) == 0;
 
-        private void SetLivingAt(ILocation someLocation)
+        private void SetLivingAt(Location someLocation)
         {
             var locationOfLife = Locations.SingleOrDefault(someLocation.Equals);
             if (locationOfLife == null) throw new ArgumentException("Location out of bounds");
             locationOfLife.BecomeAlive();
         }
 
-        //easier to reason about, 
-        public World NextWorld()
-        {
-            var nextWorld = new World(Size);
-            foreach (var location in Locations)
-            {
-                if (LocationAliveNextGeneration(location)) nextWorld.SetLivingAt(location);
-            }
-            return nextWorld;
-        }
+        public World NextWorld() => 
+            new World(Size, Locations.Where(LocationAliveNextGeneration).ToArray());
 
-        private bool LocationAliveNextGeneration(ILocation location) => location.Cell.AliveNextGeneration(NumberOfAliveNeighbours(location));
+        private bool LocationAliveNextGeneration(Location location) => 
+            location.Cell.AliveNextGeneration(NumberOfAliveNeighbours(location));
 
-        private IEnumerable<ILocation> GetNeighboursInWorld(ILocation location) => Locations.Where(location.Neighbours()
-                                                                                                    .Select(l => l.WrapLocation(Size))
-                                                                                                    .Contains);
+        private Location[] GetNeighboursInWorld(Location location) => 
+            Locations.Where(location.Neighbours()
+            .Select(l => l.WrapLocation(Size))
+            .Contains)
+            .ToArray();
 
-        private int NumberOfAliveNeighbours(ILocation location) => GetNeighboursInWorld(location).Count(IsAlive);
+        private int NumberOfAliveNeighbours(Location location) => 
+            GetNeighboursInWorld(location)
+            .Count(IsAlive);
 
-        private bool IsAlive(ILocation l) => l.Cell.GetType() == typeof(LivingCell);
+        private bool IsAlive(Location l) => l.Cell.GetType() == typeof(LivingCell);
 
         public override bool Equals(object obj)
         {

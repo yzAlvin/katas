@@ -10,7 +10,7 @@ namespace Game_of_Life
     {
         public static string RenderWorld(World world) => WorldToString(world, world.Locations);
         
-        private static string WorldToString(World world, List<ILocation> locations)
+        private static string WorldToString(World world, List<Location> locations)
         {
             var worldAsString = new StringBuilder();
 
@@ -36,7 +36,7 @@ namespace Game_of_Life
             return worldAsString.ToString(); 
         }
 
-        private ICell GetCell(World world, ILocation location) => world.Locations.Single(l => l.Equals(location)).Cell;
+        private ICell GetCell(World world, Location location) => world.Locations.Single(l => l.Equals(location)).Cell;
 
     }
 }

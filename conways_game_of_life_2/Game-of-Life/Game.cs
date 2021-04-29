@@ -39,18 +39,18 @@ namespace Game_of_Life
             }
         }
 
-        private ILocation[] GetLocationOfLiveCells(WorldSize ws)
+        private Location[] GetLocationOfLiveCells(WorldSize ws)
         {
             PromptWorld();
             var lifeCoords = PromptUntilValidLocations(ws);
             var coords = lifeCoords.Split(".");
-            var locationOfLife = new List<ILocation>();
+            var locationOfLife = new List<Location>();
             foreach (var c in coords)
             {
                 var co = c.Split(",").Select(int.Parse).ToArray();
                 //BAD ?
-                if (co.Length == 2) locationOfLife.Add(new Location2D(co[0], co[1]));
-                if (co.Length == 3) locationOfLife.Add(new Location3D(co[0], co[1], co[2]));
+                if (co.Length == 2) locationOfLife.Add(new Location(co[0], co[1]));
+                if (co.Length == 3) locationOfLife.Add(new Location(co[0], co[1], co[2]));
             }
             return locationOfLife.ToArray();
         }

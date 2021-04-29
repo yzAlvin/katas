@@ -22,7 +22,7 @@ namespace Game_of_Life.Tests
         {
             var expectedOutput = ".*.\n*..\n..*\n";
             var worldSize = new WorldSize(width: 3, height: 3);
-            var liveCellLocations = new Location2D[]{new Location2D(0, 1), new Location2D(1, 0), new Location2D(2, 2)};
+            var liveCellLocations = new Location[]{new Location(0, 1), new Location(1, 0), new Location(2, 2)};
             var worldWithLife = new World(worldSize: worldSize, locationOfLiveCells: liveCellLocations);
             var actualOutput = WorldRenderer.RenderWorld(worldWithLife);
 
