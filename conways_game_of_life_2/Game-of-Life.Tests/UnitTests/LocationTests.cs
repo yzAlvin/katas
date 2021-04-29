@@ -3,7 +3,7 @@ using Xunit;
 
 namespace Game_of_Life.Tests
 {
-    public class Location3DTests
+    public class LocationTests
     {
         [Fact]
         public void BecomeAlive_Sets_DeadCell_To_LivingCell()
