@@ -17,16 +17,20 @@ namespace Game_of_Life
 
         public Coordinate[] Neighbours()
         {
-            var neighbourOps = new int[] { -1, 0, 1 };
+            var displacementOfNeighbours = new int[] { -1, 0, 1 };
             var neighbours = new List<Coordinate>();
-            foreach (var i in neighbourOps)
+            foreach (var xDisplacement in displacementOfNeighbours)
             {
-                foreach (var j in neighbourOps)
+                foreach (var yDisplacement in displacementOfNeighbours)
                 {
-                    foreach (var k in neighbourOps)
+                    foreach (var zDisplacement in displacementOfNeighbours)
                     {
-                        if (i == 0 && j == 0 && k == 0) continue;
-                        neighbours.Add(new Coordinate(X + i, Y + j, Z + k));
+                        if (xDisplacement == 0 && yDisplacement == 0 && zDisplacement == 0) continue;
+                        neighbours.Add(new Coordinate(
+                            X + xDisplacement,
+                            Y + yDisplacement,
+                            Z + zDisplacement
+                        ));
                     }
                 }
             }
@@ -56,62 +60,3 @@ namespace Game_of_Life
 
     }
 }
-
-// public Location[] Neighbours()=> new Location[]
-// {
-//     this.BackTopLeft(),
-//     this.BackTopMid(),
-//     this.BackTopRight(),
-//     this.BackMidLeft(),
-//     this.BackMidMid(),
-//     this.BackMidRight(),
-//     this.BackBottomLeft(),
-//     this.BackBottomMid(),
-//     this.BackBottomRight(),
-
-//     this.MidTopLeft(),
-//     this.MidTopMid(),
-//     this.MidTopRight(),
-//     this.MidMidLeft(),
-//     this.MidMidRight(),
-//     this.MidBottomLeft(),
-//     this.MidBottomMid(),
-//     this.MidBottomRight(),
-
-//     this.FrontTopLeft(),  
-//     this.FrontTopMid(),  
-//     this.FrontTopRight(),
-//     this.FrontMidLeft(),  
-//     this.FrontMidMid(),  
-//     this.FrontMidRight(),  
-//     this.FrontBottomLeft(),  
-//     this.FrontBottomMid(),  
-//     this.FrontBottomRight(),  
-// };
-
-// private Location BackTopLeft() => new Location(this.X - 1, this.Y - 1, this.Z - 1);
-// private Location BackTopMid() => new Location(this.X - 1, this.Y - 1, this.Z);
-// private Location BackTopRight() => new Location(this.X - 1, this.Y - 1, this.Z + 1);
-// private Location BackMidLeft() => new Location(this.X - 1, this.Y, this.Z - 1);
-// private Location BackMidMid() => new Location(this.X - 1, this.Y, this.Z );
-// private Location BackMidRight() => new Location(this.X - 1, this.Y, this.Z + 1);
-// private Location BackBottomLeft() => new Location(this.X -1, this.Y + 1, this.Z - 1);
-// private Location BackBottomMid() => new Location(this.X -1, this.Y + 1, this.Z);
-// private Location BackBottomRight() => new Location(this.X -1, this.Y + 1, this.Z + 1);
-// private Location MidTopLeft() => new Location(this.X, this.Y - 1, this.Z - 1);
-// private Location MidTopMid() => new Location(this.X, this.Y - 1, this.Z);
-// private Location MidTopRight() => new Location(this.X, this.Y - 1, this.Z + 1);
-// private Location MidMidLeft() => new Location(this.X, this.Y, this.Z - 1);
-// private Location MidMidRight() => new Location(this.X, this.Y, this.Z + 1);
-// private Location MidBottomLeft() => new Location(this.X, this.Y + 1, this.Z - 1);
-// private Location MidBottomMid() => new Location(this.X, this.Y + 1, this.Z);
-// private Location MidBottomRight() => new Location(this.X, this.Y + 1, this.Z + 1);
-// private Location FrontTopLeft() => new Location(this.X + 1, this.Y - 1, this.Z - 1);
-// private Location FrontTopMid() => new Location(this.X + 1, this.Y - 1, this.Z);
-// private Location FrontTopRight() => new Location(this.X + 1, this.Y - 1, this.Z + 1);
-// private Location FrontMidLeft() => new Location(this.X + 1, this.Y, this.Z - 1);
-// private Location FrontMidMid() => new Location(this.X + 1, this.Y, this.Z);
-// private Location FrontMidRight() => new Location(this.X + 1, this.Y, this.Z + 1);
-// private Location FrontBottomLeft() => new Location(this.X + 1, this.Y + 1, this.Z - 1);
-// private Location FrontBottomMid() => new Location(this.X + 1, this.Y + 1, this.Z);
-// private Location FrontBottomRight() => new Location(this.X + 1, this.Y + 1, this.Z + 1);

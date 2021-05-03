@@ -8,7 +8,6 @@ namespace Game_of_Life
         public int Height { get; }
         public int Depth { get; }
 
-        // MAYBE BAD?
         public WorldSize(int width = 5, int height = 5, int depth = 1)
         {
             ValidateSize(width, height, depth);
@@ -20,7 +19,7 @@ namespace Game_of_Life
         private void ValidateSize(int width, int height, int depth)
         {
             if (width < 1 || height < 1 || depth < 1) throw new ArgumentException("World dimensions must be greater than 0");
-            if (width > 100 || height > 100 || depth > 6) throw new ArgumentException("World width and height must be less than 100, depth must be less than 6");
+            if (width > 100 || height > 100 || depth > 5) throw new ArgumentException("World width and height must be less than 100, depth must be less than 5");
         }
 
         public override bool Equals(object obj)

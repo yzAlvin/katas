@@ -13,45 +13,29 @@ namespace Game_of_Life
         private static string WorldToString(World world, List<Location> locations)
         {
             var worldAsString = new StringBuilder();
-
-            var cellsAdded = 0;
-            foreach (var location in locations)
+            for (var height = 0; height < world.Size.Height; height++)
             {
-                worldAsString.Append(CellCharacters.CellSymbols[location.Cell.GetType()]);
-                cellsAdded++;
-
-                var sliceSize = world.Size.Width * world.Size.Depth;
-                bool EndOfWidthOfSlice = cellsAdded % world.Size.Width == 0 && cellsAdded != sliceSize;
-                if (EndOfWidthOfSlice)
+                for (var depth = 0; depth < world.Size.Depth; depth++)
                 {
-                    worldAsString.Append("|");
-                }
-                if (sliceSize == cellsAdded)
-                {
-                    worldAsString.AppendLine();
-                    cellsAdded = 0;
-                }
-            }
-            return worldAsString.ToString();
-        }
-
-        private static string WorldToString2(World world, List<Location> locations)
-        {
-            var worldAsString = new StringBuilder();
-            for (var h = 0; h < world.Size.Height; h++)
-            {
-                for (var d = 0; d < world.Size.Depth; d++)
-                {
-                    for (var w = 0; w < world.Size.Width; w++)
+                    for (var width = 0; width < world.Size.Width; width++)
                     {
-                        worldAsString.Append(CellCharacters.CellSymbols[locations.Single(l => l.Equals(new Location(new Coordinate(h, w, d)))).Cell.GetType()]);
+                        worldAsString.Append(
+                            CellCharacters.CellSymbols
+                            [
+                                GetCell(locations, height, width, depth)
+                                .GetType()
+                            ]
+                        // GetCell(locations, height, width, depth);
+                        );
                     }
-                    if (d != world.Size.Depth - 1) worldAsString.Append("|");
+                    if (depth != world.Size.Depth - 1) worldAsString.Append("|");
                 }
                 worldAsString.AppendLine();
             }
             return worldAsString.ToString();
         }
 
+        private static ICell GetCell(List<Location> locations, int height, int width, int depth) =>
+            locations.Single(l => l.Coordinate.Equals(new Coordinate(height, width, depth))).Cell;
     }
 }

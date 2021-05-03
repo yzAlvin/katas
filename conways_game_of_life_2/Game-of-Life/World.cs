@@ -18,9 +18,9 @@ namespace Game_of_Life
             PopulateWorld(locationOfLiveCells);
         }
 
-        public bool IsStagnant() => NextWorld().Equals(this);
-
         public bool IsEmpty() => Locations.Count(IsAlive) == 0;
+
+        public bool IsStagnant() => this.Equals(NextWorld());
 
         public World NextWorld() =>
             new World(Size, Locations.Where(LocationAliveNextGeneration).ToArray());
@@ -42,14 +42,12 @@ namespace Game_of_Life
                 {
                     for (var z = 0; z < Size.Depth; z++)
                     {
-                        var newLocation = new Location(new Coordinate(x, y, z));
-                        Locations.Add(newLocation);
+                        Locations.Add(new Location(new Coordinate(x, y, z)));
                     }
                 }
             }
         }
 
-        // too hard to read?
         private void PopulateWorld(Location[] locationOfLiveCells) =>
             Locations =
                 locationOfLiveCells.All(x => Locations.Contains(x)) ?
@@ -60,10 +58,10 @@ namespace Game_of_Life
             location.Cell.AliveNextGeneration(NumberOfAliveNeighbours(location.Coordinate));
 
         private Location[] GetNeighboursInWorld(Coordinate coordinate) =>
-            Locations.Where(z => coordinate.Neighbours()
-            .Select(l => l.WrapCoordinate(Size))
-            .Where(l => !l.Equals(coordinate))
-            .Contains(z.Coordinate))
+            Locations.Where(l => coordinate.Neighbours()
+            .Select(c => c.WrapCoordinate(Size))
+            .Where(c => !c.Equals(coordinate))
+            .Contains(l.Coordinate))
             .ToArray();
 
         private int NumberOfAliveNeighbours(Coordinate coordinate) =>

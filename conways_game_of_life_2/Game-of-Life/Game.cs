@@ -80,10 +80,10 @@ namespace Game_of_Life
 
         private string PromptUntilValidLocations(WorldSize ws)
         {
-            var lifeCoords = Validation.CleanCoords(reader.ReadLine());
+            var lifeCoords = Validation.FormatCoords(reader.ReadLine());
             while (!Validation.ValidCoords(lifeCoords, ws))
             {
-                lifeCoords = Validation.CleanCoords(reader.ReadLine());
+                lifeCoords = Validation.FormatCoords(reader.ReadLine());
             }
 
             return lifeCoords;

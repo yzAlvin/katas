@@ -7,7 +7,7 @@ namespace Game_of_Life.Tests
 {
     public class WorldTests
     {
-
+        private ICell GetCell(World world, Location location) => world.Locations.Single(l => l.Equals(location)).Cell;
 
         [Fact]
         public void IsEmpty_ReturnsTrue_With_NewWorld()
@@ -16,122 +16,107 @@ namespace Game_of_Life.Tests
             Assert.True(emptyWorld.IsEmpty());
         }
 
-
-        private ICell GetCell(World world, Location location) => world.Locations.Single(l => l.Equals(location)).Cell;
         [Fact]
-        public void World_CreatesLivingCell_At_Location()
+        public void World_Starts_With_Living_Cells_At_Locations()
         {
-            var locationOfLife = new Location[] { new Location(new Coordinate(1, 1)) };
-            var worldWithLife = new World(locationOfLiveCells: locationOfLife);
-            Assert.IsType<LivingCell>(GetCell(worldWithLife, new Location(new Coordinate(1, 1))));
-        }
-
-        [Fact]
-        public void World_CreatesLivingCell_At_3DLocation()
-        {
-            var location = new Location(new Coordinate(1, 1, 1));
-            var locationOfLife = new Location[] { location };
-            var worldSize = new WorldSize(depth: 3);
-            var worldWithLife = new World(worldSize: worldSize, locationOfLiveCells: locationOfLife);
-            Assert.IsType<LivingCell>(GetCell(worldWithLife, location));
-        }
-
-        [Fact]
-        public void SetLivingAt_ThrowsArgumentException_At_LocationOutOfBounds()
-        {
-            var outOfBounds = new Location(new Coordinate(5, 10));
-            Assert.Throws<ArgumentException>(() => new World(locationOfLiveCells: new Location[] { outOfBounds }));
-        }
-
-        [Fact]
-        public void SetLivingAt_ThrowsArgumentException_At_3DLocationOutOfBounds()
-        {
-            var outOfBounds = new Location(new Coordinate(0, 0, 4));
-            var worldSize = new WorldSize(depth: 3);
-            Assert.Throws<ArgumentException>(() => new World(worldSize: worldSize, locationOfLiveCells: new Location[] { outOfBounds }));
+            var locationOfLivingCell = new Location(new Coordinate());
+            var worldWithLife = new World(locationOfLiveCells: new Location[] { locationOfLivingCell });
+            Assert.IsType<LivingCell>(GetCell(worldWithLife, locationOfLivingCell));
         }
 
         [Fact]
         public void IsEmpty_ReturnsFalse_With_WorldWithLivingCells()
         {
-            var locationOfLife = new Location(new Coordinate(0, 0));
-            var world = new World(locationOfLiveCells: new Location[] { locationOfLife });
+            var locationOfLivingCell = new Location(new Coordinate());
+            var world = new World(locationOfLiveCells: new Location[] { locationOfLivingCell });
             Assert.False(world.IsEmpty());
         }
 
-        [Fact]
-        public void IsEmpty_ReturnsFalse_With_WorldWith3DLivingCells()
+        [Theory]
+        [InlineData(-1, -1, -1)]
+        [InlineData(3, 3, 3)]
+        public void PopulateWorld_ThrowsArgumentException_At_LocationOutOfBounds(int outOfBoundsX, int outOfBoundsY, int outOfBoundsZ)
         {
-            var location = new Location(new Coordinate(0, 0, 2));
-            var locationOfLife = new Location[] { location };
-            var worldSize = new WorldSize(depth: 3);
-            var world = new World(worldSize: worldSize, locationOfLiveCells: locationOfLife);
-            Assert.False(world.IsEmpty());
+            var outOfBounds = new Location(new Coordinate(outOfBoundsX, outOfBoundsY, outOfBoundsZ));
+            var worldSize = new WorldSize(3, 3, 3);
+            Assert.Throws<ArgumentException>(() => new World(worldSize: worldSize, locationOfLiveCells: new Location[] { outOfBounds }));
         }
 
         [Fact]
-        public void Tick_EmptyWorld_Is_Empty_NextGeneration()
+        public void IsStagnant_ReturnsTrue_With_StagnantWorld()
         {
-            var world = new World();
-            world = world.NextWorld();
-            Assert.True(world.IsEmpty());
+            var stagnantWorld = new World();
+            Assert.True(stagnantWorld.IsStagnant());
         }
 
         [Fact]
-        public void Tick_WorldWithLife_Updates_NextGeneration()
+        public void IsStagnant_ReturnsFalse_With_ProgressingWorld()
         {
-            var location = new Location(new Coordinate(2, 2));
-            var world = new World(locationOfLiveCells: new Location[] { location });
+            var worldSize = new WorldSize(3, 3, 1);
+            var locationOfLiveCells = new Location[]
+            {
+                new Location(new Coordinate(0, 0, 0)),
+                new Location(new Coordinate(0, 1, 0)),
+                new Location(new Coordinate(1, 0, 0)),
+            };
+            var progressingWorld = new World(worldSize: worldSize, locationOfLiveCells: locationOfLiveCells);
+            Assert.False(progressingWorld.IsEmpty());
+        }
+
+        [Fact]
+        public void NextWorld_ReturnsEmptyWorld_On_EmptyWorld()
+        {
+            var emptyWorld = new World();
+            Assert.Equal(emptyWorld, emptyWorld.NextWorld());
+        }
+
+        [Fact]
+        public void NextWorld_ReturnsStagnantWorld_On_StagnantWorld()
+        {
+            var worldSize = new WorldSize(3, 3, 1);
+            var locationOfLiveCells = new Location[]
+            {
+                new Location(new Coordinate(0, 0, 0)),
+                new Location(new Coordinate(0, 1, 0)),
+                new Location(new Coordinate(1, 0, 0)),
+                new Location(new Coordinate(1, 1, 0)),
+            };
+            var stagnantWorld = new World(worldSize: worldSize, locationOfLiveCells: locationOfLiveCells);
+            Assert.Equal(stagnantWorld, stagnantWorld.NextWorld());
+        }
+
+        [Fact]
+        public void NextWorld_ReturnsEmptyWorld_On_UnderpopulatedWorld()
+        {
+            var locationOfLiveCell = new Location(new Coordinate(2, 2));
+            var world = new World(locationOfLiveCells: new Location[] { locationOfLiveCell });
             var expectedNextWorld = new World(locationOfLiveCells: new Location[0]);
             var actualNextWorld = world.NextWorld();
             Assert.Equal(expectedNextWorld, actualNextWorld);
         }
 
         [Fact]
-        public void Tick_3DWorldWithLife_Updates_NextGeneration()
+        public void NextWorld_ReturnsWorldWithLife_On_WorldWithLifeOnEdges()
         {
-            var location = new Location(new Coordinate(2, 2, 2));
-            var worldSize = new WorldSize(depth: 3);
-            var world = new World(worldSize: worldSize, locationOfLiveCells: new Location[] { location });
-            var expectedNextWorld = new World(worldSize: worldSize, locationOfLiveCells: new Location[0]);
-            var actualNextWorld = world.NextWorld();
-            Assert.Equal(expectedNextWorld, actualNextWorld);
-        }
+            var worldSize = new WorldSize(width: 3, height: 3, depth: 3);
+            var locationOfLiveCells = new Location[]
+            {
+                new Location(new Coordinate(0, 0, 0)),
+                new Location(new Coordinate(1, 1, 1)),
+                new Location(new Coordinate(2, 2, 2)),
+            };
 
-        [Fact]
-        public void Tick_WorldWithLifeOnEdges_Updates_NextGeneration()
-        {
-            var liveCellLocations = new Location[] { new Location(new Coordinate(0, 0)), new Location(new Coordinate(0, 1)), new Location(new Coordinate(4, 4)) };
-            var worldSize = new WorldSize(width: 5, height: 5);
-            var world = new World(worldSize: worldSize, locationOfLiveCells: liveCellLocations);
+            var worldWithLifeOnEdges = new World(worldSize, locationOfLiveCells);
+            Array.ForEach(locationOfLiveCells, l =>
+                Assert.IsType<LivingCell>(GetCell(worldWithLifeOnEdges, l)));
 
-            Array.ForEach(liveCellLocations, locationOfLife => Assert.IsType<LivingCell>(GetCell(world, locationOfLife)));
+            var worldAllLocationsAlive = worldWithLifeOnEdges.NextWorld();
+            Array.ForEach(worldAllLocationsAlive.Locations.ToArray(), l =>
+                Assert.IsType<LivingCell>(GetCell(worldAllLocationsAlive, l)));
 
-            world = world.NextWorld();
-            var locationOfStillLife = new Location(new Coordinate(0, 0));
-            var locationOfNewLife = new Location(new Coordinate(4, 0));
-            Assert.IsType<LivingCell>(GetCell(world, locationOfNewLife));
-            Assert.IsType<LivingCell>(GetCell(world, locationOfStillLife));
-
-            world = world.NextWorld();
-            Assert.True(world.IsEmpty());
-        }
-
-        [Fact]
-        public void Tick_3DWorldWithLifeOnEdges_Updates_NextGeneration()
-        {
-            var liveCellLocations = new Location[] { new Location(new Coordinate(0, 0, 0)), new Location(new Coordinate(0, 1, 0)), new Location(new Coordinate(1, 0, 0)), new Location(new Coordinate(0, 0, 1)) };
-            var worldSize = new WorldSize(width: 4, height: 4, depth: 3);
-            var world = new World(worldSize: worldSize, locationOfLiveCells: liveCellLocations);
-
-            Array.ForEach(liveCellLocations, locationOfLife => Assert.IsType<LivingCell>(GetCell(world, locationOfLife)));
-
-            world = world.NextWorld();
-            var newLiveCellLocations = new Location[] { new Location(new Coordinate(0, 3, 0)), new Location(new Coordinate(0, 3, 1)), new Location(new Coordinate(1, 3, 0)), new Location(new Coordinate(1, 3, 1)), new Location(new Coordinate(3, 0, 0)), new Location(new Coordinate(3, 0, 1)), new Location(new Coordinate(3, 1, 0)), new Location(new Coordinate(3, 1, 1)) };
-            var locationOfDead = new Location(new Coordinate(1, 1, 1));
-            Array.ForEach(liveCellLocations, locationOfLife => Assert.IsType<LivingCell>(GetCell(world, locationOfLife)));
-            Array.ForEach(newLiveCellLocations, locationOfLife => Assert.IsType<LivingCell>(GetCell(world, locationOfLife)));
-            Assert.IsType<DeadCell>(GetCell(world, locationOfDead));
+            var emptyWorld = worldAllLocationsAlive.NextWorld();
+            Array.ForEach(emptyWorld.Locations.ToArray(), l =>
+                Assert.IsType<DeadCell>(GetCell(emptyWorld, l)));
         }
     }
 }

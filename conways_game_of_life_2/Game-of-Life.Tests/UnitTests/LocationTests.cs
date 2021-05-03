@@ -40,7 +40,7 @@ namespace Game_of_Life.Tests
         }
 
         [Fact]
-        public void Equals_ReturnsTrue_Comparing_Locations_With_Same_Location()
+        public void Equals_ReturnsTrue_Comparing_Location_With_Same_Location()
         {
             var someLocation = new Location();
             var anotherLocationWithSameCoordinates = new Location();
@@ -48,7 +48,7 @@ namespace Game_of_Life.Tests
         }
 
         [Fact]
-        public void Equals_ReturnsFalse_Comparing_Locations_With_Different_Location()
+        public void Equals_ReturnsFalse_Comparing_Locations_With_Different_Coordinates()
         {
             var someCoordinate = new Coordinate(0, 0, 0);
             var someLocation = new Location(someCoordinate);
@@ -57,7 +57,7 @@ namespace Game_of_Life.Tests
         }
 
         [Fact]
-        public void Equals_ReturnsFalse_Comparing_Location3D_With_NotLocation3D()
+        public void Equals_ReturnsFalse_Comparing_Location_With_NotLocation()
         {
             var someLocation = new Location();
             var notALocation = new Object();
