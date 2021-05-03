@@ -23,5 +23,14 @@ namespace Game_of_Life
             if (width > 100 || height > 100 || depth > 6) throw new ArgumentException("World width and height must be less than 100, depth must be less than 6");
         }
 
+        public override bool Equals(object obj)
+        {
+            WorldSize otherWorldSize = obj as WorldSize;
+            if (otherWorldSize == null) return false;
+            return Width == otherWorldSize.Width
+                && Height == otherWorldSize.Height
+                && Depth == otherWorldSize.Depth;
+        }
+
     }
 }

@@ -14,7 +14,7 @@ namespace Game_of_Life.Tests
             // var lifeCoords = "()0, 1.2,1.2,  3.3,3";
 
             var fakeInput = new FakeInput();
-            var sequenceOfInput = new string[] {worldSize, lifeCoords};
+            var sequenceOfInput = new string[] { worldSize, lifeCoords };
             fakeInput.SetupSequence(sequenceOfInput);
 
             var fakeOutput = new FakeOutput();
@@ -44,7 +44,7 @@ namespace Game_of_Life.Tests
             var lifeCoords = "0,0,0 . 1,1,1 . 2,2,2";
 
             var fakeInput = new FakeInput();
-            var sequenceOfInput = new string[] {worldSize, lifeCoords};
+            var sequenceOfInput = new string[] { worldSize, lifeCoords };
             fakeInput.SetupSequence(sequenceOfInput);
 
             var fakeOutput = new FakeOutput();
@@ -52,7 +52,8 @@ namespace Game_of_Life.Tests
             var fakeSleeper = new FakeSleeper();
 
             var expectedGenerationOneWorldString = $"*..|...|...\n...|.*.|...\n...|...|..*\n";
-            var expectedGenerationTwoWorldString = $".*.|.*.|.*.\n.*.|.*.|.*.\n.*.|.*.|.*.\n";
+            // var expectedGenerationTwoWorldString = $".*.|.*.|.*.\n.*.|.*.|.*.\n.*.|.*.|.*.\n";
+            var expectedGenerationTwoWorldString = $"***|***|***\n***|***|***\n***|***|***\n";
             var expectedGenerationThreeWorldString = $"...|...|...\n...|...|...\n...|...|...\n";
 
             var game = new Game(fakeInput, fakeOutput, fakeSleeper);
@@ -91,6 +92,6 @@ namespace Game_of_Life.Tests
         }
 
 
-        
+
     }
 }

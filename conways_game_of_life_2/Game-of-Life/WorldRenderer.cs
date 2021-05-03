@@ -9,7 +9,7 @@ namespace Game_of_Life
     public class WorldRenderer
     {
         public static string RenderWorld(World world) => WorldToString(world, world.Locations);
-        
+
         private static string WorldToString(World world, List<Location> locations)
         {
             var worldAsString = new StringBuilder();
@@ -32,7 +32,7 @@ namespace Game_of_Life
                     cellsAdded = 0;
                 }
             }
-            return worldAsString.ToString(); 
+            return worldAsString.ToString();
         }
 
         private static string WorldToString2(World world, List<Location> locations)
@@ -44,7 +44,7 @@ namespace Game_of_Life
                 {
                     for (var w = 0; w < world.Size.Width; w++)
                     {
-                        worldAsString.Append(CellCharacters.CellSymbols[locations.Single(l => l.Equals(new Location(h, w, d))).Cell.GetType()]);
+                        worldAsString.Append(CellCharacters.CellSymbols[locations.Single(l => l.Equals(new Location(new Coordinate(h, w, d)))).Cell.GetType()]);
                     }
                     if (d != world.Size.Depth - 1) worldAsString.Append("|");
                 }

@@ -29,9 +29,7 @@ namespace Game_of_Life
         {
             World otherWorld = obj as World;
             if (otherWorld == null) return false;
-            return Size.Width == otherWorld.Size.Width &&
-                Size.Height == otherWorld.Size.Height &&
-                Size.Depth == otherWorld.Size.Depth &&
+            return Size.Equals(otherWorld.Size) &&
                 Locations.SequenceEqual(otherWorld.Locations);
         }
 
@@ -44,34 +42,32 @@ namespace Game_of_Life
                 {
                     for (var z = 0; z < Size.Depth; z++)
                     {
-                        var newLocation = new Location(x, y, z);
+                        var newLocation = new Location(new Coordinate(x, y, z));
                         Locations.Add(newLocation);
                     }
                 }
             }
         }
 
+        // too hard to read?
         private void PopulateWorld(Location[] locationOfLiveCells) =>
-            Array.ForEach(locationOfLiveCells, SetLivingAt);
-
-        private void SetLivingAt(Location someLocation)
-        {
-            var locationOfLife = Locations.SingleOrDefault(someLocation.Equals);
-            if (locationOfLife == null) throw new ArgumentException("Location out of bounds");
-            locationOfLife.BecomeAlive();
-        }
+            Locations =
+                locationOfLiveCells.All(x => Locations.Contains(x)) ?
+                    Locations.Select(l => locationOfLiveCells.Contains(l) ? l.BecomeAlive() : l).ToList()
+                    : throw new ArgumentException("Tried to access a location that was not in the world.");
 
         private bool LocationAliveNextGeneration(Location location) =>
-            location.Cell.AliveNextGeneration(NumberOfAliveNeighbours(location));
+            location.Cell.AliveNextGeneration(NumberOfAliveNeighbours(location.Coordinate));
 
-        private Location[] GetNeighboursInWorld(Location location) =>
-            Locations.Where(location.Neighbours()
-            .Select(l => l.WrapLocation(Size))
-            .Contains)
+        private Location[] GetNeighboursInWorld(Coordinate coordinate) =>
+            Locations.Where(z => coordinate.Neighbours()
+            .Select(l => l.WrapCoordinate(Size))
+            .Where(l => !l.Equals(coordinate))
+            .Contains(z.Coordinate))
             .ToArray();
 
-        private int NumberOfAliveNeighbours(Location location) =>
-            GetNeighboursInWorld(location)
+        private int NumberOfAliveNeighbours(Coordinate coordinate) =>
+            GetNeighboursInWorld(coordinate)
             .Count(IsAlive);
 
         private bool IsAlive(Location l) => l.Cell.GetType() == typeof(LivingCell);

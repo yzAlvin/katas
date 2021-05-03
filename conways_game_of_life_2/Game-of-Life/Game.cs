@@ -45,8 +45,8 @@ namespace Game_of_Life
             foreach (var c in coords)
             {
                 var co = c.Split(",").Select(int.Parse).ToArray();
-                if (co.Length == 2) locationsOfLife.Add(new Location(co[0], co[1], 0));
-                if (co.Length == 3) locationsOfLife.Add(new Location(co[0], co[1], co[2]));
+                if (co.Length == 2) locationsOfLife.Add(new Location(new Coordinate(co[0], co[1], 0)));
+                if (co.Length == 3) locationsOfLife.Add(new Location(new Coordinate(co[0], co[1], co[2])));
             }
             return locationsOfLife.ToArray();
         }
