@@ -4,12 +4,12 @@ using System.Linq;
 
 namespace Game_of_Life
 {
-    public class Location 
+    public class Location
     {
-        public int X {get; set;}
-        public int Y {get; set;}
-        public int Z {get; set;}
-        public ICell Cell {get; private set;}
+        public int X { get; set; }
+        public int Y { get; set; }
+        public int Z { get; set; }
+        public ICell Cell { get; private set; }
 
         public Location(int x = 0, int y = 0, int z = 0)
         {
@@ -25,13 +25,13 @@ namespace Game_of_Life
 
         public Location[] Neighbours()
         {
-            var neighbourOps = new int[]{-1, 0, 1};
+            var neighbourOps = new int[] { -1, 0, 1 };
             var neighbours = new List<Location>();
             foreach (var i in neighbourOps)
             {
-                foreach(var j in neighbourOps)
+                foreach (var j in neighbourOps)
                 {
-                    foreach(var k in neighbourOps)
+                    foreach (var k in neighbourOps)
                     {
                         if (i == 0 && j == 0 && k == 0) continue;
                         neighbours.Add(new Location(this.X + i, this.Y + j, this.Z + k));

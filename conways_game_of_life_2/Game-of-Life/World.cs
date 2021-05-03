@@ -6,7 +6,7 @@ namespace Game_of_Life
 {
     public class World
     {
-        public WorldSize Size {get;}
+        public WorldSize Size { get; }
         public List<Location> Locations { get; private set; }
 
         public World(WorldSize worldSize = default, Location[] locationOfLiveCells = default)
@@ -22,14 +22,14 @@ namespace Game_of_Life
 
         public bool IsEmpty() => Locations.Count(IsAlive) == 0;
 
-        public World NextWorld() => 
+        public World NextWorld() =>
             new World(Size, Locations.Where(LocationAliveNextGeneration).ToArray());
 
         public override bool Equals(object obj)
         {
             World otherWorld = obj as World;
             if (otherWorld == null) return false;
-            return Size.Width == otherWorld.Size.Width && 
+            return Size.Width == otherWorld.Size.Width &&
                 Size.Height == otherWorld.Size.Height &&
                 Size.Depth == otherWorld.Size.Depth &&
                 Locations.SequenceEqual(otherWorld.Locations);
@@ -61,16 +61,16 @@ namespace Game_of_Life
             locationOfLife.BecomeAlive();
         }
 
-        private bool LocationAliveNextGeneration(Location location) => 
+        private bool LocationAliveNextGeneration(Location location) =>
             location.Cell.AliveNextGeneration(NumberOfAliveNeighbours(location));
 
-        private Location[] GetNeighboursInWorld(Location location) => 
+        private Location[] GetNeighboursInWorld(Location location) =>
             Locations.Where(location.Neighbours()
             .Select(l => l.WrapLocation(Size))
             .Contains)
             .ToArray();
 
-        private int NumberOfAliveNeighbours(Location location) => 
+        private int NumberOfAliveNeighbours(Location location) =>
             GetNeighboursInWorld(location)
             .Count(IsAlive);
 
