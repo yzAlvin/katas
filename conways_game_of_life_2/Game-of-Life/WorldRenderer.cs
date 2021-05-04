@@ -20,12 +20,12 @@ namespace Game_of_Life
                     for (var width = 0; width < world.Size.Width; width++)
                     {
                         worldAsString.Append(
-                            CellCharacters.CellSymbols
-                            [
-                                GetCell(locations, height, width, depth)
-                                .GetType()
-                            ]
-                        // GetCell(locations, height, width, depth);
+                            // CellCharacters.CellSymbols
+                            // [
+                            //     GetCell(locations, height, width, depth)
+                            //     .GetType()
+                            // ]
+                            GetCell(locations, height, width, depth).ToString()
                         );
                     }
                     if (depth != world.Size.Depth - 1) worldAsString.Append("|");
