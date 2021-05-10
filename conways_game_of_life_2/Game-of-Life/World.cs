@@ -22,18 +22,19 @@ namespace Game_of_Life
 
         public bool IsStagnant() => this.Equals(NextWorld());
 
-        public World NextWorld()
-        {
-            var aliveLocations = Locations.Where(IsAlive);
-            var affectedLocations = new List<Location>(aliveLocations);
-            // Array.ForEach(aliveLocations.ToArray(), l => Array.ForEach(GetNeighboursInWorld(l.Coordinate), c => affectedLocations.Add(c)));
-            foreach (var alive in aliveLocations)
-            {
-                Array.ForEach(GetNeighboursInWorld(alive.Coordinate), l => affectedLocations.Add(l));
-            }
-            var nextLocations = affectedLocations.Distinct().Where(LocationAliveNextGeneration).ToArray();
-            return new World(Size, nextLocations);
-        }
+        public World NextWorld() =>
+            new World(Size, NextWorldLocations());
+
+        private Location[] NextWorldLocations() =>
+            Locations.Where(IsAlive).Aggregate(
+                Locations.Where(IsAlive).ToList(),
+                (acc, cur) =>
+                    {
+                        acc.AddRange(GetNeighboursInWorld(cur.Coordinate));
+                        return acc;
+                    }
+            )
+            .Distinct().Where(LocationAliveNextGeneration).ToArray();
 
         public override bool Equals(object obj)
         {
