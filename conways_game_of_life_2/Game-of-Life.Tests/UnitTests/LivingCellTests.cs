@@ -34,5 +34,13 @@ namespace Game_of_Life.Tests
         {
             Assert.Equal("*", livingCell.ToString());
         }
+
+        [Fact]
+        [Trait("Category", "NotThreadSafe")]
+        public void SetString_Sets_CellString()
+        {
+            LivingCell.SetString("o");
+            Assert.Equal("o", livingCell.ToString());
+        }
     }
 }

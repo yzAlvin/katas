@@ -24,8 +24,25 @@ namespace Game_of_Life
             var worldSize = GetWorldSize();
             var locationOfLiveCells = GetLocationOfLiveCells(worldSize);
             world = new World(worldSize, locationOfLiveCells);
+            SetCellString();
             PlayWorld();
         }
+
+        private void SetCellString()
+        {
+            PromptDeadCellCharacter();
+            var deadCellString = reader.ReadLine();
+            if (String.IsNullOrEmpty(deadCellString)) deadCellString = ".";
+            PromptLiveCellCharacter();
+            var aliveCellString = reader.ReadLine();
+            if (String.IsNullOrEmpty(aliveCellString)) aliveCellString = "*";
+            DeadCell.SetString(deadCellString);
+            LivingCell.SetString(aliveCellString);
+        }
+
+        private void PromptDeadCellCharacter() => writer.Write("Enter dead cell string representation (or leave blank): ");
+
+        private void PromptLiveCellCharacter() => writer.Write("Enter live cell string representation (or leave blank): ");
 
         private WorldSize GetWorldSize()
         {
@@ -40,13 +57,14 @@ namespace Game_of_Life
         {
             PromptLiveLocations();
             var lifeCoords = PromptUntilValidLocations(ws);
+            if (String.IsNullOrEmpty(lifeCoords)) return new Location[0];
             var coords = lifeCoords.Split(".");
             var locationsOfLife = new List<Location>();
             foreach (var c in coords)
             {
-                var co = c.Split(",").Select(int.Parse).ToArray();
-                if (co.Length == 2) locationsOfLife.Add(new Location(new Coordinate(co[0], co[1], 0)));
-                if (co.Length == 3) locationsOfLife.Add(new Location(new Coordinate(co[0], co[1], co[2])));
+                var coord = c.Split(",").Select(int.Parse).ToArray();
+                if (coord.Length == 2) locationsOfLife.Add(new Location(new Coordinate(coord[0], coord[1], 0)));
+                if (coord.Length == 3) locationsOfLife.Add(new Location(new Coordinate(coord[0], coord[1], coord[2])));
             }
             return locationsOfLife.ToArray();
         }
@@ -80,10 +98,11 @@ namespace Game_of_Life
 
         private string PromptUntilValidLocations(WorldSize ws)
         {
-            var lifeCoords = Validation.FormatCoords(reader.ReadLine());
-            while (!Validation.ValidCoords(lifeCoords, ws))
+            var lifeCoords = reader.ReadLine();
+            while (!Validation.ValidCoords(Validation.FormatCoords(lifeCoords), ws)
+                && !String.IsNullOrEmpty(lifeCoords))
             {
-                lifeCoords = Validation.FormatCoords(reader.ReadLine());
+                lifeCoords = reader.ReadLine();
             }
 
             return lifeCoords;

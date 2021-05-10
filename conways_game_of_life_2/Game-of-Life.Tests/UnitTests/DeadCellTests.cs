@@ -27,18 +27,12 @@ namespace Game_of_Life.Tests
             Assert.Equal(".", deadCell.ToString());
         }
 
-        /* How to test this method? it will break all other tests because
-        all deadcells now have a different string representation
-        
-        idea:
-         tests should get the cell's string representation instead of me 
-         hardcoding them?
-        */
-        // [Fact]
-        // public void SetString_Sets_CellString()
-        // {
-        //     DeadCell.SetString("x");
-        //     Assert.Equal("x", deadCell.ToString());
-        // }
+        [Fact]
+        [Trait("Category", "NotThreadSafe")]
+        public void SetString_Sets_CellString()
+        {
+            DeadCell.SetString("x");
+            Assert.Equal("x", deadCell.ToString());
+        }
     }
 }

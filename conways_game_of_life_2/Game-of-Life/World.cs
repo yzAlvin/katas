@@ -25,17 +25,6 @@ namespace Game_of_Life
         public World NextWorld() =>
             new World(Size, NextWorldLocations());
 
-        private Location[] NextWorldLocations() =>
-            Locations.Where(IsAlive).Aggregate(
-                Locations.Where(IsAlive).ToList(),
-                (acc, cur) =>
-                    {
-                        acc.AddRange(GetNeighboursInWorld(cur.Coordinate));
-                        return acc;
-                    }
-            )
-            .Distinct().Where(LocationAliveNextGeneration).ToArray();
-
         public override bool Equals(object obj)
         {
             World otherWorld = obj as World;
@@ -78,6 +67,17 @@ namespace Game_of_Life
         private int NumberOfAliveNeighbours(Coordinate coordinate) =>
             GetNeighboursInWorld(coordinate)
             .Count(IsAlive);
+
+        private Location[] NextWorldLocations() =>
+            Locations.Where(IsAlive).Aggregate(
+                Locations.Where(IsAlive).ToList(),
+                (acc, cur) =>
+                    {
+                        acc.AddRange(GetNeighboursInWorld(cur.Coordinate));
+                        return acc;
+                    }
+            )
+            .Distinct().Where(LocationAliveNextGeneration).ToArray();
 
         private bool IsAlive(Location l) => l.Cell.GetType() == typeof(LivingCell);
 
