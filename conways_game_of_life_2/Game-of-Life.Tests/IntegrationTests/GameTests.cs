@@ -7,7 +7,7 @@ namespace Game_of_Life.Tests
     public class GameTests
     {
         [Fact]
-        public void Game_Gets_World_pass_coords()
+        public void Game_Generates_And_Ticks_Over_2D_World_Console()
         {
             var worldSize = "5x4";
             var lifeCoords = "0,1.2,1.2,3.3,3";
@@ -37,7 +37,38 @@ namespace Game_of_Life.Tests
         }
 
         [Fact]
-        public void Game3D_Gets_World_pass_coords()
+        public void Game_Skips_Over_Invalid_Input()
+        {
+            var worldSize = "5x4";
+            var garbage = "i am garbage";
+            var lifeCoords = "0,1.2,1.2,3.3,3";
+
+            var fakeInput = new FakeInput();
+            var sequenceOfInput = new string[] { garbage, worldSize, garbage, lifeCoords, garbage };
+            fakeInput.SetupSequence(sequenceOfInput);
+
+            var fakeOutput = new FakeOutput();
+            var fakeSleeper = new FakeSleeper();
+
+            var expectedGenerationOneWorldString = $".*...\n.....\n.*.*.\n...*.\n";
+            var expectedGenerationTwoWorldString = $".....\n..*..\n..*..\n.....\n";
+            var expectedGenerationThreeWorldString = $".....\n.....\n.....\n.....\n";
+
+            var game = new Game(fakeInput, fakeOutput, fakeSleeper);
+            game.Run();
+
+            Assert.Equal(1, fakeInput.readStrings[worldSize]);
+            Assert.Equal(1, fakeInput.readStrings[lifeCoords]);
+
+            Assert.Equal(1, fakeOutput.writtenStrings[expectedGenerationOneWorldString]);
+            Assert.Equal(1, fakeOutput.writtenStrings[expectedGenerationTwoWorldString]);
+            Assert.Equal(1, fakeOutput.writtenStrings[expectedGenerationThreeWorldString]);
+
+            Assert.Equal(2, fakeSleeper.Calls);
+        }
+
+        [Fact]
+        public void Game_Generates_And_Ticks_Over_3D_World_Console()
         {
             var worldSize = "3x3x3";
             var lifeCoords = "0,0,0 . 1,1,1 . 2,2,2";
@@ -47,11 +78,9 @@ namespace Game_of_Life.Tests
             fakeInput.SetupSequence(sequenceOfInput);
 
             var fakeOutput = new FakeOutput();
-
             var fakeSleeper = new FakeSleeper();
 
             var expectedGenerationOneWorldString = $"*..|...|...\n...|.*.|...\n...|...|..*\n";
-            // var expectedGenerationTwoWorldString = $".*.|.*.|.*.\n.*.|.*.|.*.\n.*.|.*.|.*.\n";
             var expectedGenerationTwoWorldString = $"***|***|***\n***|***|***\n***|***|***\n";
             var expectedGenerationThreeWorldString = $"...|...|...\n...|...|...\n...|...|...\n";
 
@@ -69,7 +98,7 @@ namespace Game_of_Life.Tests
         }
 
         [Fact]
-        public void Game_From_File()
+        public void Game_Generates_And_Ticks_Over_2D_World_From_File()
         {
             var pathToTestWorld = @"/Users/Alvin.Zhao/Projects/katas/conways_game_of_life_2/Game-of-Life/exampleWorlds/testWorld.txt";
             var fileReader = File.OpenText(pathToTestWorld);

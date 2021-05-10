@@ -10,6 +10,9 @@ namespace Game_of_Life
         private Queue<string> stringQueue = new Queue<string>();
         public Dictionary<string, int> readStrings = new Dictionary<string, int>();
 
+        public void SetupSequence(string someString) => stringQueue.Enqueue(someString);
+        public void SetupSequence(string[] arrayOfStrings) => Array.ForEach(arrayOfStrings, s => SetupSequence(s));
+
         public override string ReadLine()
         {
             var returnString = stringQueue.Dequeue();
@@ -29,8 +32,6 @@ namespace Game_of_Life
             }
         }
 
-        public void SetupSequence(string someString) => stringQueue.Enqueue(someString);
-        public void SetupSequence(string[] arrayOfStrings) => Array.ForEach(arrayOfStrings, s => SetupSequence(s));
 
     }
 }

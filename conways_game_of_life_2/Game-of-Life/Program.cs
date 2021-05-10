@@ -8,8 +8,8 @@ namespace Game_of_Life
     {
         static void Main(string[] args)
         {
-            string[] possibleInputMethods = new string[]{"file", "console"};
-            
+            string[] possibleInputMethods = new string[] { "file", "console" };
+
             if (args.Length != 1 || !possibleInputMethods.Contains(args[0]))
             {
                 PrintProperUsage();
@@ -23,13 +23,14 @@ namespace Game_of_Life
                 var game = new Game(Console.In, Console.Out, sleeper);
                 game.Run();
             }
-            
+
             if (args[0] == "file")
             {
-                var pathToTestWorld = @"/Users/Alvin.Zhao/Projects/katas/conways_game_of_life_2/Game-of-Life/exampleWorlds/testWorld.txt";
-                var fileReader = File.OpenText(pathToTestWorld); 
+                var pathToTestWorld = @"/Users/Alvin.Zhao/Projects/katas/conways_game_of_life_2/Game-of-Life/exampleWorlds/exampleWorld.txt";
+                var fileReader = File.OpenText(pathToTestWorld);
                 var game = new Game(fileReader, Console.Out, sleeper);
                 game.Run();
+                fileReader.Close();
             }
         }
 
