@@ -32,10 +32,10 @@ namespace minesweeper
                     var cell = field.GetCell(new Location(x, y));
                     stringBuilder.Append(cell.IsMine ? "*" : field.CountNeighbouringMines(new Location(x, y)).ToString());
                 }
-                if (y < field.Rows-1) stringBuilder.AppendLine();
+                if (y < field.Rows - 1) stringBuilder.AppendLine();
             }
             return stringBuilder.ToString();
         }
     }
-    
+
 }

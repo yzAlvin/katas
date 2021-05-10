@@ -15,7 +15,7 @@ namespace minesweeper
             _consoleWriter = consoleWriter;
             _fields = new List<Field>();
         }
-        
+
         public void Play()
         {
             GetFields();
@@ -32,8 +32,8 @@ namespace minesweeper
                 var successfulField = TryGetField(size, out var field);
                 if (!successfulField) return;
                 _fields.Add(field);
-                
-                size = (string) _consoleReader.ReadLine();
+
+                size = (string)_consoleReader.ReadLine();
             }
         }
 
@@ -47,10 +47,10 @@ namespace minesweeper
         {
             return input.Length == 2 &&
                 IsValidInt(input[0]) && IsValidInt(input[1]);
-                
+
         }
 
-        private bool IsValidInt(char size) => int.TryParse(size.ToString(), out var dimension)  && dimension > 0;
+        private bool IsValidInt(char size) => int.TryParse(size.ToString(), out var dimension) && dimension > 0;
 
         private bool TryGetField(string size, out Field field)
         {
@@ -70,9 +70,9 @@ namespace minesweeper
 
             return true;
         }
-        
+
         private int GetRows(string input) => int.Parse(input[0].ToString());
-        
+
         private int GetCols(string input) => int.Parse(input[1].ToString());
 
         private bool ValidRow(string row, int width)
@@ -86,7 +86,7 @@ namespace minesweeper
         {
             for (var i = 0; i < _fields.Count; i++)
             {
-                _consoleWriter.WriteFieldNumber(i+1);
+                _consoleWriter.WriteFieldNumber(i + 1);
                 _consoleWriter.WriteField(_fields[i]);
             }
         }
