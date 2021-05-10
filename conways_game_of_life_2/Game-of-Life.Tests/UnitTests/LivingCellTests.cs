@@ -4,12 +4,13 @@ namespace Game_of_Life.Tests
 {
     public class LivingCellTests
     {
+        LivingCell livingCell = new LivingCell();
+
         [Theory]
         [InlineData(0)]
         [InlineData(1)]
         public void AliveNextGeneration_ReturnsFalse_If_NumberOfNeighboursIsUnderpopulation(int underpopulationNumberOfNeighbours)
         {
-            var livingCell = new LivingCell();
             Assert.False(livingCell.AliveNextGeneration(underpopulationNumberOfNeighbours));
         }
 
@@ -18,7 +19,6 @@ namespace Game_of_Life.Tests
         [InlineData(3)]
         public void AliveNextGeneration_ReturnsTrue_If_NumberOfNeighboursIsSurvival(int survivalNumberOfNeighbours)
         {
-            var livingCell = new LivingCell();
             Assert.True(livingCell.AliveNextGeneration(survivalNumberOfNeighbours));
         }
 
@@ -26,8 +26,13 @@ namespace Game_of_Life.Tests
         [InlineData(4)]
         public void AliveNextGeneration_ReturnsFalse_If_NumberOfNeighboursIsOvercrowding(int overcrowdingNumberOfNeighbours)
         {
-            var livingCell = new LivingCell();
             Assert.False(livingCell.AliveNextGeneration(overcrowdingNumberOfNeighbours));
+        }
+
+        [Fact]
+        public void ToString_Returns_CellString()
+        {
+            Assert.Equal("*", livingCell.ToString());
         }
     }
 }

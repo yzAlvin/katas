@@ -4,14 +4,12 @@ namespace Game_of_Life
     {
         private const int LowerPopulationBound = 2;
         private const int UpperPopulationBound = 3;
-        private const string CellCharacter = "*";
+        private static string CellString = "*";
 
         public bool AliveNextGeneration(int numberOfNeighbours) =>
             Survival(numberOfNeighbours)
             && !Underpopulation(numberOfNeighbours)
             && !Overcrowding(numberOfNeighbours);
-
-        public override string ToString() => CellCharacter;
 
         private bool Survival(int numberOfNeighbours) =>
             numberOfNeighbours == LowerPopulationBound
@@ -22,5 +20,9 @@ namespace Game_of_Life
 
         private bool Overcrowding(int numberOfNeighbours) =>
             numberOfNeighbours > UpperPopulationBound;
+
+        public override string ToString() => CellString;
+
+        public static void SetString(string s) => CellString = s;
     }
 }
