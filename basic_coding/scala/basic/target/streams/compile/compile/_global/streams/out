@@ -1,5 +1,0 @@
-[0m[[0m[31merror[0m] [0m[0m/Users/Alvin.Zhao/Projects/katas/basic_coding/scala/basic/src/main/scala/hello.scala:61:56: not enough arguments for method isLeapYear: (n: Int): Boolean.[0m
-[0m[[0m[31merror[0m] [0m[0mUnspecified value parameter n.[0m
-[0m[[0m[31merror[0m] [0m[0m    (year to year + (nextN * 4) by 4) filter isLeapYear()[0m
-[0m[[0m[31merror[0m] [0m[0m                                                       ^[0m
-[0m[[0m[31merror[0m] [0m[0mone error found[0m

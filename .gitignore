@@ -1,6 +1,13 @@
 .vscode/
 .DS_Store
+
+# ignore dotnet
 bin/
 obj/
-bin/
-obj/
+
+# ignore scala
+.bsp
+project/
+target/
+.scalafmt.conf
+.metals
