@@ -8,7 +8,7 @@ namespace Game_of_Life
         public int Height { get; }
         public int Depth { get; }
 
-        public WorldSize(int width = 5, int height = 5, int depth = 1)
+        public WorldSize(int height = 5, int width = 5, int depth = 1)
         {
             ValidateSize(width, height, depth);
             this.Width = width;

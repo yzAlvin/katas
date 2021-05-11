@@ -14,9 +14,10 @@ namespace Game_of_Life
             && worldSize.Split(worldSizeSeparator).All(IsValidInt);
 
         public static bool ValidCoords(string coords, WorldSize worldSize) =>
-            FormatCoords(coords).All(ValidCoordChars)
+            (String.IsNullOrEmpty(coords))
+            || (FormatCoords(coords).All(ValidCoordChars)
             && LegitCoords(FormatCoords(coords), worldSize)
-            && !coords.Any(c => c == '-');
+            && !coords.Any(c => c == '-'));
 
         private static string FormatCoords(string coords) =>
             String.Join("", (coords.Where(ValidCoordChars)));

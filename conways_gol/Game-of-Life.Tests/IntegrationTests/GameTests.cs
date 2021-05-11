@@ -9,8 +9,8 @@ namespace Game_of_Life.Tests
         [Fact]
         public void Game_Runs_Over_2D_World_From_Console()
         {
-            var worldSize = "5x4";
-            var lifeCoords = "0,1.2,1.2,3.3,3";
+            var worldSize = "3x4";
+            var lifeCoords = "0,0.1,1.1,2";
 
             var fakeInput = new FakeInput();
             var sequenceOfInput = new string[] { worldSize, lifeCoords, "", "" };
@@ -19,9 +19,10 @@ namespace Game_of_Life.Tests
             var fakeOutput = new FakeOutput();
             var fakeSleeper = new FakeSleeper();
 
-            var expectedGenerationOneWorldString = $".*...\n.....\n.*.*.\n...*.\n";
-            var expectedGenerationTwoWorldString = $".....\n..*..\n..*..\n.....\n";
-            var expectedGenerationThreeWorldString = $".....\n.....\n.....\n.....\n";
+            var expectedGenerationOne = $"*...\n.**.\n....\n";
+            var expectedGenerationTwo = $".*..\n.*..\n.*..\n";
+            var expectedGenerationThree = $"***.\n***.\n***.\n";
+            var expectedEmptyWorld = $"....\n....\n....\n";
 
             var game = new Game(fakeInput, fakeOutput, fakeSleeper);
             game.Run();
@@ -29,11 +30,12 @@ namespace Game_of_Life.Tests
             Assert.Equal(1, fakeInput.readStrings[worldSize]);
             Assert.Equal(1, fakeInput.readStrings[lifeCoords]);
 
-            Assert.Equal(1, fakeOutput.writtenStrings[expectedGenerationOneWorldString]);
-            Assert.Equal(1, fakeOutput.writtenStrings[expectedGenerationTwoWorldString]);
-            Assert.Equal(1, fakeOutput.writtenStrings[expectedGenerationThreeWorldString]);
+            Assert.Equal(1, fakeOutput.writtenStrings[expectedGenerationOne]);
+            Assert.Equal(1, fakeOutput.writtenStrings[expectedGenerationTwo]);
+            Assert.Equal(1, fakeOutput.writtenStrings[expectedGenerationThree]);
+            Assert.Equal(1, fakeOutput.writtenStrings[expectedEmptyWorld]);
 
-            Assert.Equal(2, fakeSleeper.Calls);
+            Assert.Equal(3, fakeSleeper.Calls);
         }
 
         [Fact]
@@ -50,9 +52,10 @@ namespace Game_of_Life.Tests
             var fakeOutput = new FakeOutput();
             var fakeSleeper = new FakeSleeper();
 
-            var expectedGenerationOneWorldString = $".*...\n.....\n.*.*.\n...*.\n";
-            var expectedGenerationTwoWorldString = $".....\n..*..\n..*..\n.....\n";
-            var expectedGenerationThreeWorldString = $".....\n.....\n.....\n.....\n";
+            var expectedGenerationOne = $".*..\n....\n.*.*\n...*\n....\n";
+            var expectedGenerationTwo = $"....\n*.*.\n*.*.\n*.*.\n....\n";
+            var expectedGenerationThree = $"....\n....\n*.*.\n....\n....\n";
+            var expectedEmptyWorld = $"....\n....\n....\n....\n....\n";
 
             var game = new Game(fakeInput, fakeOutput, fakeSleeper);
             game.Run();
@@ -60,11 +63,12 @@ namespace Game_of_Life.Tests
             Assert.Equal(1, fakeInput.readStrings[worldSize]);
             Assert.Equal(1, fakeInput.readStrings[lifeCoords]);
 
-            Assert.Equal(1, fakeOutput.writtenStrings[expectedGenerationOneWorldString]);
-            Assert.Equal(1, fakeOutput.writtenStrings[expectedGenerationTwoWorldString]);
-            Assert.Equal(1, fakeOutput.writtenStrings[expectedGenerationThreeWorldString]);
+            Assert.Equal(1, fakeOutput.writtenStrings[expectedGenerationOne]);
+            Assert.Equal(1, fakeOutput.writtenStrings[expectedGenerationTwo]);
+            Assert.Equal(1, fakeOutput.writtenStrings[expectedGenerationThree]);
+            Assert.Equal(1, fakeOutput.writtenStrings[expectedEmptyWorld]);
 
-            Assert.Equal(2, fakeSleeper.Calls);
+            Assert.Equal(3, fakeSleeper.Calls);
         }
 
         [Fact]
@@ -80,9 +84,9 @@ namespace Game_of_Life.Tests
             var fakeOutput = new FakeOutput();
             var fakeSleeper = new FakeSleeper();
 
-            var expectedGenerationOneWorldString = $"*..|...|...\n...|.*.|...\n...|...|..*\n";
-            var expectedGenerationTwoWorldString = $"***|***|***\n***|***|***\n***|***|***\n";
-            var expectedGenerationThreeWorldString = $"...|...|...\n...|...|...\n...|...|...\n";
+            var expectedGenerationOne = $"*..|...|...\n...|.*.|...\n...|...|..*\n";
+            var expectedGenerationTwo = $"***|***|***\n***|***|***\n***|***|***\n";
+            var expectedGenerationThree = $"...|...|...\n...|...|...\n...|...|...\n";
 
             var game = new Game(fakeInput, fakeOutput, fakeSleeper);
             game.Run();
@@ -90,9 +94,9 @@ namespace Game_of_Life.Tests
             Assert.Equal(1, fakeInput.readStrings[worldSize]);
             Assert.Equal(1, fakeInput.readStrings[lifeCoords]);
 
-            Assert.Equal(1, fakeOutput.writtenStrings[expectedGenerationOneWorldString]);
-            Assert.Equal(1, fakeOutput.writtenStrings[expectedGenerationTwoWorldString]);
-            Assert.Equal(1, fakeOutput.writtenStrings[expectedGenerationThreeWorldString]);
+            Assert.Equal(1, fakeOutput.writtenStrings[expectedGenerationOne]);
+            Assert.Equal(1, fakeOutput.writtenStrings[expectedGenerationTwo]);
+            Assert.Equal(1, fakeOutput.writtenStrings[expectedGenerationThree]);
 
             Assert.Equal(2, fakeSleeper.Calls);
         }
@@ -106,16 +110,16 @@ namespace Game_of_Life.Tests
             var fakeSleeper = new FakeSleeper();
             var game = new Game(fileReader, fakeOutput, fakeSleeper);
 
-            var expectedGenerationOneString = "*.......\n.**.....\n........\n...*....\n...*....\n........\n";
-            var expectedGenerationTwoString = ".*......\n.*......\n..*.....\n........\n........\n........\n";
-            var expectedGenerationThreeString = "........\n.**.....\n........\n........\n........\n........\n";
-            var expectedGenerationFourString = "........\n........\n........\n........\n........\n........\n";
+            var expectedGenerationOne = $"*...\n.**.\n....\n";
+            var expectedGenerationTwo = $".*..\n.*..\n.*..\n";
+            var expectedGenerationThree = $"***.\n***.\n***.\n";
+            var expectedEmptyWorld = $"....\n....\n....\n";
 
             game.Run();
-            Assert.Equal(1, fakeOutput.writtenStrings[expectedGenerationOneString]);
-            Assert.Equal(1, fakeOutput.writtenStrings[expectedGenerationTwoString]);
-            Assert.Equal(1, fakeOutput.writtenStrings[expectedGenerationThreeString]);
-            Assert.Equal(1, fakeOutput.writtenStrings[expectedGenerationFourString]);
+            Assert.Equal(1, fakeOutput.writtenStrings[expectedGenerationOne]);
+            Assert.Equal(1, fakeOutput.writtenStrings[expectedGenerationTwo]);
+            Assert.Equal(1, fakeOutput.writtenStrings[expectedGenerationThree]);
+            Assert.Equal(1, fakeOutput.writtenStrings[expectedEmptyWorld]);
             Assert.Equal(3, fakeSleeper.Calls);
         }
 
@@ -123,7 +127,7 @@ namespace Game_of_Life.Tests
         [Trait("Category", "NotThreadSafe")]
         public void Game_Runs_Over_2D_World_From_Console_With_Custom_CellStrings()
         {
-            var worldSize = "5x4";
+            var worldSize = "4x5";
             var lifeCoords = "0,1.2,1.2,3.3,3";
             string deadCellString = "🐙";
             string liveCellString = "🙊";
@@ -135,9 +139,9 @@ namespace Game_of_Life.Tests
             var fakeOutput = new FakeOutput();
             var fakeSleeper = new FakeSleeper();
 
-            var expectedGenerationOneWorldString = $"🐙🙊🐙🐙🐙\n🐙🐙🐙🐙🐙\n🐙🙊🐙🙊🐙\n🐙🐙🐙🙊🐙\n";
-            var expectedGenerationTwoWorldString = $"🐙🐙🐙🐙🐙\n🐙🐙🙊🐙🐙\n🐙🐙🙊🐙🐙\n🐙🐙🐙🐙🐙\n";
-            var expectedGenerationThreeWorldString = $"🐙🐙🐙🐙🐙\n🐙🐙🐙🐙🐙\n🐙🐙🐙🐙🐙\n🐙🐙🐙🐙🐙\n";
+            var expectedGenerationOne = $"🐙🙊🐙🐙🐙\n🐙🐙🐙🐙🐙\n🐙🙊🐙🙊🐙\n🐙🐙🐙🙊🐙\n";
+            var expectedGenerationTwo = $"🐙🐙🐙🐙🐙\n🐙🐙🙊🐙🐙\n🐙🐙🙊🐙🐙\n🐙🐙🐙🐙🐙\n";
+            var expectedGenerationThree = $"🐙🐙🐙🐙🐙\n🐙🐙🐙🐙🐙\n🐙🐙🐙🐙🐙\n🐙🐙🐙🐙🐙\n";
 
             var game = new Game(fakeInput, fakeOutput, fakeSleeper);
             game.Run();
@@ -145,9 +149,9 @@ namespace Game_of_Life.Tests
             Assert.Equal(1, fakeInput.readStrings[worldSize]);
             Assert.Equal(1, fakeInput.readStrings[lifeCoords]);
 
-            Assert.Equal(1, fakeOutput.writtenStrings[expectedGenerationOneWorldString]);
-            Assert.Equal(1, fakeOutput.writtenStrings[expectedGenerationTwoWorldString]);
-            Assert.Equal(1, fakeOutput.writtenStrings[expectedGenerationThreeWorldString]);
+            Assert.Equal(1, fakeOutput.writtenStrings[expectedGenerationOne]);
+            Assert.Equal(1, fakeOutput.writtenStrings[expectedGenerationTwo]);
+            Assert.Equal(1, fakeOutput.writtenStrings[expectedGenerationThree]);
 
             Assert.Equal(2, fakeSleeper.Calls);
         }

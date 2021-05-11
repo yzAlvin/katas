@@ -54,7 +54,7 @@ namespace Game_of_Life
         private void SetCellString()
         {
             DeadCell.SetString(GetNonEmptyString(PromptDeadCellCharacter, "."));
-            LivingCell.SetString(GetNonEmptyString(PromptDeadCellCharacter, "*"));
+            LivingCell.SetString(GetNonEmptyString(PromptLiveCellCharacter, "*"));
         }
 
         private string GetNonEmptyString(Action prompt, string fallback)
@@ -68,7 +68,7 @@ namespace Game_of_Life
         private void PlayWorld()
         {
             writer.WriteLine(WorldRenderer.RenderWorld(world));
-            while (!(world.IsEmpty() && world.IsStagnant()))
+            while (!world.IsEmpty() || !world.IsStagnant())
             {
                 world = world.NextWorld();
                 writer.WriteLine(WorldRenderer.RenderWorld(world));
@@ -108,10 +108,10 @@ namespace Game_of_Life
             writer.WriteLine("Enter coordinates of live cells: ");
 
         private void PromptDeadCellCharacter() =>
-            writer.Write("Enter dead cell string representation (or leave blank): ");
+            writer.WriteLine("Enter dead cell string representation (or leave blank): ");
 
         private void PromptLiveCellCharacter() =>
-            writer.Write("Enter live cell string representation (or leave blank): ");
+            writer.WriteLine("Enter live cell string representation (or leave blank): ");
 
     }
 }
