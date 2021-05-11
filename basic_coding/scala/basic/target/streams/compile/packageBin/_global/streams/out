@@ -1,0 +1,17 @@
+[0m[[0m[0mdebug[0m] [0m[0mPackaging /Users/Alvin.Zhao/Projects/katas/basic_coding/scala/basic/target/scala-2.13/hello-world_2.13-1.0.jar ...[0m
+[0m[[0m[0mdebug[0m] [0m[0mInput file mappings:[0m
+[0m[[0m[0mdebug[0m] [0m[0m	com[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /Users/Alvin.Zhao/Projects/katas/basic_coding/scala/basic/target/scala-2.13/classes/com[0m
+[0m[[0m[0mdebug[0m] [0m[0m	com/test[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /Users/Alvin.Zhao/Projects/katas/basic_coding/scala/basic/target/scala-2.13/classes/com/test[0m
+[0m[[0m[0mdebug[0m] [0m[0m	com/test/Main$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /Users/Alvin.Zhao/Projects/katas/basic_coding/scala/basic/target/scala-2.13/classes/com/test/Main$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	com/test/Hello$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /Users/Alvin.Zhao/Projects/katas/basic_coding/scala/basic/target/scala-2.13/classes/com/test/Hello$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	com/test/Hello.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /Users/Alvin.Zhao/Projects/katas/basic_coding/scala/basic/target/scala-2.13/classes/com/test/Hello.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	com/test/Main.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /Users/Alvin.Zhao/Projects/katas/basic_coding/scala/basic/target/scala-2.13/classes/com/test/Main.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	com/test/Main$delayedInit$body.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /Users/Alvin.Zhao/Projects/katas/basic_coding/scala/basic/target/scala-2.13/classes/com/test/Main$delayedInit$body.class[0m
+[0m[[0m[0mdebug[0m] [0m[0mDone packaging.[0m
