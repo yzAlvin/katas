@@ -52,7 +52,7 @@ class HelloTests extends FunSuite {
   test("getNum gets number from user") {
     val num = new StringReader("1")
     Console.withIn(num) {
-      assert(Hello.getNum() === 1)
+      assert(Hello.getNum() == 1)
     }
   }
 
