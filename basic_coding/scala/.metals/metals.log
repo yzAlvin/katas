@@ -4619,3 +4619,11 @@ WARNING: Unmatched cancel notification for request id 14397
 [0m2021.05.11 21:21:35 WARN  no build target for: /Users/Alvin.Zhao/Projects/katas/basic_coding/scala/basic/src/main/scala/guessingGame.scala[0m
 [0m2021.05.11 21:21:47 WARN  no build target for: /Users/Alvin.Zhao/Projects/katas/basic_coding/scala/basic/src/main/scala/guessingGame.scala[0m
 [0m2021.05.11 21:21:53 WARN  no build target for: /Users/Alvin.Zhao/Projects/katas/basic_coding/scala/basic/src/test/scala/testGuessingGame.scala[0m
+[0m2021.05.11 21:42:00 INFO  shutting down Metals[0m
+[0m2021.05.11 21:42:06 INFO  Started: Metals version 0.10.2 in workspace '/Users/Alvin.Zhao/Projects/katas/basic_coding/scala' for client vscode 1.56.0.[0m
+[0m2021.05.11 21:42:07 INFO  time: initialize in 1.43s[0m
+[0m2021.05.11 21:42:08 WARN  Build server is not auto-connectable.[0m
+[0m2021.05.11 21:42:08 WARN  no build target for: /Users/Alvin.Zhao/Projects/katas/basic_coding/scala/basic/src/main/scala/guessingGame.scala[0m
+[0m2021.05.11 21:42:08 WARN  no build target for: /Users/Alvin.Zhao/Projects/katas/basic_coding/scala/basic/src/test/scala/testGuessingGame.scala[0m
+[0m2021.05.11 21:42:08 INFO  skipping build import with status 'Requested'[0m
+[0m2021.05.11 21:42:11 INFO  no build target: using presentation compiler with only scala-library: 2.12.13[0m
