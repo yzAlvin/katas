@@ -100,7 +100,7 @@ namespace Game_of_Life.Tests
         [Fact]
         public void Game_Plays_Over_World_From_File()
         {
-            var pathToTestWorld = @"/Users/Alvin.Zhao/Projects/katas/conways_game_of_life_2/Game-of-Life/exampleWorlds/testWorld.txt";
+            var pathToTestWorld = @"/Users/Alvin.Zhao/Projects/katas/conways_gol/Game-of-Life/exampleWorlds/testWorld.txt";
             var fileReader = File.OpenText(pathToTestWorld);
             var fakeOutput = new FakeOutput();
             var fakeSleeper = new FakeSleeper();

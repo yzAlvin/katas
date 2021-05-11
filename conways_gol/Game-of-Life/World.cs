@@ -9,13 +9,13 @@ namespace Game_of_Life
         public WorldSize Size { get; }
         public List<Location> Locations { get; private set; }
 
-        public World(WorldSize worldSize = default, Location[] locationOfLiveCells = default)
+        public World(WorldSize worldSize = default, Location[] liveLocations = default)
         {
             if (worldSize == default) worldSize = new WorldSize(5, 5, 1);
-            if (locationOfLiveCells == default) locationOfLiveCells = new Location[0];
+            if (liveLocations == default) liveLocations = new Location[0];
             this.Size = worldSize;
             InitialiseWorld();
-            PopulateWorld(locationOfLiveCells);
+            PopulateWorld(liveLocations);
         }
 
         public bool IsEmpty() => Locations.Count(IsAlive) == 0;
@@ -48,11 +48,12 @@ namespace Game_of_Life
             }
         }
 
-        private void PopulateWorld(Location[] locationOfLiveCells) =>
+        private void PopulateWorld(Location[] liveLocations) =>
             Locations =
-                locationOfLiveCells.All(x => Locations.Contains(x)) ?
-                    Locations.Select(l => locationOfLiveCells.Contains(l) ? l.BecomeAlive() : l).ToList()
-                    : throw new ArgumentException("Tried to access a location that was not in the world.");
+                liveLocations.All(l => Locations.Contains(l)) ?
+                    Locations.Select(l => liveLocations.Contains(l) ? l.BecomeAlive() : l)
+                        .ToList()
+                    : throw new InvalidLocation();
 
         private bool LocationAliveNextGeneration(Location location) =>
             location.Cell.AliveNextGeneration(NumberOfAliveNeighbours(location.Coordinate));

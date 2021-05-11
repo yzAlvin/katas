@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Game_of_Life
 {
@@ -25,7 +26,12 @@ namespace Game_of_Life
                 {
                     foreach (var zDisplacement in displacementOfNeighbours)
                     {
-                        if (xDisplacement == 0 && yDisplacement == 0 && zDisplacement == 0) continue;
+                        if (
+                            xDisplacement == 0
+                            && yDisplacement == 0
+                            && zDisplacement == 0
+                        ) continue;
+
                         neighbours.Add(new Coordinate(
                             X + xDisplacement,
                             Y + yDisplacement,

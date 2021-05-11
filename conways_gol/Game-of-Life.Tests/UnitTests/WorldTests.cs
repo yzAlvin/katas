@@ -7,7 +7,8 @@ namespace Game_of_Life.Tests
 {
     public class WorldTests
     {
-        private ICell GetCell(World world, Location location) => world.Locations.Single(l => l.Equals(location)).Cell;
+        private ICell GetCell(World world, Location location) =>
+            world.Locations.Single(l => l.Equals(location)).Cell;
 
         [Fact]
         public void IsEmpty_ReturnsTrue_With_NewWorld()
@@ -19,16 +20,16 @@ namespace Game_of_Life.Tests
         [Fact]
         public void World_Starts_With_Living_Cells_At_Locations()
         {
-            var locationOfLivingCell = new Location(new Coordinate());
-            var worldWithLife = new World(locationOfLiveCells: new Location[] { locationOfLivingCell });
+            var locationOfLivingCell = new Location();
+            var worldWithLife = new World(liveLocations: new Location[] { locationOfLivingCell });
             Assert.IsType<LivingCell>(GetCell(worldWithLife, locationOfLivingCell));
         }
 
         [Fact]
         public void IsEmpty_ReturnsFalse_With_WorldWithLivingCells()
         {
-            var locationOfLivingCell = new Location(new Coordinate());
-            var world = new World(locationOfLiveCells: new Location[] { locationOfLivingCell });
+            var locationOfLivingCell = new Location();
+            var world = new World(liveLocations: new Location[] { locationOfLivingCell });
             Assert.False(world.IsEmpty());
         }
 
@@ -39,7 +40,7 @@ namespace Game_of_Life.Tests
         {
             var outOfBounds = new Location(new Coordinate(outOfBoundsX, outOfBoundsY, outOfBoundsZ));
             var worldSize = new WorldSize(3, 3, 3);
-            Assert.Throws<ArgumentException>(() => new World(worldSize: worldSize, locationOfLiveCells: new Location[] { outOfBounds }));
+            Assert.Throws<InvalidLocation>(() => new World(worldSize: worldSize, liveLocations: new Location[] { outOfBounds }));
         }
 
         [Fact]
@@ -59,7 +60,7 @@ namespace Game_of_Life.Tests
                 new Location(new Coordinate(0, 1, 0)),
                 new Location(new Coordinate(1, 0, 0)),
             };
-            var progressingWorld = new World(worldSize: worldSize, locationOfLiveCells: locationOfLiveCells);
+            var progressingWorld = new World(worldSize: worldSize, liveLocations: locationOfLiveCells);
             Assert.False(progressingWorld.IsEmpty());
         }
 
@@ -81,7 +82,7 @@ namespace Game_of_Life.Tests
                 new Location(new Coordinate(1, 0, 0)),
                 new Location(new Coordinate(1, 1, 0)),
             };
-            var stagnantWorld = new World(worldSize: worldSize, locationOfLiveCells: locationOfLiveCells);
+            var stagnantWorld = new World(worldSize: worldSize, liveLocations: locationOfLiveCells);
             Assert.Equal(stagnantWorld, stagnantWorld.NextWorld());
         }
 
@@ -89,8 +90,8 @@ namespace Game_of_Life.Tests
         public void NextWorld_ReturnsEmptyWorld_On_UnderpopulatedWorld()
         {
             var locationOfLiveCell = new Location(new Coordinate(2, 2));
-            var world = new World(locationOfLiveCells: new Location[] { locationOfLiveCell });
-            var expectedNextWorld = new World(locationOfLiveCells: new Location[0]);
+            var world = new World(liveLocations: new Location[] { locationOfLiveCell });
+            var expectedNextWorld = new World(liveLocations: new Location[0]);
             var actualNextWorld = world.NextWorld();
             Assert.Equal(expectedNextWorld, actualNextWorld);
         }

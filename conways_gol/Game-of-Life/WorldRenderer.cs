@@ -8,9 +8,9 @@ namespace Game_of_Life
 {
     public class WorldRenderer
     {
-        public static string RenderWorld(World world) => WorldToString(world, world.Locations);
+        private const string sliceSeparator = "|";
 
-        private static string WorldToString(World world, List<Location> locations)
+        public static string RenderWorld(World world)
         {
             var worldAsString = new StringBuilder();
             for (var height = 0; height < world.Size.Height; height++)
@@ -20,17 +20,17 @@ namespace Game_of_Life
                     for (var width = 0; width < world.Size.Width; width++)
                     {
                         worldAsString.Append(
-                            GetCell(locations, height, width, depth).ToString()
+                            GetCell(world.Locations, height, width, depth).ToString()
                         );
                     }
-                    if (depth != world.Size.Depth - 1) worldAsString.Append("|");
+                    if (depth != world.Size.Depth - 1) worldAsString.Append(sliceSeparator);
                 }
                 worldAsString.AppendLine();
             }
             return worldAsString.ToString();
         }
 
-        private static ICell GetCell(List<Location> locations, int height, int width, int depth) =>
-            locations.Single(l => l.Coordinate.Equals(new Coordinate(height, width, depth))).Cell;
+        private static ICell GetCell(List<Location> locations, int h, int w, int d) =>
+            locations.Single(l => l.Coordinate.Equals(new Coordinate(h, w, d))).Cell;
     }
 }

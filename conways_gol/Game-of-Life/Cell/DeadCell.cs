@@ -5,7 +5,7 @@ namespace Game_of_Life
     public class DeadCell : ICell
     {
         private const int FertileThreshold = 3;
-        private static string CellString = ".";
+        protected static string CellString = ".";
 
         public bool AliveNextGeneration(int numberOfNeighbours) =>
             FertileNeighbourhood(numberOfNeighbours);

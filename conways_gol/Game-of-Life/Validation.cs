@@ -5,37 +5,47 @@ namespace Game_of_Life
 {
     public static class Validation
     {
-        public static bool ValidWorldSize(string[] worldSize) =>
-            SizeIs2DOr3D(worldSize) && worldSize.All(IsValidInt);
+        private const char coordinateSeparator = '.';
+        private const char coordinatePairSeparator = ',';
+        private const string worldSizeSeparator = "x";
+
+        public static bool ValidWorldSize(string worldSize) =>
+            SizeIs2DOr3D(worldSize.Split(worldSizeSeparator))
+            && worldSize.Split(worldSizeSeparator).All(IsValidInt);
 
         public static bool ValidCoords(string coords, WorldSize worldSize) =>
-            coords.All(ValidCoordChars) && LegitCoords(coords, worldSize);
+            FormatCoords(coords).All(ValidCoordChars)
+            && LegitCoords(FormatCoords(coords), worldSize)
+            && !coords.Any(c => c == '-');
 
-        public static string FormatCoords(string coords) =>
+        private static string FormatCoords(string coords) =>
             String.Join("", (coords.Where(ValidCoordChars)));
 
         private static bool SizeIs2DOr3D(string[] worldSize) =>
-            worldSize.Length == 2 || worldSize.Length == 3;
+            worldSize.Length == 2
+            || worldSize.Length == 3;
 
         private static bool IsValidInt(string size) =>
-            int.TryParse(size, out var _);
+            int.TryParse(size, out var n) && n >= 0;
 
         private static bool ValidCoordChars(char c) =>
-            Char.IsDigit(c) || c == '.' || c == ',';
+            Char.IsDigit(c)
+            || c == coordinateSeparator
+            || c == coordinatePairSeparator;
 
-        private static bool LegitCoords(string coords, WorldSize worldSize)
+        private static bool LegitCoords(string coordString, WorldSize worldSize)
         {
-            var coordsArary = coords.Split(".");
+            var coordStringArray = coordString.Split(coordinateSeparator);
 
-            foreach (var c in coordsArary)
+            foreach (var coordPair in coordStringArray)
             {
-                var coordinatePair = c.Split(",");
-                if (!coordinatePair.All(IsValidInt) || !SizeIs2DOr3D(coordinatePair)) return false;
-                var coordinatesAsIntegers = coordinatePair.Select(int.Parse).ToArray();
+                var coord = coordPair.Split(coordinatePairSeparator);
+                if (!(coord.All(IsValidInt) && SizeIs2DOr3D(coord))) return false;
+                var coordIntPair = coord.Select(int.Parse).ToArray();
                 Coordinate coordinate = new Coordinate(
-                        coordinatesAsIntegers[0],
-                        coordinatesAsIntegers[1],
-                        coordinatePair.Length == 3 ? coordinatesAsIntegers[2] : 0
+                        coordIntPair[0],
+                        coordIntPair[1],
+                        coord.Length == 3 ? coordIntPair[2] : 0
                 );
                 if (OutOfBounds(coordinate, worldSize)) return false;
             }

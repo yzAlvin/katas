@@ -6,7 +6,7 @@ namespace Game_of_Life
 {
     public class Location
     {
-        public Coordinate Coordinate { get; set; }
+        public Coordinate Coordinate { get; private set; }
         public ICell Cell { get; private set; }
 
         public Location(Coordinate coordinate = default, ICell cell = default)
@@ -17,9 +17,11 @@ namespace Game_of_Life
             this.Cell = cell;
         }
 
-        public Location BecomeAlive() => new Location(this.Coordinate, new LivingCell());
+        public Location BecomeAlive() =>
+            new Location(this.Coordinate, new LivingCell());
 
-        public Location BecomeDead() => new Location(this.Coordinate, new DeadCell());
+        public Location BecomeDead() =>
+            new Location(this.Coordinate, new DeadCell());
 
         public override bool Equals(object obj)
         {

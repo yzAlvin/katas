@@ -22,8 +22,8 @@ namespace Game_of_Life.Tests
         {
             var expectedOutput = ".*.\n*..\n..*\n";
             var worldSize = new WorldSize(width: 3, height: 3);
-            var liveCellLocations = new Location[] { new Location(new Coordinate(0, 1)), new Location(new Coordinate(1, 0)), new Location(new Coordinate(2, 2)) };
-            var worldWithLife = new World(worldSize: worldSize, locationOfLiveCells: liveCellLocations);
+            var liveLocations = new Location[] { new Location(new Coordinate(0, 1)), new Location(new Coordinate(1, 0)), new Location(new Coordinate(2, 2)) };
+            var worldWithLife = new World(worldSize: worldSize, liveLocations: liveLocations);
             var actualOutput = WorldRenderer.RenderWorld(worldWithLife);
 
             Assert.Equal(expectedOutput, actualOutput);
@@ -45,7 +45,7 @@ namespace Game_of_Life.Tests
         {
             var expectedWorld = "*..|...|...\n...|.*.|.*.\n*..|..*|..*\n";
             var worldSize = new WorldSize(width: 3, height: 3, depth: 3);
-            var liveCellLocations = new Location[]
+            var liveLocations = new Location[]
             {
                 new Location(new Coordinate(0, 0, 0)),
                 new Location(new Coordinate(2, 0, 0)),
@@ -55,7 +55,7 @@ namespace Game_of_Life.Tests
                 new Location(new Coordinate(2, 2, 2)),
 
             };
-            var worldWithLife = new World(worldSize: worldSize, locationOfLiveCells: liveCellLocations);
+            var worldWithLife = new World(worldSize: worldSize, liveLocations: liveLocations);
 
             var actualWorld = WorldRenderer.RenderWorld(worldWithLife);
             Assert.Equal(expectedWorld, actualWorld);

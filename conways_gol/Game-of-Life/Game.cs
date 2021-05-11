@@ -22,32 +22,15 @@ namespace Game_of_Life
         public void Run()
         {
             var worldSize = GetWorldSize();
-            var locationOfLiveCells = GetLocationOfLiveCells(worldSize);
-            world = new World(worldSize, locationOfLiveCells);
+            var liveLocations = GetLocationOfLiveCells(worldSize);
+            world = new World(worldSize, liveLocations);
             SetCellString();
             PlayWorld();
         }
 
-        private void SetCellString()
-        {
-            PromptDeadCellCharacter();
-            var deadCellString = reader.ReadLine();
-            if (String.IsNullOrEmpty(deadCellString)) deadCellString = ".";
-            PromptLiveCellCharacter();
-            var aliveCellString = reader.ReadLine();
-            if (String.IsNullOrEmpty(aliveCellString)) aliveCellString = "*";
-            DeadCell.SetString(deadCellString);
-            LivingCell.SetString(aliveCellString);
-        }
-
-        private void PromptDeadCellCharacter() => writer.Write("Enter dead cell string representation (or leave blank): ");
-
-        private void PromptLiveCellCharacter() => writer.Write("Enter live cell string representation (or leave blank): ");
-
         private WorldSize GetWorldSize()
         {
-            PromptWorldSize();
-            var size = PromptUntilValidWorldSize();
+            var size = PromptUntil(Validation.ValidWorldSize, PromptWorldSize);
             var worldSize = size.Split("x").Select(int.Parse).ToArray();
             worldSize = worldSize.Length == 3 ? worldSize : new int[] { worldSize[0], worldSize[1], 1 };
             return new WorldSize(worldSize[0], worldSize[1], worldSize[2]);
@@ -55,58 +38,80 @@ namespace Game_of_Life
 
         private Location[] GetLocationOfLiveCells(WorldSize ws)
         {
-            PromptLiveLocations();
-            var lifeCoords = PromptUntilValidLocations(ws);
-            if (String.IsNullOrEmpty(lifeCoords)) return new Location[0];
-            var coords = lifeCoords.Split(".");
-            var locationsOfLife = new List<Location>();
+            var coordsofLife = PromptUntilValidLocations(ws);
+            if (String.IsNullOrEmpty(coordsofLife)) return new Location[0];
+            var coords = coordsofLife.Split(".");
+            var liveLocations = new List<Location>();
             foreach (var c in coords)
             {
                 var coord = c.Split(",").Select(int.Parse).ToArray();
-                if (coord.Length == 2) locationsOfLife.Add(new Location(new Coordinate(coord[0], coord[1], 0)));
-                if (coord.Length == 3) locationsOfLife.Add(new Location(new Coordinate(coord[0], coord[1], coord[2])));
+                if (coord.Length == 2) liveLocations.Add(new Location(new Coordinate(coord[0], coord[1], 0)));
+                if (coord.Length == 3) liveLocations.Add(new Location(new Coordinate(coord[0], coord[1], coord[2])));
             }
-            return locationsOfLife.ToArray();
+            return liveLocations.ToArray();
+        }
+
+        private void SetCellString()
+        {
+            DeadCell.SetString(GetNonEmptyString(PromptDeadCellCharacter, "."));
+            LivingCell.SetString(GetNonEmptyString(PromptDeadCellCharacter, "*"));
+        }
+
+        private string GetNonEmptyString(Action prompt, string fallback)
+        {
+            prompt();
+            var userInput = reader.ReadLine();
+            if (String.IsNullOrEmpty(userInput)) userInput = fallback;
+            return userInput;
         }
 
         private void PlayWorld()
         {
             writer.WriteLine(WorldRenderer.RenderWorld(world));
-            while (!world.IsEmpty() || !world.IsStagnant())
+            while (!(world.IsEmpty() && world.IsStagnant()))
             {
                 world = world.NextWorld();
-                // Console.Clear();
                 writer.WriteLine(WorldRenderer.RenderWorld(world));
                 sleeper.Sleep();
             }
         }
 
-        private void PromptWorldSize() => writer.Write("Enter world size in the format 'nxn': ");
-
-        private string PromptUntilValidWorldSize()
+        private string PromptUntil(Func<string, bool> valid, Action prompt)
         {
-            var worldSize = reader.ReadLine();
-            while (!Validation.ValidWorldSize(worldSize.Split("x")))
+            prompt();
+            var userInput = reader.ReadLine();
+            while (!valid(userInput))
             {
-                PromptWorldSize();
-                worldSize = reader.ReadLine();
+                prompt();
+                userInput = reader.ReadLine();
             }
-            return worldSize;
+            return userInput;
         }
-
-        private void PromptLiveLocations() => writer.WriteLine("Enter coordinates of live cells: ");
 
         private string PromptUntilValidLocations(WorldSize ws)
         {
+            PromptLiveLocations();
             var lifeCoords = reader.ReadLine();
-            while (!Validation.ValidCoords(Validation.FormatCoords(lifeCoords), ws)
-                && !String.IsNullOrEmpty(lifeCoords))
+            while (!Validation.ValidCoords(lifeCoords, ws))
             {
+                PromptLiveLocations();
                 lifeCoords = reader.ReadLine();
             }
 
             return lifeCoords;
         }
+
+        private void PromptWorldSize() =>
+            writer.Write("Enter world size in the format 'nxn': ");
+
+        private void PromptLiveLocations() =>
+            writer.WriteLine("Enter coordinates of live cells: ");
+
+        private void PromptDeadCellCharacter() =>
+            writer.Write("Enter dead cell string representation (or leave blank): ");
+
+        private void PromptLiveCellCharacter() =>
+            writer.Write("Enter live cell string representation (or leave blank): ");
 
     }
 }

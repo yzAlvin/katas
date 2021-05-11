@@ -11,9 +11,9 @@ namespace Game_of_Life.Tests
         [InlineData(101, 101, 6)]
         public void World_ThrowsArgumentException_With_Negative_Sizes(int badWidth, int badHeight, int badDepth)
         {
-            Assert.Throws<ArgumentException>(() => new WorldSize(width: badWidth));
-            Assert.Throws<ArgumentException>(() => new WorldSize(height: badHeight));
-            Assert.Throws<ArgumentException>(() => new WorldSize(depth: badDepth));
+            Assert.Throws<InvalidWorldSize>(() => new WorldSize(width: badWidth));
+            Assert.Throws<InvalidWorldSize>(() => new WorldSize(height: badHeight));
+            Assert.Throws<InvalidWorldSize>(() => new WorldSize(depth: badDepth));
         }
 
         [Theory]
