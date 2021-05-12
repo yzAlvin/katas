@@ -112,4 +112,12 @@ class HelloTests extends FunSuite {
     assert(Hello.nextNLeapYears(1499, 3) == Vector(1504, 1508, 1512))
   }
 
+  test("average return average of array of double") {
+    assert(Hello.average(Array()) == 0.0)
+    assert(Hello.average(Array(0.0)) == 0.0)
+    assert(Hello.average(Array(0.0, 1.0)) == 0.5)
+    assert(Hello.average(Array(3.0, 2.0, 1.0)) == 2.0)
+    assert(Hello.average(Array(1.1, 3.4, 4.2)) == 2.9)
+  }
+
 }
