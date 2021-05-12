@@ -28,6 +28,7 @@ namespace Game_of_Life
             Location otherLocation = obj as Location;
             if (otherLocation == null) return false;
             return Coordinate.Equals(otherLocation.Coordinate);
+            // && Cell.Equals(otherLocation.Cell);
         }
     }
 }

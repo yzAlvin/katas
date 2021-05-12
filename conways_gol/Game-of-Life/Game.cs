@@ -68,7 +68,7 @@ namespace Game_of_Life
         private void PlayWorld()
         {
             writer.WriteLine(WorldRenderer.RenderWorld(world));
-            while (!world.IsEmpty() || !world.IsStagnant())
+            while (!world.IsStagnant())
             {
                 world = world.NextWorld();
                 writer.WriteLine(WorldRenderer.RenderWorld(world));

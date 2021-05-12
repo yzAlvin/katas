@@ -11,26 +11,11 @@ namespace Game_of_Life.Tests
             world.Locations.Single(l => l.Equals(location)).Cell;
 
         [Fact]
-        public void IsEmpty_ReturnsTrue_With_NewWorld()
-        {
-            var emptyWorld = new World();
-            Assert.True(emptyWorld.IsEmpty());
-        }
-
-        [Fact]
         public void World_Starts_With_Living_Cells_At_Locations()
         {
             var locationOfLivingCell = new Location();
             var worldWithLife = new World(liveLocations: new Location[] { locationOfLivingCell });
             Assert.IsType<LivingCell>(GetCell(worldWithLife, locationOfLivingCell));
-        }
-
-        [Fact]
-        public void IsEmpty_ReturnsFalse_With_WorldWithLivingCells()
-        {
-            var locationOfLivingCell = new Location();
-            var world = new World(liveLocations: new Location[] { locationOfLivingCell });
-            Assert.False(world.IsEmpty());
         }
 
         [Theory]
@@ -53,15 +38,13 @@ namespace Game_of_Life.Tests
         [Fact]
         public void IsStagnant_ReturnsFalse_With_ProgressingWorld()
         {
-            var worldSize = new WorldSize(3, 3, 1);
+            var worldSize = new WorldSize(3, 3);
             var locationOfLiveCells = new Location[]
             {
-                new Location(new Coordinate(0, 0, 0)),
-                new Location(new Coordinate(0, 1, 0)),
-                new Location(new Coordinate(1, 0, 0)),
-            };
+                new Location(new Coordinate(0, 0)),
+             };
             var progressingWorld = new World(worldSize: worldSize, liveLocations: locationOfLiveCells);
-            Assert.False(progressingWorld.IsEmpty());
+            Assert.False(progressingWorld.IsStagnant());
         }
 
         [Fact]
@@ -74,13 +57,13 @@ namespace Game_of_Life.Tests
         [Fact]
         public void NextWorld_ReturnsStagnantWorld_On_StagnantWorld()
         {
-            var worldSize = new WorldSize(3, 3, 1);
+            var worldSize = new WorldSize(5, 5);
             var locationOfLiveCells = new Location[]
             {
-                new Location(new Coordinate(0, 0, 0)),
-                new Location(new Coordinate(0, 1, 0)),
-                new Location(new Coordinate(1, 0, 0)),
-                new Location(new Coordinate(1, 1, 0)),
+                new Location(new Coordinate(0, 0)),
+                new Location(new Coordinate(0, 1)),
+                new Location(new Coordinate(1, 0)),
+                new Location(new Coordinate(1, 1)),
             };
             var stagnantWorld = new World(worldSize: worldSize, liveLocations: locationOfLiveCells);
             Assert.Equal(stagnantWorld, stagnantWorld.NextWorld());

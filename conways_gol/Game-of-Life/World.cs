@@ -18,8 +18,6 @@ namespace Game_of_Life
             PopulateWorld(liveLocations);
         }
 
-        public bool IsEmpty() => Locations.Count(IsAlive) == 0;
-
         public bool IsStagnant() => this.Equals(NextWorld());
 
         public World NextWorld() =>
@@ -30,7 +28,8 @@ namespace Game_of_Life
             World otherWorld = obj as World;
             if (otherWorld == null) return false;
             return Size.Equals(otherWorld.Size) &&
-                Locations.SequenceEqual(otherWorld.Locations);
+                Locations.Where(IsAlive).Select(l => l.Coordinate)
+                .SequenceEqual(otherWorld.Locations.Where(IsAlive).Select(l => l.Coordinate));
         }
 
         private void InitialiseWorld()
