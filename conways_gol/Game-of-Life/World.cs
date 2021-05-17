@@ -9,10 +9,10 @@ namespace Game_of_Life
         public WorldSize Size { get; }
         public List<Location> Locations { get; private set; }
 
-        public World(WorldSize worldSize = default, Location[] liveLocations = default)
+        public World(WorldSize worldSize = default, Coordinate[] liveLocations = default)
         {
             if (worldSize == default) worldSize = new WorldSize(5, 5, 1);
-            if (liveLocations == default) liveLocations = new Location[0];
+            if (liveLocations == default) liveLocations = new Coordinate[0];
             this.Size = worldSize;
             InitialiseWorld();
             PopulateWorld(liveLocations);
@@ -47,12 +47,11 @@ namespace Game_of_Life
             }
         }
 
-        private void PopulateWorld(Location[] liveLocations) =>
-            Locations =
-                liveLocations.All(l => Locations.Contains(l)) ?
-                    Locations.Select(l => liveLocations.Contains(l) ? l.BecomeAlive() : l)
-                        .ToList()
-                    : throw new InvalidLocation();
+        private void PopulateWorld(Coordinate[] liveLocations) =>
+        Locations =
+        liveLocations.All(c => Locations.Select(l => l.Coordinate).Contains(c)) ?
+        Locations.Select(l => liveLocations.Contains(l.Coordinate) ? l.BecomeAlive() : l).ToList()
+        : throw new InvalidLocation();
 
         private bool LocationAliveNextGeneration(Location location) =>
             location.Cell.AliveNextGeneration(NumberOfAliveNeighbours(location.Coordinate));
@@ -68,16 +67,19 @@ namespace Game_of_Life
             GetNeighboursInWorld(coordinate)
             .Count(IsAlive);
 
-        private Location[] NextWorldLocations() =>
-            Locations.Where(IsAlive).Aggregate(
-                Locations.Where(IsAlive).ToList(),
-                (acc, cur) =>
-                    {
-                        acc.AddRange(GetNeighboursInWorld(cur.Coordinate));
-                        return acc;
-                    }
-            )
-            .Distinct().Where(LocationAliveNextGeneration).ToArray();
+        private Coordinate[] NextWorldLocations() =>
+        Locations.Where(IsAlive).Aggregate(
+            Locations.Where(IsAlive).ToList(),
+            (acc, cur) =>
+                {
+                    acc.AddRange(GetNeighboursInWorld(cur.Coordinate));
+                    return acc;
+                }
+        )
+        .Distinct()
+        .Where(LocationAliveNextGeneration)
+        .Select(l => l.Coordinate)
+        .ToArray();
 
         private bool IsAlive(Location l) => l.Cell.GetType() == typeof(LivingCell);
 

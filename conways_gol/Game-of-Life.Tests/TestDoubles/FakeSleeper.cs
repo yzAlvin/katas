@@ -1,10 +1,10 @@
 using System.Runtime.ConstrainedExecution;
 namespace Game_of_Life
 {
-    public class FakeSleeper : Sleeper 
+    public class FakeSleeper : Sleeper
     {
-        public int Calls {get; private set;}
+        public int Calls { get; private set; }
 
-        public override void Sleep(int duration) => this.Calls++;
+        public override void Sleep() => this.Calls++;
     }
 }

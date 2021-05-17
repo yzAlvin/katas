@@ -22,7 +22,7 @@ namespace Game_of_Life.Tests
         {
             var expectedOutput = ".*.\n*..\n..*\n";
             var worldSize = new WorldSize(width: 3, height: 3);
-            var liveLocations = new Location[] { new Location(new Coordinate(0, 1)), new Location(new Coordinate(1, 0)), new Location(new Coordinate(2, 2)) };
+            var liveLocations = new Coordinate[] { new Coordinate(0, 1), new Coordinate(1, 0), new Coordinate(2, 2) };
             var worldWithLife = new World(worldSize: worldSize, liveLocations: liveLocations);
             var actualOutput = WorldRenderer.RenderWorld(worldWithLife);
 
@@ -45,14 +45,14 @@ namespace Game_of_Life.Tests
         {
             var expectedWorld = "*..|...|...\n...|.*.|.*.\n*..|..*|..*\n";
             var worldSize = new WorldSize(width: 3, height: 3, depth: 3);
-            var liveLocations = new Location[]
+            var liveLocations = new Coordinate[]
             {
-                new Location(new Coordinate(0, 0, 0)),
-                new Location(new Coordinate(2, 0, 0)),
-                new Location(new Coordinate(1, 1, 1)),
-                new Location(new Coordinate(2, 2, 1)),
-                new Location(new Coordinate(1, 1, 2)),
-                new Location(new Coordinate(2, 2, 2)),
+                new Coordinate(0, 0, 0),
+                new Coordinate(2, 0, 0),
+                new Coordinate(1, 1, 1),
+                new Coordinate(2, 2, 1),
+                new Coordinate(1, 1, 2),
+                new Coordinate(2, 2, 2),
 
             };
             var worldWithLife = new World(worldSize: worldSize, liveLocations: liveLocations);

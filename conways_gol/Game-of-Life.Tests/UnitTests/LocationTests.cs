@@ -57,6 +57,14 @@ namespace Game_of_Life.Tests
         }
 
         [Fact]
+        public void Equals_ReturnsFalse_Comparing_Locations_With_Different_CellState()
+        {
+            var aliveLocation = new Location().BecomeAlive();
+            var deadLocation = new Location().BecomeDead();
+            Assert.NotEqual(aliveLocation, deadLocation);
+        }
+
+        [Fact]
         public void Equals_ReturnsFalse_Comparing_Location_With_NotLocation()
         {
             var someLocation = new Location();

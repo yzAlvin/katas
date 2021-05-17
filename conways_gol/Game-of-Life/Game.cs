@@ -36,17 +36,17 @@ namespace Game_of_Life
             return new WorldSize(worldSize[0], worldSize[1], worldSize[2]);
         }
 
-        private Location[] GetLocationOfLiveCells(WorldSize ws)
+        private Coordinate[] GetLocationOfLiveCells(WorldSize ws)
         {
             var coordsofLife = PromptUntilValidLocations(ws);
-            if (String.IsNullOrEmpty(coordsofLife)) return new Location[0];
+            if (String.IsNullOrEmpty(coordsofLife)) return new Coordinate[0];
             var coords = coordsofLife.Split(".");
-            var liveLocations = new List<Location>();
+            var liveLocations = new List<Coordinate>();
             foreach (var c in coords)
             {
                 var coord = c.Split(",").Select(int.Parse).ToArray();
-                if (coord.Length == 2) liveLocations.Add(new Location(new Coordinate(coord[0], coord[1], 0)));
-                if (coord.Length == 3) liveLocations.Add(new Location(new Coordinate(coord[0], coord[1], coord[2])));
+                if (coord.Length == 2) liveLocations.Add(new Coordinate(coord[0], coord[1], 0));
+                if (coord.Length == 3) liveLocations.Add(new Coordinate(coord[0], coord[1], coord[2]));
             }
             return liveLocations.ToArray();
         }
