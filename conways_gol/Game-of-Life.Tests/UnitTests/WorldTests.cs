@@ -14,7 +14,7 @@ namespace Game_of_Life.Tests
         public void World_Starts_With_Living_Cells_At_Locations()
         {
             var locationOfLivingCell = new Coordinate();
-            var worldWithLife = new World(liveLocations: new Coordinate[] { locationOfLivingCell });
+            var worldWithLife = new World(livingCoords: new Coordinate[] { locationOfLivingCell });
             Assert.IsType<LivingCell>(GetCell(worldWithLife, locationOfLivingCell));
         }
 
@@ -25,7 +25,7 @@ namespace Game_of_Life.Tests
         {
             var outOfBounds = new Coordinate(outOfBoundsX, outOfBoundsY, outOfBoundsZ);
             var worldSize = new WorldSize(3, 3, 3);
-            Assert.Throws<InvalidLocation>(() => new World(worldSize: worldSize, liveLocations: new Coordinate[] { outOfBounds }));
+            Assert.Throws<InvalidLocation>(() => new World(worldSize: worldSize, livingCoords: new Coordinate[] { outOfBounds }));
         }
 
         [Fact]
@@ -43,7 +43,7 @@ namespace Game_of_Life.Tests
             {
                 new Coordinate(0, 0),
              };
-            var progressingWorld = new World(worldSize: worldSize, liveLocations: locationOfLiveCells);
+            var progressingWorld = new World(worldSize: worldSize, livingCoords: locationOfLiveCells);
             Assert.False(progressingWorld.IsStagnant());
         }
 
@@ -65,7 +65,7 @@ namespace Game_of_Life.Tests
                 new Coordinate(1, 0),
                 new Coordinate(1, 1),
             };
-            var stagnantWorld = new World(worldSize: worldSize, liveLocations: locationOfLiveCells);
+            var stagnantWorld = new World(worldSize: worldSize, livingCoords: locationOfLiveCells);
             Assert.Equal(stagnantWorld, stagnantWorld.NextWorld());
         }
 
@@ -73,8 +73,8 @@ namespace Game_of_Life.Tests
         public void NextWorld_ReturnsEmptyWorld_On_UnderpopulatedWorld()
         {
             var locationOfLiveCell = new Coordinate(2, 2);
-            var world = new World(liveLocations: new Coordinate[] { locationOfLiveCell });
-            var expectedNextWorld = new World(liveLocations: new Coordinate[0]);
+            var world = new World(livingCoords: new Coordinate[] { locationOfLiveCell });
+            var expectedNextWorld = new World(livingCoords: new Coordinate[0]);
             var actualNextWorld = world.NextWorld();
             Assert.Equal(expectedNextWorld, actualNextWorld);
         }

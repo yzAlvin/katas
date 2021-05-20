@@ -9,13 +9,13 @@ namespace Game_of_Life
         public WorldSize Size { get; }
         public List<Location> Locations { get; private set; }
 
-        public World(WorldSize worldSize = default, Coordinate[] liveLocations = default)
+        public World(WorldSize worldSize = default, Coordinate[] livingCoords = default)
         {
             if (worldSize == default) worldSize = new WorldSize(5, 5, 1);
-            if (liveLocations == default) liveLocations = new Coordinate[0];
+            if (livingCoords == default) livingCoords = new Coordinate[0];
             this.Size = worldSize;
             InitialiseWorld();
-            PopulateWorld(liveLocations);
+            PopulateWorld(livingCoords);
         }
 
         public bool IsStagnant() => this.Equals(NextWorld());
@@ -27,9 +27,8 @@ namespace Game_of_Life
         {
             World otherWorld = obj as World;
             if (otherWorld == null) return false;
-            return Size.Equals(otherWorld.Size) &&
-                Locations.Where(IsAlive).Select(l => l.Coordinate)
-                .SequenceEqual(otherWorld.Locations.Where(IsAlive).Select(l => l.Coordinate));
+            return Size.Equals(otherWorld.Size)
+                && Locations.SequenceEqual(otherWorld.Locations);
         }
 
         private void InitialiseWorld()
@@ -47,11 +46,11 @@ namespace Game_of_Life
             }
         }
 
-        private void PopulateWorld(Coordinate[] liveLocations) =>
-        Locations =
-        liveLocations.All(c => Locations.Select(l => l.Coordinate).Contains(c)) ?
-        Locations.Select(l => liveLocations.Contains(l.Coordinate) ? l.BecomeAlive() : l).ToList()
-        : throw new InvalidLocation();
+        private void PopulateWorld(Coordinate[] livingCoords) =>
+            Locations =
+            livingCoords.All(c => Locations.Select(l => l.Coordinate).Contains(c)) ?
+            Locations.Select(l => livingCoords.Contains(l.Coordinate) ? l.BecomeAlive() : l).ToList()
+            : throw new InvalidLocation();
 
         private bool LocationAliveNextGeneration(Location location) =>
             location.Cell.AliveNextGeneration(NumberOfAliveNeighbours(location.Coordinate));

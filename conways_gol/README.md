@@ -29,16 +29,11 @@ Your task is to implement Conways Game of Life. You should be able to:
 * Don't test implementation details
 * Think in terms of **BEHAVIOUR** - put on "tester" hat
 
-* Try to be as "functional" as possible
+* Try to be "functional" 
     * Pure functions
-    * No side effects - might be hard, still unsure how to handle input/output streams
-    * Writing small methods and combining them
-    * Preferring Linq methods over loops - preferring declarative over imperative
-
-## Problems I encountered
-* My implementation broke abstraction details, one of my implementations was so brittle I decided to start over because it was just too problematic to continue building up
-
-* 
+    * No side effects - might be hard, still unsure how to handle input/output streams, exception monad?
+    * Writing small methods and composing them 
+    * Preferring Linq methods over loops 
 
 ## Before Coding
 
@@ -53,8 +48,6 @@ Your task is to implement Conways Game of Life. You should be able to:
 
 * Display world from console
 * Display world from file
-
-* Pause between each generation
 
 ### Interfaces
 * WorldSize(int width, int height, int depth)

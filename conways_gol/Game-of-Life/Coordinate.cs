@@ -43,25 +43,26 @@ namespace Game_of_Life
             return neighbours.ToArray();
         }
 
-        public Coordinate WrapCoordinate(WorldSize upperBound)
-        {
-            var wrappedX = X;
-            var wrappedY = Y;
-            var wrappedZ = Z;
-            if (X < 0) wrappedX = upperBound.Height + X;
-            if (Y < 0) wrappedY = upperBound.Width + Y;
-            if (Z < 0) wrappedZ = upperBound.Depth + Z;
-            if (X > upperBound.Height - 1) wrappedX = X - upperBound.Height;
-            if (Y > upperBound.Width - 1) wrappedY = Y - upperBound.Width;
-            if (Z > upperBound.Depth - 1) wrappedZ = Z - upperBound.Depth;
-            return new Coordinate(wrappedX, wrappedY, wrappedZ);
-        }
+        public Coordinate WrapCoordinate(WorldSize upperBound) =>
+            new Coordinate(
+                WrapNumber(X, 0, upperBound.Height),
+                WrapNumber(Y, 0, upperBound.Width),
+                WrapNumber(Z, 0, upperBound.Height)
+            );
+
 
         public override bool Equals(object obj)
         {
             Coordinate otherCoord = obj as Coordinate;
             if (otherCoord == null) return false;
             return X == otherCoord.X && Y == otherCoord.Y && Z == otherCoord.Z;
+        }
+
+        private int WrapNumber(int number, int lowerBound, int upperBound)
+        {
+            if (number < lowerBound) return number + upperBound;
+            if (number > upperBound - 1) return number - upperBound;
+            return number;
         }
 
     }
