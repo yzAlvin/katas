@@ -95,7 +95,7 @@ Your task is to implement Conways Game of Life. You should be able to:
 * WorldRenderer returns world in string format
 
 ### Class Diagram
-![Class Diagram](https://user-images.githubusercontent.com/14051545/116186262-9ef08e00-a766-11eb-9d5e-56ebe26cc5f4.jpg)
+![Class Diagram](https://user-images.githubusercontent.com/14051545/119060148-fd7ef400-ba14-11eb-859a-b514ebd8aef6.jpg)
 
 ## Extensions
 
