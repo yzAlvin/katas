@@ -8,6 +8,11 @@ namespace Game_of_Life
     {
         static void Main(string[] args)
         {
+            if (args.Length <= 0 || args.Length > 2)
+            {
+                PrintProperUsage();
+                return;
+            }
             switch (args[0])
             {
                 case "console":
@@ -43,8 +48,10 @@ namespace Game_of_Life
 
         private static void PrintProperUsage()
         {
-            Console.WriteLine("Please enter the input method argument.");
-            Console.WriteLine("Usage: Life <file|console>");
+            Console.WriteLine("To play from console: ");
+            Console.WriteLine("Usage: dotnet run --project ~/~.csproj console");
+            Console.WriteLine("To play from file: ");
+            Console.WriteLine("Usage: dotnet run --project ~/~.csproj file <name_of_file.txt>");
         }
     }
 }

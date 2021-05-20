@@ -9,10 +9,15 @@ namespace Game_of_Life
         public Coordinate Coordinate { get; private set; }
         public ICell Cell { get; private set; }
 
-        public Location(Coordinate coordinate = default, ICell cell = default)
+        public Location(Coordinate coordinate = default)
         {
             if (coordinate == default) coordinate = new Coordinate(0, 0, 0);
-            if (cell == default) cell = new DeadCell();
+            this.Coordinate = coordinate;
+            this.Cell = new DeadCell();
+        }
+
+        public Location(Coordinate coordinate, ICell cell)
+        {
             this.Coordinate = coordinate;
             this.Cell = cell;
         }
