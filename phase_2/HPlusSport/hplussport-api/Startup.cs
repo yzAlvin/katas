@@ -32,6 +32,22 @@ namespace hplussport_api
             services.AddDbContext<ShopContext>(options =>
                 options.UseInMemoryDatabase("Shop"));
             services.AddControllers();
+
+            services.AddAuthentication("Bearer")
+                .AddJwtBearer("Bearer", options =>
+                {
+                    options.Authority = "http://localhost:5002";
+                    options.RequireHttpsMetadata = false;
+
+                    options.Audience = "hps-api";
+
+                    options.TokenValidationParameters =
+                    new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                    {
+                        ValidateAudience = false
+                    };
+                });
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "hplussport_api", Version = "v1" });
@@ -72,6 +88,7 @@ namespace hplussport_api
 
             app.UseCors();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

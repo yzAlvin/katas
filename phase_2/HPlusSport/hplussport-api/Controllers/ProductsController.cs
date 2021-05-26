@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using hplussport_api_classes;
 using hplussport_api_models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,6 +15,7 @@ namespace hplussport_api_controllers
     [ApiVersion("1.0")]
     // [Route("v{v:apiVersion}/products")]
     [Route("products")]
+    [Authorize]
     [EnableCors]
     [ApiController]
     public class ProductsControllerV1_0 : ControllerBase
