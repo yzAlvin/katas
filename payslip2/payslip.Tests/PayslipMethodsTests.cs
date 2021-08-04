@@ -18,7 +18,6 @@ namespace PayslipGenerator
 		[Fact]
 		public void GeneratePayslip_ShouldReturn_Payslip()
 		{
-			// var data = new Data("David", "Rudd", 60050, 9, "01 March", "31 March");
 			var data = new Data
 			{
 				FirstName = "David",

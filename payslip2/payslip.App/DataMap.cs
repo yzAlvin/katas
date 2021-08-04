@@ -12,7 +12,6 @@ namespace PayslipGenerator
 			Map(m => m.SuperRate).Name("super rate (%)", "SuperRate");
 			Map(m => m.StartDate).Name("payment start date", "StartDate");
 			Map(m => m.EndDate).Name("payment end date", "EndDate");
-			//annual salary, super rate (%), payment start date, payment end date
 		}
 	}
 
